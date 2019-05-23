@@ -56,7 +56,7 @@ public class Tracks extends MainActivity {
         super.onCreate(savedInstanceState);
 
         if (!isNetworkAvailable()){
-            Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         }
 
         new GetTracks().execute("https://classical.suspilne.media/list");
@@ -154,7 +154,7 @@ public class Tracks extends MainActivity {
                     setPlayBtnIcon(ids, -1);
                     player.releasePlayer();
 
-                    Toast.makeText(Tracks.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Tracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -212,7 +212,7 @@ public class Tracks extends MainActivity {
             super.onPostExecute(titles);
 
             if (titles == null){
-                Toast.makeText(Tracks.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                Toast.makeText(Tracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
                 return;
             }
 

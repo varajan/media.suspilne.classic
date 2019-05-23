@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="confirm_exit">Закрити UA: Класична музика?</string>
+    <string name="x_minutes">%s хвилин</string>
+    <string name="no_internet">Відсутній Інтернет!</string>
+    <string name="confirm_allow_work_in_background">Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)</string>
+    <string name="play_one_by_one">Грати треки однин за одним</string>
+    <string name="sleep_timeout">Таймер сну (закривати програму)</string>
+    <string name="title">Назва</string>
+    <string name="author">Автор</string>
+    <string name="track_1_title">Концерт №2 для фортепіано з оркестром, твір 18, 1 частина - Moderato</string>
+    <string name="track_2_title">Вокаліз, твір 34, №14. Перекладення для інструментального тріо В.Крюкова (оригінал для голосу і фортепіано)</string>
+    <string name="track_3_title">«Музичний момент» h-moll, твір 16 №3</string>
+    <string name="track_4_title">Прелюдія cis-moll з циклу «П’єси-фантазії для фортепіано», твір 3 №2</string>
+    <string name="track_5_title">Елегія es-moll, з циклу «П’єси-фантазії для фортепіано», твір 3 №1</string>
+    <string name="track_7_title">Елізі</string>
+    <string name="track_6_title">Соната №23 «Апасіоната» f-moll, твір 57, 1 частина – Andante assai</string>
+    <string name="track_8_title">Симфонія №3 «Героїчна», Es-dur, твір 55, 3 частина – Скерцо, Allegro vivace</string>
+    <string name="track_9_title">Соната №8 «Патетична» c-moll, твір 13, 2 частина  - Adagio cantabile</string>
+    <string name="track_10_title">Концерт для скрипки з оркестром D-dur, твір 61, 3 частина Рондо. Allegro</string>
+    <string name="track_11_title">Соната №14 «Quasi una fantasia» («Місячна»), cis-moll, твір 27№2, 1 частина – Adagio sostenuto</string>
+    <string name="track_12_title">Концерт №2 для фортепіано з оркестром B-dur, твір 19, 3 частина Рондо. Molto allegro</string>
+    <string name="track_13_title">Симфонічна увертюра «Егмонт» (до трагедії Гьоте), твір 84</string>
+    <string name="track_14_title">Обробка української народної пісні «Їхав козак за Дунай» (із збірки «Пісні різних народів»)</string>
+    <string name="track_15_title">Симфонія №5, 1 частина</string>
+    <string name="track_15_author">Людвіг ван Бетховен</string>
+    <string name="track_14_author">Людвіг ван Бетховен</string>
+    <string name="track_13_author">Людвіг ван Бетховен</string>
+    <string name="track_12_author">Людвіг ван Бетховен</string>
+    <string name="track_10_author">Людвіг ван Бетховен</string>
+    <string name="track_11_author">Людвіг ван Бетховен</string>
+    <string name="track_9_author">Людвіг ван Бетховен</string>
+    <string name="track_8_author">Людвіг ван Бетховен</string>
+    <string name="track_7_author">Людвіг ван Бетховен</string>
+    <string name="track_6_author">Людвіг ван Бетховен</string>
+    <string name="track_5_author">Сергій Рахманінов</string>
+    <string name="track_4_author">Сергій Рахманінов</string>
+    <string name="track_3_author">Сергій Рахманінов</string>
+    <string name="track_2_author">Сергій Рахманінов</string>
+    <string name="track_1_author">Сергій Рахманінов</string>
+</resources>

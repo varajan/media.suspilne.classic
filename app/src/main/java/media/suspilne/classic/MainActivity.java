@@ -109,9 +109,9 @@ public class MainActivity extends AppCompatActivity
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Вийти з Казок?")
-                .setPositiveButton("Так", dialogClickListener)
-                .setNegativeButton("Ні", dialogClickListener)
+        builder.setMessage(R.string.confirm_exit)
+                .setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener)
                 .show();
     }
 

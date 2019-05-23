@@ -58,7 +58,9 @@ public class Settings extends MainActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SettingsHelper.setInt(Settings.this,"timeout", seekBar.getProgress() * step);
-                timeoutText.setText(SettingsHelper.getString(Settings.this, "timeout", "0") + " хвилин");
+                String minutes = SettingsHelper.getString(Settings.this, "timeout", "0");
+
+                timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
             }
 
             @Override
@@ -107,8 +109,9 @@ public class Settings extends MainActivity {
         boolean isTracksPlayNext = SettingsHelper.getBoolean(this, "tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
         int accent = ContextCompat.getColor(this, R.color.colorAccent);
+        String minutes = SettingsHelper.getString(Settings.this, "timeout", "5");
 
-        timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
+        timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
 
         batteryOptimization.setEnabled(Build.VERSION.SDK_INT > 23);

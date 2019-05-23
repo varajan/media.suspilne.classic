@@ -4,7 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="tracks">Список</string>
+    <string name="tracks">Записи</string>
     <string name="settings">Налаштування</string>
     <string name="exit">Вихід</string>
 </resources>
