@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_settings_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Settings">
+
+<LinearLayout
+        android:id="@+id/list"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/batteryOptimization"
+            android:fontFamily="@font/chalkboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)"
+            android:textSize="16sp"
+            tools:typeface="serif"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Switch
+            android:id="@+id/tracksPlayNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/chalkboard"
+            android:text="Казки: грати одну за одною"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
+            tools:typeface="serif" />
+
+        <Switch
+            android:id="@+id/autoQuit"
+            android:fontFamily="@font/chalkboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Таймер сну (закривати програму)"
+            android:textSize="16sp"
+            tools:typeface="serif"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tracksPlayNext" />
+
+        <SeekBar
+            android:id="@+id/timeout"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:max="18"
+            android:min="1"
+            android:progress="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/autoQuit" />
+
+        <TextView
+            android:id="@+id/timeoutText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/chalkboard"
+            android:text="45"
+            android:textSize="16sp"
+            tools:typeface="serif" />
+    </LinearLayout>
+</ScrollView>

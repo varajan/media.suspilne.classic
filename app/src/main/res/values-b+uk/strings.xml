@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">UA: Classical Music</string>
+    <string name="app_name">UA: Класична музика</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="tracks">Tracks</string>
-    <string name="settings">Settings</string>
-    <string name="exit">Exit</string>
+    <string name="tracks">Список</string>
+    <string name="settings">Налаштування</string>
+    <string name="exit">Вихід</string>
 </resources>
