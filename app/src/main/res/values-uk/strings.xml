@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">UA: Класична музика</string>
+    <string name="tracks">Записи</string>
+    <string name="settings">Налаштування</string>
+    <string name="exit">Вихід</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
     <string name="confirm_exit">Закрити UA: Класична музика?</string>
@@ -25,19 +29,6 @@
     <string name="track_13_title">Симфонічна увертюра «Егмонт» (до трагедії Гьоте), твір 84</string>
     <string name="track_14_title">Обробка української народної пісні «Їхав козак за Дунай» (із збірки «Пісні різних народів»)</string>
     <string name="track_15_title">Симфонія №5, 1 частина</string>
-    <string name="track_15_author">Людвіг ван Бетховен</string>
-    <string name="track_14_author">Людвіг ван Бетховен</string>
-    <string name="track_13_author">Людвіг ван Бетховен</string>
-    <string name="track_12_author">Людвіг ван Бетховен</string>
-    <string name="track_10_author">Людвіг ван Бетховен</string>
-    <string name="track_11_author">Людвіг ван Бетховен</string>
-    <string name="track_9_author">Людвіг ван Бетховен</string>
-    <string name="track_8_author">Людвіг ван Бетховен</string>
-    <string name="track_7_author">Людвіг ван Бетховен</string>
-    <string name="track_6_author">Людвіг ван Бетховен</string>
-    <string name="track_5_author">Сергій Рахманінов</string>
-    <string name="track_4_author">Сергій Рахманінов</string>
-    <string name="track_3_author">Сергій Рахманінов</string>
-    <string name="track_2_author">Сергій Рахманінов</string>
-    <string name="track_1_author">Сергій Рахманінов</string>
+    <string name="ludvig_van_beethoven">Людвіг ван Бетховен</string>
+    <string name="sergey_rachmaninov">Сергій Рахманінов</string>
 </resources>

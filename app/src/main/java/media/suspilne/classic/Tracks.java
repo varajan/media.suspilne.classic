@@ -1,25 +1,34 @@
 package media.suspilne.classic;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
 public class Tracks extends MainActivity {
+    private List<TrackEntry> tracks = new ArrayList<>(Arrays.asList(
+        new TrackEntry(1, R.string.track_1_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(2, R.string.track_2_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(3, R.string.track_3_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(4, R.string.track_4_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(5, R.string.track_5_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(6, R.string.track_6_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(7, R.string.track_7_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(8, R.string.track_8_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(9, R.string.track_9_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(10, R.string.track_10_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(11, R.string.track_11_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(12, R.string.track_12_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(13, R.string.track_13_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(14, R.string.track_14_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(15, R.string.track_15_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven)));
+
     int nowPlaying;
     int lastPlaying;
     long position;
@@ -59,176 +68,98 @@ public class Tracks extends MainActivity {
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         }
 
-        new GetTracks().execute("https://classical.suspilne.media/list");
-    }
+        LinearLayout list = findViewById(R.id.list);
+        for (final TrackEntry track:tracks) {
+            View item = LayoutInflater.from(Tracks.this).inflate(R.layout.track_item, list, false);
+            item.setTag(track.id);
+            list.addView(item);
 
-    class GetTracks extends AsyncTask<String, Void, ArrayList<Integer>> {
-        @Override
-        protected ArrayList<Integer> doInBackground(String... arg) {
-            ArrayList<Integer> result = new ArrayList<>();
+            // -- set titles/photos
+            ((ImageView)item.findViewById(R.id.photo)).setImageResource(track.authorPhotoId);
+            ((TextView) item.findViewById(R.id.title)).setText(track.titleId);
+            ((TextView) item.findViewById(R.id.author)).setText(track.authorNameId);
+            // -- set titles/photos
 
-            try {
-                Document document = Jsoup.connect(arg[0]).get();
-                Elements Tracks = document.select("div.tales-list a");
-                for (Element tale : Tracks) {
-                    String href = tale.attr("href");
-                    String id = href.split("\\?")[0].split("/")[2];
-                    result.add(Integer.valueOf(id));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            final ImageView playBtn = item.findViewById(R.id.play);
+            playBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
+                        position = player.position();
+                        lastPlaying = track.id;
 
-            result = ListHelper.union(result, SettingsHelper.getSavedTaleIds(Tracks.this));
-            Collections.sort(result);
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(final ArrayList<Integer> ids) {
-            super.onPostExecute(ids);
-            final LinearLayout list = findViewById(R.id.list);
-
-            for (final int id:ids) {
-                View item = LayoutInflater.from(Tracks.this).inflate(R.layout.track_item, list, false);
-                item.setTag(id);
-                list.addView(item);
-
-                new SetTaleTitle().execute(id);
-
-                final ImageView playBtn = item.findViewById(R.id.play);
-
-                playBtn.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
-                            position = player.position();
-                            lastPlaying = id;
-
-                            player.releasePlayer();
-                            playBtn.setImageResource(R.mipmap.track_play);
-                            playBtn.setTag(R.mipmap.track_play);
-                        }else{
-                            playTale(ids, id);
-                            Tracks.this.setQuiteTimeout();
-                        }
-                    }
-                });
-
-                if (nowPlaying == id){
-                    playBtn.setImageResource(R.mipmap.track_pause);
-                    playBtn.setTag(R.mipmap.track_pause);
-
-                    player.initializePlayer("https://classical.suspilne.media/inc/audio/" + String.format("%02d", nowPlaying) + ".mp3");
-                    player.setPosition(position);
-
-                    Tracks.this.setQuiteTimeout();
-                }
-            }
-
-            player.addListener(new Player.MediaIsEndedListener(){
-                @Override
-                public void mediaIsEnded(){
-                    if (SettingsHelper.getBoolean(Tracks.this, "TracksPlayNext")){
-                        int next = ids.get(0);
-
-                        for(int i:ids){
-                            if (i > nowPlaying) {
-                                next = i;
-                                break;
-                            }
-                        }
-
-                        playTale(ids, next);
+                        player.releasePlayer();
+                        playBtn.setImageResource(R.mipmap.track_play);
+                        playBtn.setTag(R.mipmap.track_play);
                     }else{
-                        nowPlaying = -1;
-                        setPlayBtnIcon(ids, -1);
+                        playTrack(track);
+                        Tracks.this.setQuiteTimeout();
                     }
                 }
             });
 
-            player.addListener(new Player.SourceIsNotAccessibleListener(){
-                @Override
-                public void sourceIsNotAccessible(){
-                    nowPlaying = -1;
-                    setPlayBtnIcon(ids, -1);
-                    player.releasePlayer();
+            if (nowPlaying == track.id){
+                playBtn.setImageResource(R.mipmap.track_pause);
+                playBtn.setTag(R.mipmap.track_pause);
 
-                    Toast.makeText(Tracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-
-        private void playTale(ArrayList<Integer> ids, int playId){
-            player.releasePlayer();
-            player.initializePlayer("https://classical.suspilne.media/inc/audio/" + String.format("%02d", playId) + ".mp3");
-            if (playId == lastPlaying){
+                player.initializePlayer(track.stream(nowPlaying));
                 player.setPosition(position);
-            }
-            setPlayBtnIcon(ids, playId);
-            nowPlaying = playId;
-            lastPlaying = playId;
-        }
 
-        private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
-            LinearLayout list = findViewById(R.id.list);
-
-            for (int x:ids){
-                ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
-                btn.setImageResource(x == id ? R.mipmap.track_pause : R.mipmap.track_play);
-                btn.setTag(x == id ? R.mipmap.track_pause : R.mipmap.track_play);
+                Tracks.this.setQuiteTimeout();
             }
         }
+        // -- add items
+
+        player.addListener(new Player.MediaIsEndedListener(){
+            @Override
+            public void mediaIsEnded(){
+                if (SettingsHelper.getBoolean(Tracks.this, "TracksPlayNext")){
+//                    int next = ids.get(0);
+//
+//                    for(int i:ids){
+//                        if (i > nowPlaying) {
+//                            next = i;
+//                            break;
+//                        }
+//                    }
+//
+//                    playTrack(next);
+                }else{
+                    nowPlaying = -1;
+                    setPlayBtnIcon(new TrackEntry());
+                }
+            }
+        });
+
+        player.addListener(new Player.SourceIsNotAccessibleListener(){
+            @Override
+            public void sourceIsNotAccessible(){
+                nowPlaying = -1;
+                setPlayBtnIcon(new TrackEntry());
+                player.releasePlayer();
+
+                Toast.makeText(Tracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    class SetTaleTitle extends AsyncTask<Integer, Void, String[]> {
-        private int id;
-
-        @Override
-        protected String[] doInBackground(Integer... arg) {
-            try {
-                id = arg[0];
-                String title = SettingsHelper.getString(Tracks.this, "title-" + id);
-                String reader = SettingsHelper.getString(Tracks.this, "reader-" + id);
-
-                if (title.equals("") || reader.equals("")){
-                    Document document = Jsoup.connect("https://classical.suspilne.media/list").get();
-                    title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
-                    reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
-
-                    SettingsHelper.setString(Tracks.this, "title-" + id, title);
-                    SettingsHelper.setString(Tracks.this, "reader-" + id, reader);
-                }
-
-                return new String[] {title, reader};
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
+    private void playTrack(TrackEntry track){
+        player.releasePlayer();
+        player.initializePlayer(track.stream());
+        if (track.id == lastPlaying){
+            player.setPosition(position);
         }
+        setPlayBtnIcon(track);
+        nowPlaying = track.id;
+        lastPlaying = track.id;
+    }
 
-        @Override
-        protected void onPostExecute(String[] titles) {
-            super.onPostExecute(titles);
+    private void setPlayBtnIcon(TrackEntry track){
+        LinearLayout list = findViewById(R.id.list);
 
-            if (titles == null){
-                Toast.makeText(Tracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            View item = findViewById(R.id.list).findViewWithTag(id);
-            TextView title = item.findViewById(R.id.title);
-            TextView reader = item.findViewById(R.id.reader);
-            ImageView preview = item.findViewById(R.id.preview);
-            int margin = ((ConstraintLayout.LayoutParams)preview.getLayoutParams()).leftMargin;
-            int imageWidth = preview.getWidth();
-            int maxWidth =  item.getWidth() - imageWidth - 3 * margin;
-
-            title.setText(titles[0]);
-            reader.setText(titles[1]);
-
-            title.setWidth(maxWidth);
-            reader.setWidth(maxWidth);
+        for (TrackEntry x:tracks){
+            ImageView btn = list.findViewWithTag(x.id).findViewById(R.id.play);
+            btn.setImageResource(x.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+            btn.setTag(x.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
         }
     }
 }

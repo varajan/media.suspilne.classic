@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">UA: Classical Music</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
 
     <string name="tracks">Tracks</string>
     <string name="settings">Settings</string>
@@ -17,8 +17,8 @@
     <string name="sleep_timeout">Quite application timeout</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
-    <string name="track_1_title" translatable="false">The Piano Concerto No. 2 in C minor, Op. 18, is a concerto for piano and orchestra, 1st part - Moderato</string>
-    <string name="track_2_title" translatable="false">track 2</string>
+    <string name="track_1_title">The Piano Concerto No. 2 in C minor, Op. 18, is a concerto for piano and orchestra, 1st part - Moderato</string>
+    <string name="track_2_title">track 2</string>
     <string name="track_3_title">track 3</string>
     <string name="track_4_title">track 4</string>
     <string name="track_5_title">track 5</string>
@@ -32,19 +32,6 @@
     <string name="track_13_title">track 13</string>
     <string name="track_14_title">track 14</string>
     <string name="track_15_title">track 15</string>
-    <string name="track_15_author">Ludwig Van Beethoven</string>
-    <string name="track_14_author">Ludwig Van Beethoven</string>
-    <string name="track_13_author">Ludwig Van Beethoven</string>
-    <string name="track_12_author">Ludwig Van Beethoven</string>
-    <string name="track_11_author">Ludwig Van Beethoven</string>
-    <string name="track_10_author">Ludwig Van Beethoven</string>
-    <string name="track_9_author">Ludwig Van Beethoven</string>
-    <string name="track_8_author">Ludwig Van Beethoven</string>
-    <string name="track_7_author">Ludwig Van Beethoven</string>
-    <string name="track_6_author">Ludwig Van Beethoven</string>
-    <string name="track_5_author">Sergey Rachmaninov</string>
-    <string name="track_4_author">Sergey Rachmaninov</string>
-    <string name="track_3_author">Sergey Rachmaninov</string>
-    <string name="track_2_author">Sergey Rachmaninov</string>
-    <string name="track_1_author">Sergey Rachmaninov</string>
+    <string name="ludvig_van_beethoven">Ludwig Van Beethoven</string>
+    <string name="sergey_rachmaninov">Sergey Rachmaninov</string>
 </resources>
