@@ -156,10 +156,10 @@ public class Tracks extends MainActivity {
     private void setPlayBtnIcon(TrackEntry track){
         LinearLayout list = findViewById(R.id.list);
 
-        for (TrackEntry x:tracks){
-            ImageView btn = list.findViewWithTag(x.id).findViewById(R.id.play);
-            btn.setImageResource(x.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
-            btn.setTag(x.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+        for (TrackEntry item:tracks){
+            ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
+            btn.setImageResource(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+            btn.setTag(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
         }
     }
 }
