@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UA: Класична музика</string>
+    <string name="app_name">UA: Класика</string>
     <string name="tracks">Записи</string>
     <string name="settings">Налаштування</string>
     <string name="exit">Вихід</string>
