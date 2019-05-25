@@ -13,21 +13,21 @@ import java.util.List;
 
 public class Tracks extends MainActivity {
     private List<TrackEntry> tracks = new ArrayList<>(Arrays.asList(
-        new TrackEntry(1, R.string.track_1_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(2, R.string.track_2_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(3, R.string.track_3_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(4, R.string.track_4_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(5, R.string.track_5_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(6, R.string.track_6_title, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(7, R.string.track_7_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(8, R.string.track_8_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(9, R.string.track_9_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(10, R.string.track_10_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(11, R.string.track_11_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(12, R.string.track_12_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(13, R.string.track_13_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(14, R.string.track_14_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(15, R.string.track_15_title, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven)));
+        new TrackEntry(1, R.string.track_001, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(2, R.string.track_002, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(3, R.string.track_003, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(4, R.string.track_004, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(5, R.string.track_005, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(6, R.string.track_006, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
+        new TrackEntry(7, R.string.track_007, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(8, R.string.track_008, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(9, R.string.track_009, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(10, R.string.track_010, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(11, R.string.track_011, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(12, R.string.track_012, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(13, R.string.track_013, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(14, R.string.track_014, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(15, R.string.track_015, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven)));
 
     int nowPlaying;
     int lastPlaying;
