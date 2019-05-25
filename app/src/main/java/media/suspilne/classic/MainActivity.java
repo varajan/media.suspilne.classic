@@ -133,14 +133,14 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.tracks_menu:
                 if (currentView != R.id.tracks_menu) {
-                    openActivity(Tracks.class);
+                    openActivity(TracksActivity.class);
                 }
                 break;
 
 
             case R.id.settings_menu:
                 if (currentView != R.id.settings_menu) {
-                    openActivity(Settings.class);
+                    openActivity(SettingsActivity.class);
                 }
                 break;
 

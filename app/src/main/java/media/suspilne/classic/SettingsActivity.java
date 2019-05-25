@@ -14,7 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class Settings extends MainActivity {
+public class SettingsActivity extends MainActivity {
     private Switch batteryOptimization;
     private Switch tracksPlayNext;
     private Switch autoQuit;
@@ -39,7 +39,7 @@ public class Settings extends MainActivity {
         tracksPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(Settings.this, "tracksPlayNext", isChecked);
+                SettingsHelper.setBoolean(SettingsActivity.this, "tracksPlayNext", isChecked);
                 setColorsAndState();
             }
         });
@@ -47,7 +47,7 @@ public class Settings extends MainActivity {
         autoQuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(Settings.this, "autoQuit", isChecked);
+                SettingsHelper.setBoolean(SettingsActivity.this, "autoQuit", isChecked);
                 setColorsAndState();
             }
         });
@@ -57,8 +57,8 @@ public class Settings extends MainActivity {
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SettingsHelper.setInt(Settings.this,"timeout", seekBar.getProgress() * step);
-                String minutes = SettingsHelper.getString(Settings.this, "timeout", "0");
+                SettingsHelper.setInt(SettingsActivity.this,"timeout", seekBar.getProgress() * step);
+                String minutes = SettingsHelper.getString(SettingsActivity.this, "timeout", "0");
 
                 timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
             }
@@ -109,7 +109,7 @@ public class Settings extends MainActivity {
         boolean isTracksPlayNext = SettingsHelper.getBoolean(this, "tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
         int accent = ContextCompat.getColor(this, R.color.colorAccent);
-        String minutes = SettingsHelper.getString(Settings.this, "timeout", "5");
+        String minutes = SettingsHelper.getString(SettingsActivity.this, "timeout", "5");
 
         timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);

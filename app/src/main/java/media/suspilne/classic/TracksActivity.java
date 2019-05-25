@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Tracks extends MainActivity {
+public class TracksActivity extends MainActivity {
     private List<TrackEntry> tracks = new ArrayList<>(Arrays.asList(
         new TrackEntry(1, R.string.track_001, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
         new TrackEntry(2, R.string.track_002, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
@@ -76,7 +76,7 @@ public class Tracks extends MainActivity {
 
         LinearLayout list = findViewById(R.id.list);
         for (final TrackEntry track:tracks) {
-            View item = LayoutInflater.from(Tracks.this).inflate(R.layout.track_item, list, false);
+            View item = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             item.setTag(track.id);
             list.addView(item);
 
@@ -98,7 +98,7 @@ public class Tracks extends MainActivity {
                         playBtn.setTag(R.mipmap.track_play);
                     }else{
                         playTrack(track);
-                        Tracks.this.setQuiteTimeout();
+                        TracksActivity.this.setQuiteTimeout();
                     }
                 }
             });
@@ -110,7 +110,7 @@ public class Tracks extends MainActivity {
                 player.initializePlayer(track.stream(nowPlaying));
                 player.setPosition(position);
 
-                Tracks.this.setQuiteTimeout();
+                TracksActivity.this.setQuiteTimeout();
             }
         }
         // -- add items
@@ -118,7 +118,7 @@ public class Tracks extends MainActivity {
         player.addListener(new Player.MediaIsEndedListener(){
             @Override
             public void mediaIsEnded(){
-                if (SettingsHelper.getBoolean(Tracks.this, "TracksPlayNext")){
+                if (SettingsHelper.getBoolean(TracksActivity.this, "TracksPlayNext")){
 //                    int next = ids.get(0);
 //
 //                    for(int i:ids){
@@ -143,7 +143,7 @@ public class Tracks extends MainActivity {
                 setPlayBtnIcon(new TrackEntry());
                 player.releasePlayer();
 
-                Toast.makeText(Tracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+                Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
             }
         });
     }

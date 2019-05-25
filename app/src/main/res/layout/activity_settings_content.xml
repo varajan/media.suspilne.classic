@@ -5,7 +5,7 @@
     android:id="@+id/activity_settings_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    tools:context=".SettingsActivity">
 
 <LinearLayout
         android:id="@+id/list"
