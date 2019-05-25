@@ -37,7 +37,17 @@ public class TracksActivity extends MainActivity {
         new TrackEntry(22, R.string.track_022, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
         new TrackEntry(23, R.string.track_023, R.string.medelson, R.mipmap.mendelson),
         new TrackEntry(24, R.string.track_024, R.string.carl_orff, R.mipmap.carl_orff),
-        new TrackEntry(25, R.string.track_025, R.string.sebastian_bach, R.mipmap.bach)
+        new TrackEntry(25, R.string.track_025, R.string.sebastian_bach, R.mipmap.bach),
+        new TrackEntry(26, R.string.track_026, R.string.sebastian_bach, R.mipmap.bach),
+        new TrackEntry(27, R.string.track_027, R.string.sebastian_bach, R.mipmap.bach),
+        new TrackEntry(28, R.string.track_028, R.string.debussy, R.mipmap.debussy),
+        new TrackEntry(29, R.string.track_029, R.string.ravel, R.mipmap.ravel),
+        new TrackEntry(30, R.string.track_030, R.string.borodin, R.mipmap.borodin),
+        new TrackEntry(31, R.string.track_031, R.string.ravel, R.mipmap.ravel),
+        new TrackEntry(32, R.string.track_032, R.string.rossini, R.mipmap.rossini),
+        new TrackEntry(33, R.string.track_033, R.string.rossini, R.mipmap.rossini),
+        new TrackEntry(34, R.string.track_034, R.string.rossini, R.mipmap.rossini),
+        new TrackEntry(35, R.string.track_035, R.string.rossini, R.mipmap.rossini)
             ));
 
     int nowPlaying;

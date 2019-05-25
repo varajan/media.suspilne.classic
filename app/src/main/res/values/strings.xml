@@ -59,4 +59,18 @@
     <string name="chopin">Frederic Chopin</string>
     <string name="joseph_haydn">Joseph Haydn</string>
     <string name="liszt">Ferencz Liszt</string>
+    <string name="track_026">Suite No. 3 in B minor, aria</string>
+    <string name="track_027">The Brandenburg Concertos No. 3 in G minor, part 1</string>
+    <string name="track_028">Afternoon of a Faun</string>
+    <string name="debussy">Claude Debussy</string>
+    <string name="ravel">Joseph Maurice Ravel</string>
+    <string name="track_029">Bolero</string>
+    <string name="borodin">Alexandr Borodin</string>
+    <string name="track_030">Polovtsian Dances from Prince Igor opera</string>
+    <string name="track_031">Tzigane for violin and piano</string>
+    <string name="rossini">Gioachino Antonio Rossini</string>
+    <string name="track_032">The Barber of Seville, or The Useless Precaution, overture</string>
+    <string name="track_033">Opera William Tell, overture</string>
+    <string name="track_034">La gazza ladra opera, overture</string>
+    <string name="track_035">Opera The Italian Girl in Algiers, overture</string>
 </resources>

@@ -56,4 +56,18 @@
     <string name="chopin">Фредерік Шопен</string>
     <string name="joseph_haydn">Йозеф Гайдн</string>
     <string name="liszt">Ференц Ліст</string>
+    <string name="track_026">Арія з сюїти №3</string>
+    <string name="track_027">Бранденбурзький концерт №3, 1 частина</string>
+    <string name="track_028">Післяполудневий відпочинок фавна</string>
+    <string name="debussy">Клод Дебюссі</string>
+    <string name="ravel">Моріс Жозеф Равель</string>
+    <string name="track_029">Болеро</string>
+    <string name="borodin">Олександр Бородін</string>
+    <string name="track_030">Половецькі танці з опери «Князь Ігор»</string>
+    <string name="track_031">«Циганка» рапсодія для скрипки з оркестром</string>
+    <string name="rossini">Джоаккіно Антоніо Россіні</string>
+    <string name="track_032">Увертюра до опери «Севільський цирульник»</string>
+    <string name="track_033">Увертюра до опери «Вільгельм Телль»</string>
+    <string name="track_034">Увертюра до опери «Сорока-злодійка»</string>
+    <string name="track_035">Увертюра до опери «Італійка в Алжирі»</string>
 </resources>
