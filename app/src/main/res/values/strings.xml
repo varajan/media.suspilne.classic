@@ -45,4 +45,7 @@
     <string name="track_023">Wedding macrh from Midsummer Night\'s Dream</string>
     <string name="track_024">O Fortune. Carmina Burana</string>
     <string name="track_025">Toccata and Fugue in D minor</string>
+    <string name="carl_orff">Carl Orff</string>
+    <string name="medelson">Felix Mendelssohn Bartholdy</string>
+    <string name="sebastian_bach">Johann Sebastian Bach</string>
 </resources>
