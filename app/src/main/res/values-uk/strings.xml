@@ -45,4 +45,15 @@
     <string name="carl_orff">Карл Орф</string>
     <string name="medelson">Фелікс Мендельсон Бартольді</string>
     <string name="sebastian_bach">Йоганн Себастьян Бах</string>
+    <string name="modest_musorgsky">Модест Мусоргський</string>
+    <string name="elgar">Едуард Елгар</string>
+    <string name="leontovych">Mykola Leontovych</string>
+    <string name="bilash">Олександр Білаш</string>
+    <string name="vincenzo_bellini">Вінченцо Белліні</string>
+    <string name="mykola_lysenko">Микола Лисенко</string>
+    <string name="aram_khachaturian">Арам Хачатурян</string>
+    <string name="dmitri_shostakovich">Дмитро Шостакович</string>
+    <string name="chopin">Фредерік Шопен</string>
+    <string name="joseph_haydn">Йозеф Гайдн</string>
+    <string name="liszt">Ференц Ліст</string>
 </resources>

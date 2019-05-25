@@ -48,4 +48,15 @@
     <string name="carl_orff">Carl Orff</string>
     <string name="medelson">Felix Mendelssohn Bartholdy</string>
     <string name="sebastian_bach">Johann Sebastian Bach</string>
+    <string name="modest_musorgsky">Modest Mussorgsky</string>
+    <string name="elgar">Edward Elgar</string>
+    <string name="leontovych">Mykola Leontovych</string>
+    <string name="bilash">Oleksandr Bilash</string>
+    <string name="vincenzo_bellini">Vincenzo Bellini</string>
+    <string name="mykola_lysenko">Mykola Lysenko</string>
+    <string name="aram_khachaturian">Aram Khachaturian</string>
+    <string name="dmitri_shostakovich">Dmitri Shostakovich</string>
+    <string name="chopin">Frederic Chopin</string>
+    <string name="joseph_haydn">Joseph Haydn</string>
+    <string name="liszt">Ferencz Liszt</string>
 </resources>
