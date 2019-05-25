@@ -27,7 +27,13 @@ public class Tracks extends MainActivity {
         new TrackEntry(12, R.string.track_012, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
         new TrackEntry(13, R.string.track_013, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
         new TrackEntry(14, R.string.track_014, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(15, R.string.track_015, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven)));
+        new TrackEntry(15, R.string.track_015, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
+        new TrackEntry(16, R.string.track_016, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
+        new TrackEntry(17, R.string.track_017, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
+        new TrackEntry(18, R.string.track_018, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
+        new TrackEntry(19, R.string.track_019, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
+        new TrackEntry(20, R.string.track_020, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky)
+            ));
 
     int nowPlaying;
     int lastPlaying;
