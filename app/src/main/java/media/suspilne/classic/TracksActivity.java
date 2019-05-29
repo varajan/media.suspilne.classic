@@ -47,7 +47,12 @@ public class TracksActivity extends MainActivity {
         new TrackEntry(32, R.string.track_032, R.string.rossini, R.mipmap.rossini),
         new TrackEntry(33, R.string.track_033, R.string.rossini, R.mipmap.rossini),
         new TrackEntry(34, R.string.track_034, R.string.rossini, R.mipmap.rossini),
-        new TrackEntry(35, R.string.track_035, R.string.rossini, R.mipmap.rossini)
+        new TrackEntry(35, R.string.track_035, R.string.rossini, R.mipmap.rossini),
+        new TrackEntry(36, R.string.track_036, R.string.kamil, R.mipmap.kamil),
+        new TrackEntry(37, R.string.track_037, R.string.wagner, R.mipmap.wagner),
+        new TrackEntry(38, R.string.track_038, R.string.mozart, R.mipmap.mozart),
+        new TrackEntry(39, R.string.track_039, R.string.strauss_i, R.mipmap.strauss_i),
+        new TrackEntry(40, R.string.track_040, R.string.strauss_ii, R.mipmap.strauss_ii)
             ));
 
     int nowPlaying;

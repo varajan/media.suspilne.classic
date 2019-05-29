@@ -72,4 +72,12 @@
     <string name="track_035">Увертюра до опери «Італійка в Алжирі»</string>
     <string name="kamil">Каміль Сен-Санс</string>
     <string name="track_036">Інтродукція і рондо каприччіозо для скрипки з оркестром</string>
+    <string name="wagner">Ріхард Вагнер</string>
+    <string name="track_037">Увертюра до опери «Летючий голландець»</string>
+    <string name="mozart">Вольфганг Амадей Моцарт</string>
+    <string name="track_038">Увертюра до опери «Весілля Фігаро»</string>
+    <string name="strauss_i">Йоганн Штраус батько</string>
+    <string name="track_039">Марш Радецького</string>
+    <string name="track_040">Полька «Трік-трак»</string>
+    <string name="strauss_ii">Йоганн Штраус син</string>
 </resources>

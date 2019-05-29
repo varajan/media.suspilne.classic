@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">UA: Classic</string>
-    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
 
     <string name="tracks">Tracks</string>
     <string name="settings">Settings</string>
@@ -74,5 +74,13 @@
     <string name="track_034">La gazza ladra opera, overture</string>
     <string name="track_035">Opera The Italian Girl in Algiers, overture</string>
     <string name="kamil">Camille Saint-Saëns</string>
-    <string name="track_036">s</string>
+    <string name="track_036">The Introduction and Rondo Capriccioso in A minor for violin and orchestra</string>
+    <string name="wagner">Richard Wagner</string>
+    <string name="track_037">Opera The Flying Dutchman, overture</string>
+    <string name="mozart">Wolfgang Amadeus Mozart</string>
+    <string name="track_038">Opera The Marriage of Figaro, overture</string>
+    <string name="strauss_i">Johann Strauss (father)</string>
+    <string name="track_039">The Radetzky March</string>
+    <string name="track_040">Tik-Tak-Polka</string>
+    <string name="strauss_ii">Johann Strauss (son)</string>
 </resources>
