@@ -8,57 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class TracksActivity extends MainActivity {
-    private List<TrackEntry> tracks = new ArrayList<>(Arrays.asList(
-        new TrackEntry(1, R.string.track_001, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(2, R.string.track_002, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(3, R.string.track_003, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(4, R.string.track_004, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(5, R.string.track_005, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(6, R.string.track_006, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
-        new TrackEntry(7, R.string.track_007, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(8, R.string.track_008, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(9, R.string.track_009, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(10, R.string.track_010, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(11, R.string.track_011, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(12, R.string.track_012, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(13, R.string.track_013, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(14, R.string.track_014, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(15, R.string.track_015, R.string.ludvig_van_beethoven, R.mipmap.ludvig_van_beethoven),
-        new TrackEntry(16, R.string.track_016, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(17, R.string.track_017, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(18, R.string.track_018, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(19, R.string.track_019, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(20, R.string.track_020, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(21, R.string.track_021, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(22, R.string.track_022, R.string.petro_chaikovsky, R.mipmap.petro_chaikovsky),
-        new TrackEntry(23, R.string.track_023, R.string.medelson, R.mipmap.mendelson),
-        new TrackEntry(24, R.string.track_024, R.string.carl_orff, R.mipmap.carl_orff),
-        new TrackEntry(25, R.string.track_025, R.string.sebastian_bach, R.mipmap.bach),
-        new TrackEntry(26, R.string.track_026, R.string.sebastian_bach, R.mipmap.bach),
-        new TrackEntry(27, R.string.track_027, R.string.sebastian_bach, R.mipmap.bach),
-        new TrackEntry(28, R.string.track_028, R.string.debussy, R.mipmap.debussy),
-        new TrackEntry(29, R.string.track_029, R.string.ravel, R.mipmap.ravel),
-        new TrackEntry(30, R.string.track_030, R.string.borodin, R.mipmap.borodin),
-        new TrackEntry(31, R.string.track_031, R.string.ravel, R.mipmap.ravel),
-        new TrackEntry(32, R.string.track_032, R.string.rossini, R.mipmap.rossini),
-        new TrackEntry(33, R.string.track_033, R.string.rossini, R.mipmap.rossini),
-        new TrackEntry(34, R.string.track_034, R.string.rossini, R.mipmap.rossini),
-        new TrackEntry(35, R.string.track_035, R.string.rossini, R.mipmap.rossini),
-        new TrackEntry(36, R.string.track_036, R.string.kamil, R.mipmap.kamil),
-        new TrackEntry(37, R.string.track_037, R.string.wagner, R.mipmap.wagner),
-        new TrackEntry(38, R.string.track_038, R.string.mozart, R.mipmap.mozart),
-        new TrackEntry(39, R.string.track_039, R.string.strauss_i, R.mipmap.strauss_i),
-        new TrackEntry(40, R.string.track_040, R.string.strauss_ii, R.mipmap.strauss_ii)
-            ));
-
-    int nowPlaying;
-    int lastPlaying;
-    long position;
+    private Tracks tracks = new Tracks();
 
     @Override
     public void onDestroy() {
@@ -71,18 +23,18 @@ public class TracksActivity extends MainActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("nowPlaying", player.isPlaying() ? nowPlaying : -1);
-        outState.putInt("lastPlaying", lastPlaying);
-        outState.putLong("position", player.isPlaying() ? player.position() : position);
+        outState.putInt("nowPlaying", player.isPlaying() ? tracks.nowPlaying : -1);
+        outState.putInt("lastPlaying", tracks.lastPlaying);
+        outState.putLong("position", player.isPlaying() ? player.position() : tracks.position);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        nowPlaying = savedInstanceState.getInt("nowPlaying");
-        lastPlaying = savedInstanceState.getInt("lastPlaying");
-        position = savedInstanceState.getLong("position");
+        tracks.nowPlaying = savedInstanceState.getInt("nowPlaying");
+        tracks.lastPlaying = savedInstanceState.getInt("lastPlaying");
+        tracks.position = savedInstanceState.getLong("position");
     }
 
     @Override
@@ -96,7 +48,7 @@ public class TracksActivity extends MainActivity {
         }
 
         LinearLayout list = findViewById(R.id.list);
-        for (final TrackEntry track:tracks) {
+        for (final TrackEntry track:tracks.items) {
             View item = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             item.setTag(track.id);
             list.addView(item);
@@ -112,8 +64,8 @@ public class TracksActivity extends MainActivity {
             playBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
-                        position = player.position();
-                        lastPlaying = track.id;
+                        tracks.position = player.position();
+                        tracks.lastPlaying = track.id;
 
                         player.releasePlayer();
                         playBtn.setImageResource(R.mipmap.track_play);
@@ -125,12 +77,12 @@ public class TracksActivity extends MainActivity {
                 }
             });
 
-            if (nowPlaying == track.id){
+            if (tracks.nowPlaying == track.id){
                 playBtn.setImageResource(R.mipmap.track_pause);
                 playBtn.setTag(R.mipmap.track_pause);
 
-                player.initializePlayer(track.stream(nowPlaying));
-                player.setPosition(position);
+                player.initializePlayer(track.stream(tracks.nowPlaying));
+                player.setPosition(tracks.position);
 
                 TracksActivity.this.setQuiteTimeout();
             }
@@ -141,18 +93,9 @@ public class TracksActivity extends MainActivity {
             @Override
             public void mediaIsEnded(){
                 if (SettingsHelper.getBoolean(TracksActivity.this, "TracksPlayNext")){
-//                    int next = ids.get(0);
-//
-//                    for(int i:ids){
-//                        if (i > nowPlaying) {
-//                            next = i;
-//                            break;
-//                        }
-//                    }
-//
-//                    playTrack(next);
+                    playTrack(tracks.next());
                 }else{
-                    nowPlaying = -1;
+                    tracks.nowPlaying = -1;
                     setPlayBtnIcon(new TrackEntry());
                 }
             }
@@ -161,7 +104,7 @@ public class TracksActivity extends MainActivity {
         player.addListener(new Player.SourceIsNotAccessibleListener(){
             @Override
             public void sourceIsNotAccessible(){
-                nowPlaying = -1;
+                tracks.nowPlaying = -1;
                 setPlayBtnIcon(new TrackEntry());
                 player.releasePlayer();
 
@@ -173,18 +116,18 @@ public class TracksActivity extends MainActivity {
     private void playTrack(TrackEntry track){
         player.releasePlayer();
         player.initializePlayer(track.stream());
-        if (track.id == lastPlaying){
-            player.setPosition(position);
+        if (track.id == tracks.lastPlaying){
+            player.setPosition(tracks.position);
         }
         setPlayBtnIcon(track);
-        nowPlaying = track.id;
-        lastPlaying = track.id;
+        tracks.nowPlaying = track.id;
+        tracks.lastPlaying = track.id;
     }
 
     private void setPlayBtnIcon(TrackEntry track){
         LinearLayout list = findViewById(R.id.list);
 
-        for (TrackEntry item:tracks){
+        for (TrackEntry item:tracks.items){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
             btn.setImageResource(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
             btn.setTag(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
