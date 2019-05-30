@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:layout_width="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="130dp">
+    android:orientation="horizontal"
+    android:layout_height="165dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/photo"
-        android:layout_width="150dp"
-        android:layout_height="113dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:maxWidth="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/icon_classic_round" />
-
-    <TextView
-        app:fontFamily="@font/chalkboard"
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_weight = "0"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/title"
-        android:textColor="@color/colorAccent"
-        android:textSize="6pt"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/photo"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="wrap_content">
 
-    <TextView
-        app:fontFamily="@font/chalkboard"
-        android:id="@+id/author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:textSize="6pt"
-        android:text="@string/author"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toEndOf="@+id/photo"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:maxWidth="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/icon_classic_round" />
 
-    <ImageView
-        android:id="@+id/play"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/photo"
-        app:srcCompat="@mipmap/track_play"
-        tools:scaleType="fitXY" />
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/play"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_alignEnd="@+id/photo"
+            android:layout_alignBottom="@+id/photo"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/photo"
+            app:srcCompat="@mipmap/track_play"
+            tools:scaleType="fitXY" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_weight = "1"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            app:fontFamily="@font/chalkboard"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="8dp"
+            android:text="Title title title title title title title title"
+            android:textColor="@color/colorAccent"
+            android:textSize="6pt"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="0dp"
+            android:text="author author author author author author author author author author author author author author"
+            android:textColor="@color/colorAccent"
+            android:textSize="6pt"
+            app:fontFamily="@font/chalkboard"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+    </RelativeLayout>
+
+</LinearLayout>
