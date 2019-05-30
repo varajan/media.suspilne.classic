@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +102,8 @@ public class TracksActivity extends MainActivity {
             list.addView(item);
 
             // -- set titles/photos
-            ((ImageView)item.findViewById(R.id.photo)).setImageResource(track.authorPhotoId);
+            Drawable d = getResources().getDrawable(track.authorPhotoId);
+            ((ImageView)item.findViewById(R.id.photo)).setImageDrawable(ImageHelper.getCircularDrawable(d));
             ((TextView) item.findViewById(R.id.title)).setText(track.titleId);
             ((TextView) item.findViewById(R.id.author)).setText(track.authorNameId);
             // -- set titles/photos
