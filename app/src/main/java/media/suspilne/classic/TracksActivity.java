@@ -2,6 +2,7 @@ package media.suspilne.classic;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +36,11 @@ public class TracksActivity extends MainActivity {
         tracks.nowPlaying = savedInstanceState.getInt("nowPlaying");
         tracks.lastPlaying = savedInstanceState.getInt("lastPlaying");
         tracks.position = savedInstanceState.getLong("position");
+
+        if (tracks.nowPlaying > 0){
+            playTrack(tracks.items.get(tracks.nowPlaying-1));
+            TracksActivity.this.setQuiteTimeout();
+        }
     }
 
     @Override
@@ -76,23 +82,13 @@ public class TracksActivity extends MainActivity {
                     }
                 }
             });
-
-            if (tracks.nowPlaying == track.id){
-                playBtn.setImageResource(R.mipmap.track_pause);
-                playBtn.setTag(R.mipmap.track_pause);
-
-                player.initializePlayer(track.stream(tracks.nowPlaying));
-                player.setPosition(tracks.position);
-
-                TracksActivity.this.setQuiteTimeout();
-            }
         }
         // -- add items
 
         player.addListener(new Player.MediaIsEndedListener(){
             @Override
             public void mediaIsEnded(){
-                if (SettingsHelper.getBoolean(TracksActivity.this, "TracksPlayNext")){
+                if (SettingsHelper.getBoolean(TracksActivity.this, "tracksPlayNext")){
                     playTrack(tracks.next());
                 }else{
                     tracks.nowPlaying = -1;
