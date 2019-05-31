@@ -108,7 +108,9 @@ public class SettingsActivity extends MainActivity {
     private void setColorsAndState() {
         boolean isTracksPlayNext = SettingsHelper.getBoolean(this, "tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
-        int accent = ContextCompat.getColor(this, R.color.colorAccent);
+        int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        int primary = ContextCompat.getColor(this, R.color.colorPrimary);
+
         String minutes = SettingsHelper.getString(SettingsActivity.this, "timeout", "5");
 
         timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
@@ -121,12 +123,12 @@ public class SettingsActivity extends MainActivity {
         timeout.setEnabled(isAutoQuit);
 
         batteryOptimization.setOnCheckedChangeListener(null);
-        batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? accent : Color.GRAY);
+        batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? primaryDark : primary);
         batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
         batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
 
-        tracksPlayNext.setTextColor(isTracksPlayNext ? accent : Color.GRAY);
-        autoQuit.setTextColor(isAutoQuit ? accent : Color.GRAY);
-        timeoutText.setTextColor(isAutoQuit ? accent : Color.GRAY);
+        tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
+        autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
+        timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
     }
 }
