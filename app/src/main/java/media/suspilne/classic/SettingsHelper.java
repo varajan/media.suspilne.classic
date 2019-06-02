@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class SettingsHelper {
-    private static String application = "media.suspilne.classic";
+    public static String application = "media.suspilne.classic";
 
     public static String getString(Activity activity, String setting){
         return getString(activity, setting, "");
