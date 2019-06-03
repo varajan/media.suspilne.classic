@@ -13,3 +13,4 @@
 .externalNativeBuild
 /.idea/*
 .idea/vcs.xml
+app/release/app.aab

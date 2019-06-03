@@ -108,4 +108,7 @@
     <string name="track_058">Peer Gynt, Suite No. 1, Morning Mood</string>
     <string name="track_059">Peer Gynt, Suite No. 1, Anitra\'s Dance</string>
     <string name="track_060">Peer Gynt, Suite No. 1, In the Hall of the Mountain King</string>
+    <string name="language_ua">Ukrainian (Українська)</string>
+    <string name="language_en">English</string>
+    <string name="language">Language:</string>
 </resources>

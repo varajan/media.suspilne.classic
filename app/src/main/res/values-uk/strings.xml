@@ -105,4 +105,7 @@
     <string name="track_060">«У печері гірського короля» – Сюїта № 1 з музики до драми Г. Ібсена «Пер Гюнт»</string>
     <string name="track_059">«Танець Анітри» – Сюїта № 1 з музики до драми Г. Ібсена «Пер Гюнт»</string>
     <string name="track_058">«Ранок» – Сюїта № 1 з музики до драми Г.Ібсена «Пер Гюнт»</string>
+    <string name="language_en">Англійська (English)</string>
+    <string name="language_ua" translatable="false">Українська (Ukrainian)</string>
+    <string name="language">Мова:</string>
 </resources>

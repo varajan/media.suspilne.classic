@@ -1,13 +1,10 @@
 package media.suspilne.classic;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class TracksActivity extends MainActivity {
@@ -55,18 +52,12 @@ public class TracksActivity extends MainActivity {
 
         LinearLayout list = findViewById(R.id.list);
         for (final TrackEntry track:tracks.items) {
-            View item = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
-            item.setTag(track.id);
-            list.addView(item);
+            View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
+            trackView.setTag(track.id);
+            list.addView(trackView);
+            track.setViewDetails(this, trackView);
 
-            // -- set titles/photos
-            Drawable d = getResources().getDrawable(track.authorPhotoId);
-            ((ImageView)item.findViewById(R.id.photo)).setImageDrawable(ImageHelper.getCircularDrawable(d));
-            ((TextView) item.findViewById(R.id.title)).setText(track.titleId);
-            ((TextView) item.findViewById(R.id.author)).setText(track.authorNameId);
-            // -- set titles/photos
-
-            final ImageView playBtn = item.findViewById(R.id.play);
+            final ImageView playBtn = trackView.findViewById(R.id.play);
             playBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
