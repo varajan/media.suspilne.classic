@@ -100,8 +100,8 @@ public class SettingsActivity extends MainActivity {
 
     private void setLanguages(){
         ArrayList<Country> countries = new ArrayList<>();
-        countries.add( new Country("en", getResources().getString(R.string.language_en), 1));
-        countries.add( new Country("uk", getResources().getString(R.string.language_ua), 1));
+        countries.add( new Country("en", getResources().getString(R.string.language_en), R.mipmap.uk));
+        countries.add( new Country("uk", getResources().getString(R.string.language_ua), R.mipmap.ua));
 
         LanguageArrayAdapter arrayAdapter = new LanguageArrayAdapter(this, R.layout.language, countries);
         String currentLanguage = getCurrentLanguage();

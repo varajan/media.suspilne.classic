@@ -26,7 +26,7 @@ public class LanguageArrayAdapter extends ArrayAdapter<Country> {
     public View getView(int position, View convertView, ViewGroup parent ){
         View itemView = inflater.inflate(groupid, parent, false);
 
-//        ((ImageView)itemView.findViewById(R.id.flag)).setImageResource(list.get(position).flag);
+        ((ImageView)itemView.findViewById(R.id.flag)).setImageResource(list.get(position).flag);
         ((TextView)itemView.findViewById(R.id.code)).setText(list.get(position).code);
         ((TextView)itemView.findViewById(R.id.title)).setText(list.get(position).title);
 
