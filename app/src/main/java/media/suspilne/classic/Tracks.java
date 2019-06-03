@@ -53,6 +53,26 @@ public class Tracks {
             new TrackEntry(37, R.string.track_037, R.string.wagner, R.mipmap.wagner),
             new TrackEntry(38, R.string.track_038, R.string.mozart, R.mipmap.mozart),
             new TrackEntry(39, R.string.track_039, R.string.strauss_i, R.mipmap.strauss_i),
-            new TrackEntry(40, R.string.track_040, R.string.strauss_ii, R.mipmap.strauss_ii)
+            new TrackEntry(40, R.string.track_040, R.string.strauss_ii, R.mipmap.strauss_ii),
+            new TrackEntry(41, R.string.track_041, R.string.straus_eduard, R.mipmap.eduard_strauss),
+            new TrackEntry(42, R.string.track_042, R.string.strauss_ii, R.mipmap.strauss_ii),
+            new TrackEntry(43, R.string.track_043, R.string.strauss_ii, R.mipmap.strauss_ii),
+            new TrackEntry(44, R.string.track_044, R.string.vivaldi, R.mipmap.vivaldi),
+            new TrackEntry(45, R.string.track_045, R.string.vivaldi, R.mipmap.vivaldi),
+            new TrackEntry(46, R.string.track_046, R.string.vivaldi, R.mipmap.vivaldi),
+            new TrackEntry(47, R.string.track_047, R.string.vivaldi, R.mipmap.vivaldi),
+            new TrackEntry(48, R.string.track_048, R.string.mozart, R.mipmap.mozart),
+            new TrackEntry(49, R.string.track_049, R.string.mozart, R.mipmap.mozart),
+            new TrackEntry(50, R.string.track_050, R.string.mozart, R.mipmap.mozart),
+            new TrackEntry(51, R.string.track_051, R.string.mozart, R.mipmap.mozart),
+            new TrackEntry(52, R.string.track_052, R.string.astor, R.mipmap.astor),
+            new TrackEntry(53, R.string.track_053, R.string.astor, R.mipmap.astor),
+            new TrackEntry(54, R.string.track_054, R.string.astor, R.mipmap.astor),
+            new TrackEntry(55, R.string.track_055, R.string.bizet, R.mipmap.bizet),
+            new TrackEntry(56, R.string.track_056, R.string.bizet, R.mipmap.bizet),
+            new TrackEntry(57, R.string.track_057, R.string.grieg, R.mipmap.grieg),
+            new TrackEntry(58, R.string.track_058, R.string.grieg, R.mipmap.grieg),
+            new TrackEntry(59, R.string.track_059, R.string.grieg, R.mipmap.grieg),
+            new TrackEntry(60, R.string.track_060, R.string.grieg, R.mipmap.grieg)
     ));
 }
