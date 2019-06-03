@@ -80,4 +80,6 @@
     <string name="track_039">Марш Радецького</string>
     <string name="track_040">Полька «Трік-трак»</string>
     <string name="strauss_ii">Йоганн Штраус син</string>
+    <string name="language_en">Англійська (English)</string>
+    <string name="language_ua" translatable="false">Українська (Ukraininan)</string>
 </resources>

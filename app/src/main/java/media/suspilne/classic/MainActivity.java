@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void setLanguage(String language){
+    public void setLanguage(String language){
         Locale myLocale = new Locale(language);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
