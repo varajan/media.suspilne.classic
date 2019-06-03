@@ -56,13 +56,24 @@ public class MainActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public String getCurrentLanguage(){
+        return getResources().getConfiguration().locale.getLanguage();
+    }
+
     public void setLanguage(String language){
+        String currentLanguage = getCurrentLanguage();
         Locale myLocale = new Locale(language);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
+
+        if (!language.equals(currentLanguage)){
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -80,8 +91,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
