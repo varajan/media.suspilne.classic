@@ -85,4 +85,5 @@
     <string name="strauss_ii">Johann Strauss (son)</string>
     <string name="language_ua">Ukraininan (Українська)</string>
     <string name="language_en">English</string>
+    <string name="language">Language:</string>
 </resources>

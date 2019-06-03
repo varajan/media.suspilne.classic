@@ -82,4 +82,5 @@
     <string name="strauss_ii">Йоганн Штраус син</string>
     <string name="language_en">Англійська (English)</string>
     <string name="language_ua" translatable="false">Українська (Ukraininan)</string>
+    <string name="language">Мова:</string>
 </resources>
