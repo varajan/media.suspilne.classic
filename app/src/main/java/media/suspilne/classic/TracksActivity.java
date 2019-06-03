@@ -1,13 +1,10 @@
 package media.suspilne.classic;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class TracksActivity extends MainActivity {
@@ -58,7 +55,7 @@ public class TracksActivity extends MainActivity {
             View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             trackView.setTag(track.id);
             list.addView(trackView);
-            setTrackDetails(track, trackView);
+            track.setViewDetails(this, trackView);
 
             final ImageView playBtn = trackView.findViewById(R.id.play);
             playBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,22 +98,6 @@ public class TracksActivity extends MainActivity {
                 Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void setTrackDetails(TrackEntry track, View trackView){
-        try
-        {
-            Bitmap author = ImageHelper.getBitmapFromResource(getResources(), track.authorPhotoId, 100, 100);
-            author = ImageHelper.getCircularDrawable(author);
-
-            ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
-            ((TextView) trackView.findViewById(R.id.title)).setText(track.titleId);
-            ((TextView) trackView.findViewById(R.id.author)).setText(track.authorNameId);
-        }catch (Exception e){
-            Log.e(SettingsHelper.application, "Failed to load track #" + track.id);
-            Log.e(SettingsHelper.application, e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     private void playTrack(TrackEntry track){
