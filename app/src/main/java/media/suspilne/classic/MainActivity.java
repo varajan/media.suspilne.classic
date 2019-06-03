@@ -76,16 +76,27 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private String getDefaultLanguage(){
+        String systemLanguage = Locale.getDefault().getLanguage();
+
+        switch (systemLanguage){
+            case "uk": return "uk";
+            case "en": return "en";
+
+            default: return "en";
+        }
+    }
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        setLanguage(SettingsHelper.getString(this, "Language"));
+        setLanguage(SettingsHelper.getString(this, "Language", getDefaultLanguage()));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setLanguage(SettingsHelper.getString(this, "Language"));
+        setLanguage(SettingsHelper.getString(this, "Language", getDefaultLanguage()));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
