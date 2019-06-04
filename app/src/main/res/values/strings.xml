@@ -115,4 +115,12 @@
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">\u2605\nNo favorite tracks to show</string>
     <string name="filterHint">Filter by title or author</string>
+    <string name="track_061">Gayane, Sabre Dance</string>
+    <string name="track_062">Orpheus in the Underworld, overture</string>
+    <string name="offenbach">Jacques Offenbach</string>
+    <string name="track_063">The Tales of Hoffmann, barcarole</string>
+    <string name="track_064">Meniute from the Quintet, essay 11 No.5</string>
+    <string name="boccherini">Luigi Boccherini</string>
+    <string name="track_065">"Opera La Gioconda, Clock Dance "</string>
+    <string name="ponchielli">Amilcare Ponchielli</string>
 </resources>

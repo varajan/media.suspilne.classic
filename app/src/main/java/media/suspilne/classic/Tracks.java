@@ -127,6 +127,11 @@ public class Tracks {
             new TrackEntry(57, R.string.track_057, R.string.grieg, R.mipmap.grieg),
             new TrackEntry(58, R.string.track_058, R.string.grieg, R.mipmap.grieg),
             new TrackEntry(59, R.string.track_059, R.string.grieg, R.mipmap.grieg),
-            new TrackEntry(60, R.string.track_060, R.string.grieg, R.mipmap.grieg)
+            new TrackEntry(60, R.string.track_060, R.string.grieg, R.mipmap.grieg),
+            new TrackEntry(61, R.string.track_061, R.string.aram_khachaturian, R.mipmap.khachaturian),
+            new TrackEntry(62, R.string.track_062, R.string.offenbach, R.mipmap.offenbach),
+            new TrackEntry(63, R.string.track_063, R.string.offenbach, R.mipmap.offenbach),
+            new TrackEntry(64, R.string.track_064, R.string.boccherini, R.mipmap.boccherini),
+            new TrackEntry(65, R.string.track_065, R.string.ponchielli, R.mipmap.ponchielli)
     ));
 }
