@@ -171,8 +171,8 @@ public class SettingsActivity extends MainActivity {
 
         if (Build.VERSION.SDK_INT > 23){
             batteryOptimization.setOnCheckedChangeListener(null);
-            batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? primaryDark : primary);
-            batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
+            batteryOptimization.setTextColor(isIgnoringBatteryOptimizations() ? primaryDark : primary);
+            batteryOptimization.setChecked(isIgnoringBatteryOptimizations());
             batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
         }else{
             batteryOptimization.setVisibility(View.GONE);

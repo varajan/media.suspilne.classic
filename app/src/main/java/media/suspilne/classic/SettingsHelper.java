@@ -15,17 +15,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class SettingsHelper {
-    public static String application = "media.suspilne.classic";
+    static String application = "media.suspilne.classic";
 
-    public static String getString(String setting){
+    static String getString(String setting){
         return getString(setting, "");
     }
 
-    public static String getString(String setting, String defaultValue){
+    static String getString(String setting, String defaultValue){
         return MainActivity.getContext().getSharedPreferences(application,0).getString(setting, defaultValue);
     }
 
-    public static void setString(String setting, String value){
+    static void setString(String setting, String value){
         SharedPreferences.Editor editor = MainActivity.getContext().getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
         editor.commit();
