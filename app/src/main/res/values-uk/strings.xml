@@ -109,4 +109,5 @@
     <string name="language_ua">Українська (Ukrainian)</string>
     <string name="language">Мова:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиці</string>
+    <string name="nothingToShow">Немає жодного улюбленого запису</string>
 </resources>

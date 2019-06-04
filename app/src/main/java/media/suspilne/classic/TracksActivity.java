@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class TracksActivity extends MainActivity {
     private Tracks tracks;
 
@@ -54,6 +56,8 @@ public class TracksActivity extends MainActivity {
 
         LinearLayout list = findViewById(R.id.list);
         for (final TrackEntry track:tracks.getTracks()) {
+            findViewById(R.id.nothingToShow).setVisibility(View.GONE);
+
             View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             trackView.setTag(track.id);
             list.addView(trackView);
