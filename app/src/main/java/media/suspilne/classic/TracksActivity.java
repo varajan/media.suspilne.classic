@@ -57,7 +57,7 @@ public class TracksActivity extends MainActivity {
             View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             trackView.setTag(track.id);
             list.addView(trackView);
-            track.setViewDetails(this, trackView);
+            track.setViewDetails();
 
             final ImageView playBtn = trackView.findViewById(R.id.play);
             playBtn.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +73,12 @@ public class TracksActivity extends MainActivity {
                         playTrack(track);
                         TracksActivity.this.setQuiteTimeout();
                     }
+                }
+            });
+
+            trackView.findViewById(R.id.favorite).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    track.resetFavorite();
                 }
             });
         }

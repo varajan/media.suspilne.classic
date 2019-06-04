@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity
 
     private static Context context;
     public static Context getContext(){ return context; }
+
+    private static Activity activity;
+    public static Activity getActivity(){ return activity; }
 
     protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean("autoQuit")) {
@@ -99,6 +103,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MainActivity.context = getApplicationContext();
+        MainActivity.activity = this;
 
         super.onCreate(savedInstanceState);
         setLanguage(SettingsHelper.getString("Language", getDefaultLanguage()));

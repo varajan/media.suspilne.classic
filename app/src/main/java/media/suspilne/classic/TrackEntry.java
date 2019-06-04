@@ -1,7 +1,5 @@
 package media.suspilne.classic;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +11,7 @@ public class TrackEntry{
     public int titleId;
     public int authorNameId;
     public int authorPhotoId;
-    public boolean favorite;
+    private boolean favorite;
 
     public TrackEntry(){ id = -1; }
 
@@ -25,11 +23,23 @@ public class TrackEntry{
         this.favorite = SettingsHelper.getBoolean("isFavorite_" + id);
     }
 
-    public void setViewDetails(Context context, View trackView){
+    private View getTrackView(){
+        return  TracksActivity.getActivity().findViewById(R.id.list).findViewWithTag(id);
+    }
+
+    public void resetFavorite(){
+        favorite = !favorite;
+        SettingsHelper.setBoolean("isFavorite_" + id, favorite);
+
+        ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
+    }
+
+    public void setViewDetails(){
         try
         {
-            Bitmap author = ImageHelper.getBitmapFromResource(context.getResources(), authorPhotoId, 100, 100);
+            Bitmap author = ImageHelper.getBitmapFromResource(MainActivity.getContext().getResources(), authorPhotoId, 100, 100);
             author = ImageHelper.getCircularDrawable(author);
+            View trackView = getTrackView();
 
             ((ImageView)trackView.findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
