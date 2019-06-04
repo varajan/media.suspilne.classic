@@ -165,6 +165,7 @@ public class SettingsActivity extends MainActivity {
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
         batteryOptimization.setEnabled(Build.VERSION.SDK_INT > 23);
+        showOnlyFavorite.setChecked(isShowOnlyFavorite);
         tracksPlayNext.setChecked(isTracksPlayNext);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);

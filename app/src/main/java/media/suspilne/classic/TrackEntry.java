@@ -11,7 +11,7 @@ public class TrackEntry{
     public int titleId;
     public int authorNameId;
     public int authorPhotoId;
-    private boolean favorite;
+    public boolean favorite;
 
     public TrackEntry(){ id = -1; }
 
@@ -21,6 +21,14 @@ public class TrackEntry{
         this.authorNameId = name;
         this.authorPhotoId = photo;
         this.favorite = SettingsHelper.getBoolean("isFavorite_" + id);
+    }
+
+    public String getAuthor(){
+        return TracksActivity.getActivity().getResources().getString(authorNameId);
+    }
+
+    public String getTitle(){
+        return TracksActivity.getActivity().getResources().getString(titleId);
     }
 
     private View getTrackView(){

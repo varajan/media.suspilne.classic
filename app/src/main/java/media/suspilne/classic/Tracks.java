@@ -2,6 +2,8 @@ package media.suspilne.classic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Tracks {
@@ -9,11 +11,61 @@ public class Tracks {
     public int lastPlaying;
     public long position;
 
-    public TrackEntry next(){
-        return nowPlaying == items.get(items.size()-1).id ? items.get(0) : items.get(nowPlaying);
+    public TrackEntry getNext(){
+        List<TrackEntry> tracks = getTracks();
+        boolean skip = true;
+
+        for (int i = 0; i < tracks.size(); i++){
+            if (tracks.get(i).id != nowPlaying && skip){
+                continue;
+            }
+
+            if (tracks.get(i).id == nowPlaying) {
+                skip = false;
+                continue;
+            }
+
+            return tracks.get(i);
+        }
+
+        return tracks.get(0);
     }
 
-    public List<TrackEntry> items = new ArrayList<>(Arrays.asList(
+    public TrackEntry getById(int id){
+        for (TrackEntry track:items) {
+            if (track.id == id) return track;
+        }
+
+        return null;
+    }
+
+    public List<TrackEntry> getTracks(){
+        boolean showFavorites = SettingsHelper.getBoolean("showOnlyFavorite");
+        List<TrackEntry> tracks = showFavorites ? getFavorite() : items;
+
+        Collections.sort(tracks, new Comparator<TrackEntry>() {
+            @Override
+            public int compare(TrackEntry track1, TrackEntry track2) {
+                return track1.getAuthor().equals(track2.getAuthor())
+                        ? track1.getTitle().compareTo(track2.getTitle())
+                        : track1.getAuthor().compareTo(track2.getAuthor());
+            }
+        });
+
+        return tracks;
+    }
+
+    private List<TrackEntry> getFavorite(){
+        List<TrackEntry> tracks = new ArrayList<>();
+
+        for (TrackEntry track:items) {
+            if (track.favorite) tracks.add(track);
+        }
+
+        return tracks;
+    }
+
+    private List<TrackEntry> items = new ArrayList<>(Arrays.asList(
             new TrackEntry(1, R.string.track_001, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
             new TrackEntry(2, R.string.track_002, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),
             new TrackEntry(3, R.string.track_003, R.string.sergey_rachmaninov, R.mipmap.sergei_rachmaninoff),

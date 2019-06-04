@@ -35,7 +35,7 @@ public class TracksActivity extends MainActivity {
         tracks.position = savedInstanceState.getLong("position");
 
         if (tracks.nowPlaying > 0){
-            playTrack(tracks.items.get(tracks.nowPlaying-1));
+            playTrack(tracks.getById(tracks.nowPlaying));
             TracksActivity.this.setQuiteTimeout();
         }
     }
@@ -53,7 +53,7 @@ public class TracksActivity extends MainActivity {
         }
 
         LinearLayout list = findViewById(R.id.list);
-        for (final TrackEntry track:tracks.items) {
+        for (final TrackEntry track:tracks.getTracks()) {
             View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             trackView.setTag(track.id);
             list.addView(trackView);
@@ -88,7 +88,7 @@ public class TracksActivity extends MainActivity {
             @Override
             public void mediaIsEnded(){
                 if (SettingsHelper.getBoolean( "tracksPlayNext")){
-                    playTrack(tracks.next());
+                    playTrack(tracks.getNext());
                 }else{
                     tracks.nowPlaying = -1;
                     setPlayBtnIcon(new TrackEntry());
@@ -122,7 +122,7 @@ public class TracksActivity extends MainActivity {
     private void setPlayBtnIcon(TrackEntry track){
         LinearLayout list = findViewById(R.id.list);
 
-        for (TrackEntry item:tracks.items){
+        for (TrackEntry item:tracks.getTracks()){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
             btn.setImageResource(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
             btn.setTag(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
