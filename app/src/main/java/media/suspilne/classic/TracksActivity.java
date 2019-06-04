@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class TracksActivity extends MainActivity {
-    private Tracks tracks = new Tracks();
+    private Tracks tracks;
 
     @Override
     public void onDestroy() {
@@ -46,6 +46,8 @@ public class TracksActivity extends MainActivity {
         currentView = R.id.tracks_menu;
         super.onCreate(savedInstanceState);
 
+        tracks = new Tracks();
+
         if (!isNetworkAvailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         }
@@ -79,7 +81,7 @@ public class TracksActivity extends MainActivity {
         player.addListener(new Player.MediaIsEndedListener(){
             @Override
             public void mediaIsEnded(){
-                if (SettingsHelper.getBoolean(TracksActivity.this, "tracksPlayNext")){
+                if (SettingsHelper.getBoolean( "tracksPlayNext")){
                     playTrack(tracks.next());
                 }else{
                     tracks.nowPlaying = -1;

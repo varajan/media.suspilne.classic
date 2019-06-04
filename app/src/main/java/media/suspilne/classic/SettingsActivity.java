@@ -2,26 +2,20 @@ package media.suspilne.classic;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class SettingsActivity extends MainActivity {
     private Switch batteryOptimization;
@@ -51,7 +45,7 @@ public class SettingsActivity extends MainActivity {
         tracksPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(SettingsActivity.this, "tracksPlayNext", isChecked);
+                SettingsHelper.setBoolean("tracksPlayNext", isChecked);
                 setColorsAndState();
             }
         });
@@ -59,7 +53,7 @@ public class SettingsActivity extends MainActivity {
         autoQuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(SettingsActivity.this, "autoQuit", isChecked);
+                SettingsHelper.setBoolean("autoQuit", isChecked);
                 setColorsAndState();
             }
         });
@@ -69,8 +63,8 @@ public class SettingsActivity extends MainActivity {
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SettingsHelper.setInt(SettingsActivity.this,"timeout", seekBar.getProgress() * step);
-                String minutes = SettingsHelper.getString(SettingsActivity.this, "timeout", "0");
+                SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
+                String minutes = SettingsHelper.getString("timeout", "0");
 
                 timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
             }
@@ -89,7 +83,7 @@ public class SettingsActivity extends MainActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String code = ((Country) languages.getSelectedItem()).code;
 
-                SettingsHelper.setString(SettingsActivity.this,"Language", code);
+                SettingsHelper.setString("Language", code);
                 SettingsActivity.this.setLanguage(code);
             }
 
@@ -149,15 +143,15 @@ public class SettingsActivity extends MainActivity {
     }
 
     private void setColorsAndState() {
-        boolean isTracksPlayNext = SettingsHelper.getBoolean(this, "tracksPlayNext");
-        boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
+        boolean isTracksPlayNext = SettingsHelper.getBoolean("tracksPlayNext");
+        boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
 
-        String minutes = SettingsHelper.getString(SettingsActivity.this, "timeout", "5");
+        String minutes = SettingsHelper.getString("timeout", "5");
 
         timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
-        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
+        timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
         batteryOptimization.setEnabled(Build.VERSION.SDK_INT > 23);
         tracksPlayNext.setChecked(isTracksPlayNext);

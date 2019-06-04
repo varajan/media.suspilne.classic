@@ -30,10 +30,13 @@ public class MainActivity extends AppCompatActivity
     protected NavigationView navigation;
     protected int currentView;
 
+    private static Context context;
+    public static Context getContext(){ return context; }
+
     protected void setQuiteTimeout(){
-        if (SettingsHelper.getBoolean(this, "autoQuit")) {
+        if (SettingsHelper.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
-            int timeout = SettingsHelper.getInt(this, "timeout");
+            int timeout = SettingsHelper.getInt("timeout");
 
             quitTimer = new Timer();
             quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
@@ -90,13 +93,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        setLanguage(SettingsHelper.getString(this, "Language", getDefaultLanguage()));
+        setLanguage(SettingsHelper.getString("Language", getDefaultLanguage()));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MainActivity.context = getApplicationContext();
+
         super.onCreate(savedInstanceState);
-        setLanguage(SettingsHelper.getString(this, "Language", getDefaultLanguage()));
+        setLanguage(SettingsHelper.getString("Language", getDefaultLanguage()));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
