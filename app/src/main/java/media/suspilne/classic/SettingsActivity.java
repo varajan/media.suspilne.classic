@@ -158,23 +158,25 @@ public class SettingsActivity extends MainActivity {
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
-
         String minutes = SettingsHelper.getString("timeout", "5");
 
         timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
-        batteryOptimization.setEnabled(Build.VERSION.SDK_INT > 23);
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
         tracksPlayNext.setChecked(isTracksPlayNext);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
 
-        batteryOptimization.setOnCheckedChangeListener(null);
-        batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? primaryDark : primary);
-        batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
-        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        if (Build.VERSION.SDK_INT > 23){
+            batteryOptimization.setOnCheckedChangeListener(null);
+            batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? primaryDark : primary);
+            batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
+            batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        }else{
+            batteryOptimization.setVisibility(View.GONE);
+        }
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
