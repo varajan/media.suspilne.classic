@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UA: Класика</string>
-    <string name="tracks">Записи</string>
+    <string name="tracks">Композиції</string>
     <string name="settings">Налаштування</string>
     <string name="exit">Вихід</string>
     <string name="yes">Так</string>
@@ -10,7 +10,7 @@
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>
     <string name="confirm_allow_work_in_background">Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)</string>
-    <string name="play_one_by_one">Грати треки однин за одним</string>
+    <string name="play_one_by_one">Грати композиції однину за одною</string>
     <string name="sleep_timeout">Таймер сну (закривати програму)</string>
     <string name="title">Назва</string>
     <string name="author">Автор</string>
@@ -108,4 +108,5 @@
     <string name="language_en">Англійська (English)</string>
     <string name="language_ua" translatable="false">Українська (Ukrainian)</string>
     <string name="language">Мова:</string>
+    <string name="showOnlyFavorite">Відображати лише улюблені композиці</string>
 </resources>

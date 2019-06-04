@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class SettingsActivity extends MainActivity {
     private Switch batteryOptimization;
     private Switch tracksPlayNext;
+    private Switch showOnlyFavorite;
     private Switch autoQuit;
     private SeekBar timeout;
     private TextView timeoutText;
@@ -34,6 +35,7 @@ public class SettingsActivity extends MainActivity {
 
         batteryOptimization = this.findViewById(R.id.batteryOptimization);
         tracksPlayNext = this.findViewById(R.id.tracksPlayNext);
+        showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
@@ -46,6 +48,14 @@ public class SettingsActivity extends MainActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SettingsHelper.setBoolean("tracksPlayNext", isChecked);
+                setColorsAndState();
+            }
+        });
+
+        showOnlyFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SettingsHelper.setBoolean("showOnlyFavorite", isChecked);
                 setColorsAndState();
             }
         });
@@ -143,6 +153,7 @@ public class SettingsActivity extends MainActivity {
     }
 
     private void setColorsAndState() {
+        boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
         boolean isTracksPlayNext = SettingsHelper.getBoolean("tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
@@ -164,6 +175,7 @@ public class SettingsActivity extends MainActivity {
         batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
         batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
 
+        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);

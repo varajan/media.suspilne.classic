@@ -74,6 +74,20 @@
             tools:typeface="serif" />
 
         <Switch
+            android:id="@+id/showOnlyFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/chalkboard"
+            android:text="@string/showOnlyFavorite"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
+            tools:typeface="serif" />
+
+        <Switch
             android:id="@+id/autoQuit"
             android:fontFamily="@font/chalkboard"
             android:layout_width="match_parent"
