@@ -42,6 +42,10 @@ public class TrackEntry{
         ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
     }
 
+    public void remove(){
+        getTrackView().setVisibility(View.GONE);
+    }
+
     public void setViewDetails(){
         try
         {

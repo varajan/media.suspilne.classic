@@ -11,6 +11,9 @@ public class Tracks {
     public int lastPlaying;
     public long position;
 
+    boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
+    boolean tracksPlayNext = SettingsHelper.getBoolean( "tracksPlayNext");
+
     public TrackEntry getNext(){
         List<TrackEntry> tracks = getTracks();
         boolean skip = true;
@@ -28,7 +31,7 @@ public class Tracks {
             return tracks.get(i);
         }
 
-        return tracks.get(0);
+        return tracks.size() > 0 ? tracks.get(0) : new TrackEntry();
     }
 
     public TrackEntry getById(int id){
@@ -40,8 +43,7 @@ public class Tracks {
     }
 
     public List<TrackEntry> getTracks(){
-        boolean showFavorites = SettingsHelper.getBoolean("showOnlyFavorite");
-        List<TrackEntry> tracks = showFavorites ? getFavorite() : items;
+        List<TrackEntry> tracks = showOnlyFavorite ? getFavorite() : items;
 
         Collections.sort(tracks, new Comparator<TrackEntry>() {
             @Override

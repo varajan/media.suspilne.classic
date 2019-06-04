@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.List;
-
 public class TracksActivity extends MainActivity {
     private Tracks tracks;
 
@@ -83,6 +81,23 @@ public class TracksActivity extends MainActivity {
             trackView.findViewById(R.id.favorite).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     track.resetFavorite();
+
+                    if (tracks.showOnlyFavorite){
+
+                        if (player.isPlaying() && tracks.tracksPlayNext && tracks.nowPlaying == track.id){
+                            playTrack(tracks.getNext());
+                        }
+
+                        if (tracks.nowPlaying == track.id){
+                            player.releasePlayer();
+                        }
+
+                        track.remove();
+
+                        if (tracks.getTracks().size() == 0){
+                            findViewById(R.id.nothingToShow).setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
             });
         }
@@ -91,7 +106,7 @@ public class TracksActivity extends MainActivity {
         player.addListener(new Player.MediaIsEndedListener(){
             @Override
             public void mediaIsEnded(){
-                if (SettingsHelper.getBoolean( "tracksPlayNext")){
+                if (tracks.tracksPlayNext){
                     playTrack(tracks.getNext());
                 }else{
                     tracks.nowPlaying = -1;
