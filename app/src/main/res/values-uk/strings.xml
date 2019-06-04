@@ -110,4 +110,5 @@
     <string name="language">Мова:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">\u2605\nНемає жодного улюбленого запису</string>
+    <string name="filterHint">Фільтрувати по назві чи автору</string>
 </resources>

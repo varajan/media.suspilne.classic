@@ -114,4 +114,5 @@
     <string name="language">Language:</string>
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">\u2605\nNo favorite tracks to show</string>
+    <string name="filterHint">Filter by title or author</string>
 </resources>

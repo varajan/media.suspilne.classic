@@ -23,7 +23,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/toolbarTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/tracks"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_alignParentStart="true"/>
+
+                    <EditText
+                        android:id="@+id/searchField"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/colorPrimary"
+                        android:ems="10"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:hint="@string/filterHint"
+                        android:visibility="gone"
+                        android:gravity="center" >
+                    </EditText>
+
+                    <ImageButton
+                        android:id="@+id/searchIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_search"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 

@@ -1,14 +1,21 @@
 package media.suspilne.classic;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TracksActivity extends MainActivity {
     private Tracks tracks;
+    private ImageView searchIcon;
+    private EditText searchField;
+    private TextView toolbarTitle;
 
     @Override
     public void onDestroy() {
@@ -40,12 +47,49 @@ public class TracksActivity extends MainActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_tracks);
-        currentView = R.id.tracks_menu;
-        super.onCreate(savedInstanceState);
+    private void hideSearch(){
+        toolbarTitle.setVisibility(View.VISIBLE);
+        searchIcon.setVisibility(View.VISIBLE);
+        searchField.setVisibility(View.GONE);
+    }
 
+    private void addSearchField(){
+        searchIcon = findViewById(R.id.searchIcon);
+        searchField = findViewById(R.id.searchField);
+        toolbarTitle = findViewById(R.id.toolbarTitle);
+
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                toolbarTitle.setVisibility(View.GONE);
+                searchIcon.setVisibility(View.GONE);
+                searchField.setVisibility(View.VISIBLE);
+            }
+        });
+
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    hideSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keycode, KeyEvent event){
+        if (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            hideSearch();
+            return false;
+        }
+
+        return super.onKeyDown(keycode, event);
+    }
+
+    private void addTracks(){
         tracks = new Tracks();
 
         if (!isNetworkAvailable()){
@@ -101,8 +145,9 @@ public class TracksActivity extends MainActivity {
                 }
             });
         }
-        // -- add items
+    }
 
+    private void setPlayerListeners(){
         player.addListener(new Player.MediaIsEndedListener(){
             @Override
             public void mediaIsEnded(){
@@ -125,6 +170,17 @@ public class TracksActivity extends MainActivity {
                 Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_tracks);
+        currentView = R.id.tracks_menu;
+        super.onCreate(savedInstanceState);
+
+        addSearchField();
+        addTracks();
+        setPlayerListeners();
     }
 
     private void playTrack(TrackEntry track){

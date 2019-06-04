@@ -11,7 +11,7 @@ public class TrackEntry{
     private int titleId;
     private int authorNameId;
     private int authorPhotoId;
-    private boolean favorite;
+    boolean favorite;
 
     TrackEntry(){ id = -1; }
 
