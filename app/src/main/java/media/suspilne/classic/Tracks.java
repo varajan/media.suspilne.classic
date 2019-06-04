@@ -132,6 +132,11 @@ public class Tracks {
             new TrackEntry(62, R.string.track_062, R.string.offenbach, R.mipmap.offenbach),
             new TrackEntry(63, R.string.track_063, R.string.offenbach, R.mipmap.offenbach),
             new TrackEntry(64, R.string.track_064, R.string.boccherini, R.mipmap.boccherini),
-            new TrackEntry(65, R.string.track_065, R.string.ponchielli, R.mipmap.ponchielli)
+            new TrackEntry(65, R.string.track_065, R.string.ponchielli, R.mipmap.ponchielli),
+            new TrackEntry(66, R.string.track_066, R.string.debussy, R.mipmap.debussy),
+            new TrackEntry(67, R.string.track_067, R.string.modest_musorgsky, R.mipmap.modest_mussorgsky),
+            new TrackEntry(68, R.string.track_068, R.string.dukas, R.mipmap.dukas),
+            new TrackEntry(69, R.string.track_069, R.string.barber, R.mipmap.barber),
+            new TrackEntry(70, R.string.track_070, R.string.rimsky_korsakov, R.mipmap.rimsky_korsakov)
     ));
 }

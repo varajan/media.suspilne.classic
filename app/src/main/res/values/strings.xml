@@ -123,4 +123,12 @@
     <string name="boccherini">Luigi Boccherini</string>
     <string name="track_065">"Opera La Gioconda, Clock Dance "</string>
     <string name="ponchielli">Amilcare Ponchielli</string>
+    <string name="track_066">The Suite bergamasque, Clair de lune</string>
+    <string name="track_067">Night on Bald Mountain</string>
+    <string name="track_068">The Sorcerer\'s Apprentice</string>
+    <string name="dukas">Paul Dukas</string>
+    <string name="barber">Samuel Osborne Barber</string>
+    <string name="track_069">Adagio for Strings</string>
+    <string name="rimsky_korsakov">Nikolai Andreyevich Rimsky-Korsakov</string>
+    <string name="track_070">" The Tale of Tsar Saltan, Flight of the Bumblebee"</string>
 </resources>
