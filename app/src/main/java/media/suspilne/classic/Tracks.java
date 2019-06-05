@@ -6,15 +6,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Tracks {
-    public int nowPlaying;
-    public int lastPlaying;
-    public long position;
+class Tracks {
+    int nowPlaying;
+    int lastPlaying;
+    long position;
+    String filter;
 
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
     boolean tracksPlayNext = SettingsHelper.getBoolean( "tracksPlayNext");
 
-    public TrackEntry getNext(){
+    Tracks(String filter){
+        this.filter = filter.toLowerCase();
+    }
+
+    TrackEntry getNext(){
         List<TrackEntry> tracks = getTracks();
         boolean skip = true;
 
@@ -42,6 +47,18 @@ public class Tracks {
         return null;
     }
 
+    private List<TrackEntry> filter(List<TrackEntry> tracks){
+        List<TrackEntry> result = new ArrayList<>();
+
+        for (TrackEntry track:tracks) {
+            if (track.getTitle().toLowerCase().contains(filter) || track.getAuthor().toLowerCase().contains(filter)){
+                result.add(track);
+            }
+        }
+
+        return result;
+    }
+
     public List<TrackEntry> getTracks(){
         List<TrackEntry> tracks = showOnlyFavorite ? getFavorite() : items;
 
@@ -54,7 +71,7 @@ public class Tracks {
             }
         });
 
-        return tracks;
+        return filter(tracks);
     }
 
     private List<TrackEntry> getFavorite(){

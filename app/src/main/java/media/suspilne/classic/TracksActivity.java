@@ -1,10 +1,12 @@
 package media.suspilne.classic;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,6 +53,9 @@ public class TracksActivity extends MainActivity {
         toolbarTitle.setVisibility(View.VISIBLE);
         searchIcon.setVisibility(View.VISIBLE);
         searchField.setVisibility(View.GONE);
+
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
     }
 
     private void addSearchField(){
@@ -63,6 +68,10 @@ public class TracksActivity extends MainActivity {
                 toolbarTitle.setVisibility(View.GONE);
                 searchIcon.setVisibility(View.GONE);
                 searchField.setVisibility(View.VISIBLE);
+                searchField.requestFocus();
+
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         });
 
@@ -72,6 +81,7 @@ public class TracksActivity extends MainActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                     hideSearch();
+                    showTracks(v.getText().toString());
                     return true;
                 }
                 return false;
@@ -89,16 +99,21 @@ public class TracksActivity extends MainActivity {
         return super.onKeyDown(keycode, event);
     }
 
-    private void addTracks(){
-        tracks = new Tracks();
+    private void showTracks(String filter){
+        tracks = new Tracks(filter);
 
         if (!isNetworkAvailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         }
 
         LinearLayout list = findViewById(R.id.list);
+        list.removeViews(1, list.getChildCount()-1);
+
+        View nothing = findViewById(R.id.nothingToShow);
+        nothing.setVisibility(View.VISIBLE);
+
         for (final TrackEntry track:tracks.getTracks()) {
-            findViewById(R.id.nothingToShow).setVisibility(View.GONE);
+            nothing.setVisibility(View.GONE);
 
             View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
             trackView.setTag(track.id);
@@ -179,7 +194,7 @@ public class TracksActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         addSearchField();
-        addTracks();
+        showTracks("");
         setPlayerListeners();
     }
 

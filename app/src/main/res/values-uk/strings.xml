@@ -109,7 +109,7 @@
     <string name="language_ua">Українська (Ukrainian)</string>
     <string name="language">Мова:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
-    <string name="nothingToShow">\u2605\nНемає жодного улюбленого запису</string>
+    <string name="nothingToShow">Немає жодного запису</string>
     <string name="filterHint">Фільтрувати по назві чи автору</string>
     <string name="track_061">«Танець з шаблями» з балету «Гаяне»</string>
     <string name="track_062">Увертюра до оперети «Орфей у пеклі»</string>
