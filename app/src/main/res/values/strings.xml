@@ -156,4 +156,14 @@
     <string name="track_088">Opera Turandot, None shall sleep</string>
     <string name="track_089">Opera La traviata, Alfred\'s Aria</string>
     <string name="track_090">Opera Rigoletto, La donna è mobile</string>
+    <string name="track_091">Opera The Elixir of Love, A furtive tear romanza</string>
+    <string name="track_092">Opera Faust, Mephistopheles</string>
+    <string name="track_093">Piano Concerto No. 1 in E-flat major, part 1 Allegro maestoso</string>
+    <string name="track_094">Lento placido, Consolation</string>
+    <string name="track_095">Dreams of Love</string>
+    <string name="track_096">The Piano Concerto No. 1, part 3 Allegro molto</string>
+    <string name="track_097">The Tuba Concerto, part 3 Allegro</string>
+    <string name="track_098">Waltz in C♯ minor, Op. 64</string>
+    <string name="track_099">" Waltz in D♭ major, Minute Waltz"</string>
+    <string name="track_100">Waltz in A♭ major, L\'Adieu, Op. 69</string>
 </resources>
