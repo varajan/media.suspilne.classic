@@ -163,4 +163,14 @@
     <string name="track_098">\"Вальс\". До дієз мінор. Твір 64 №2</string>
     <string name="track_099">Вальс ре бемоль мажор Твір 64 №1</string>
     <string name="track_100">Вальс Фа мінор Твір 69 №1</string>
+    <string name="track_101">«Фантазія-експромт» твір 66</string>
+    <string name="track_102">Полонез «Героїчний» ля бемоль мажор, твір 53</string>
+    <string name="track_103">Етюд №12 «Революційний» для 2-х фортепіано та симфонічного оркестру</string>
+    <string name="track_104">Романс з кінофільму «Овод»</string>
+    <string name="track_105">Вальс до драми М. Лермонтова «Маскарад»</string>
+    <string name="track_106">Увертюра до опери «Тарас Бульба»</string>
+    <string name="track_107">«Пісня жайвіра» (березень) з циклу «Пори року»</string>
+    <string name="track_108">«Пролісок» (квітень) з циклу «Пори року»</string>
+    <string name="track_109">«Баркарола» (червень) з циклу «Пори року»</string>
+    <string name="track_110">«На трійці» (листопад) з циклу «Пори року»</string>
 </resources>
