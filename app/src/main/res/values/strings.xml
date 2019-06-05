@@ -34,9 +34,9 @@
     <string name="barber">Samuel Osborne Barber</string>
     <string name="rimsky_korsakov">Nikolai Andreyevich Rimsky-Korsakov</string>
 	
-    <string name="ludvig_van_beethoven">Ludwig Van Beethoven</string>
-    <string name="sergey_rachmaninov">Sergey Rachmaninov</string>
-    <string name="petro_chaikovsky">Pyotr Tchaikovsky</string>
+    <string name="beethoven">Ludwig Van Beethoven</string>
+    <string name="rachmaninov">Sergey Rachmaninov</string>
+    <string name="chaikovsky">Pyotr Tchaikovsky</string>
 	<string name="carl_orff">Carl Orff</string>
     <string name="medelson">Felix Mendelssohn Bartholdy</string>
     <string name="sebastian_bach">Johann Sebastian Bach</string>
@@ -47,19 +47,19 @@
     <string name="vincenzo_bellini">Vincenzo Bellini</string>
     <string name="mykola_lysenko">Mykola Lysenko</string>
     <string name="aram_khachaturian">Aram Khachaturian</string>
-    <string name="dmitri_shostakovich">Dmitri Shostakovich</string>
+    <string name="orff">Dmitri Shostakovich</string>
     <string name="chopin">Frederic Chopin</string>
-    <string name="joseph_haydn">Joseph Haydn</string>
-    <string name="liszt">Ferencz Liszt</string>
+    <string name="bach">Joseph Haydn</string>
+    <string name="musorgsky">Ferencz Liszt</string>
     <string name="debussy">Claude Debussy</string>
     <string name="ravel">Joseph Maurice Ravel</string>
     <string name="borodin">Alexandr Borodin</string>
-    <string name="rossini">Gioachino Antonio Rossini</string>
-    <string name="kamil">Camille Saint-Saëns</string>
-    <string name="wagner">Richard Wagner</string>
-    <string name="mozart">Wolfgang Amadeus Mozart</string>
+    <string name="bellini">Gioachino Antonio Rossini</string>
+    <string name="lysenko">Camille Saint-Saëns</string>
+    <string name="khachaturian">Richard Wagner</string>
+    <string name="shostakovich">Wolfgang Amadeus Mozart</string>
     <string name="strauss_i">Johann Strauss (father)</string>
-    <string name="strauss_ii">Johann Strauss (son)</string>
+    <string name="haydn">Johann Strauss (son)</string>
     <string name="straus_eduard">Eduard Strauss</string>
     <string name="vivaldi">Antonio Lucio Vivaldi</string>
 
