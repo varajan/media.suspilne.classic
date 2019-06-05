@@ -58,6 +58,13 @@
     <string name="dukas">Поль Дюка</string>
     <string name="barber">Самюел Барбер</string>
     <string name="rimsky_korsakov">Микола Андрійович Римський-Корсаков</string>
+    <string name="verdi">Джузеппе Верді</string>
+    <string name="brahms">Йоганнес Брамс</string>
+    <string name="handel">Георг Фрідріх Гендель</string>
+    <string name="prokofiev">Сергій Прокоф’єв</string>
+    <string name="puccini">Джакомо Пуччіні</string>
+    <string name="donizetti">Гаетано Доніцетті</string>
+    <string name="gounod">Шарль Гуно</string>
 
     <string name="track_001">Концерт №2 для фортепіано з оркестром, твір 18, 1 частина - Moderato</string>
     <string name="track_002">Вокаліз, твір 34, №14. Перекладення для інструментального тріо В.Крюкова (оригінал для голосу і фортепіано)</string>
@@ -129,11 +136,14 @@
     <string name="track_068">«Учень чарівника» (Симфонічне скерцо)</string>
     <string name="track_069">Адажіо для струнних</string>
     <string name="track_070">«Політ джмеля» з опери «Казка про царя Салтана»</string>
-    <string name="verdi">Джузеппе Верді</string>
-    <string name="brahms">Йоганнес Брамс</string>
-    <string name="handel">Георг Фрідріх Гендель</string>
-    <string name="prokofiev">Сергій Прокоф’єв</string>
-    <string name="puccini">Джакомо Пуччіні</string>
-    <string name="donizetti">Гаетано Доніцетті</string>
-    <string name="gounod">Шарль Гуно</string>
+    <string name="track_071">Увертюра до опери «Сила долі»</string>
+    <string name="track_072">«Лебідь» з симфонічної сюїта «Карнавал тварин»</string>
+    <string name="track_073">«Весільний хор» з 3-ої дії опери «Лоенгрін»</string>
+    <string name="track_074">Кампанелла</string>
+    <string name="track_075">Угорський танець №1</string>
+    <string name="track_076">Угорський танець №5</string>
+    <string name="track_077">«Алилуя» з ораторії «Мессія»</string>
+    <string name="track_078">«Монтеккі і Капулетті» Сюїта №2 з балету «Ромео і Джульєтта»</string>
+    <string name="track_079">«Джульєтта-дівчинка»  Сюїта №2 з балету «Ромео і Джульєтта»</string>
+    <string name="track_080">Арія Тоски «Vissi d’arte» з опери «Тоска»</string>
 </resources>

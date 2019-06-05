@@ -61,6 +61,13 @@
     <string name="strauss_ii">Johann Strauss (son)</string>
     <string name="straus_eduard">Eduard Strauss</string>
     <string name="vivaldi">Antonio Lucio Vivaldi</string>
+    <string name="verdi">Giuseppe Verdi</string>
+    <string name="brahms">Johannes Brahms</string>
+    <string name="handel">George Frideric Handel</string>
+    <string name="prokofiev">Sergei Prokofiev</string>
+    <string name="puccini">Giacomo Puccini</string>
+    <string name="donizetti">Gaetano Donizetti</string>
+    <string name="gounod">Charles Gounod</string>
 
     <string name="track_001">The Piano Concerto No. 2 in C minor, Op. 18, is a concerto for piano and orchestra, 1st part - Moderato</string>
     <string name="track_002">Fourteen Songs, \"Vocalise\"</string>
@@ -132,11 +139,14 @@
     <string name="track_068">The Sorcerer\'s Apprentice</string>
     <string name="track_069">Adagio for Strings</string>
     <string name="track_070">" The Tale of Tsar Saltan, Flight of the Bumblebee"</string>
-    <string name="verdi">Giuseppe Verdi</string>
-    <string name="brahms">Johannes Brahms</string>
-    <string name="handel">George Frideric Handel</string>
-    <string name="prokofiev">Sergei Prokofiev</string>
-    <string name="puccini">Giacomo Puccini</string>
-    <string name="donizetti">Gaetano Donizetti</string>
-    <string name="gounod">Charles Gounod</string>
+    <string name="track_071">Opera The Power of Fate, overture</string>
+    <string name="track_072">The Carnival of the Animals, The Swan</string>
+    <string name="track_073">Opera Lohengrin, Bridal Chorus</string>
+    <string name="track_074">Campanella</string>
+    <string name="track_075">Hungarian Dances, No. 1</string>
+    <string name="track_076">Hungarian Dances, No. 5</string>
+    <string name="track_077">Oratorio Messiah, Hallelujah</string>
+    <string name="track_078">Romeo and Juliet, Suite No. 2, Montagues and Capulets</string>
+    <string name="track_079">Romeo and Juliet, Suite No. 2, Juliet as a Young Girl</string>
+    <string name="track_080">Opera Tosca, Vissi d\'arte</string>
 </resources>
