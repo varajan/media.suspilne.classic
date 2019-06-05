@@ -51,7 +51,8 @@
                         android:inputType="text"
                         android:hint="@string/filterHint"
                         android:visibility="gone"
-                        android:gravity="center" >
+                        android:gravity="center"
+                        android:drawableRight="@drawable/ic_cancel">
                     </EditText>
 
                     <ImageButton

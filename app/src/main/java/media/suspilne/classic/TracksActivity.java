@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -61,11 +62,11 @@ public class TracksActivity extends MainActivity {
                 .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
     }
 
-    private void addSearchField(){
+    private void addSearchField() {
         favoriteIcon = findViewById(R.id.showFavorite);
         searchIcon = findViewById(R.id.searchIcon);
-        searchField = findViewById(R.id.searchField);
         toolbarTitle = findViewById(R.id.toolbarTitle);
+        searchField = findViewById(R.id.searchField);
 
         searchIcon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -99,6 +100,27 @@ public class TracksActivity extends MainActivity {
                     showTracks();
                     return true;
                 }
+                return false;
+            }
+        });
+
+
+        searchField.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int actionX = (int) event.getX();
+                int viewWidth = v.getWidth();
+                int buttonWidth = SettingsHelper.dpToPx(15);
+
+                if (viewWidth - buttonWidth <= actionX){
+                    searchField.setText("");
+                    tracks.filter = "";
+
+                    hideSearch();
+                    showTracks();
+                    return true;
+                }
+
                 return false;
             }
         });
