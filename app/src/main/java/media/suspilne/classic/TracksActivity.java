@@ -79,7 +79,6 @@ public class TracksActivity extends MainActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-
                     hideSearch();
                     showTracks(v.getText().toString());
                     return true;
@@ -100,11 +99,7 @@ public class TracksActivity extends MainActivity {
     }
 
     private void showTracks(String filter){
-        tracks = new Tracks(filter);
-
-        if (!isNetworkAvailable()){
-            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
-        }
+        tracks.filter = filter;
 
         LinearLayout list = findViewById(R.id.list);
         list.removeViews(1, list.getChildCount()-1);
@@ -160,6 +155,13 @@ public class TracksActivity extends MainActivity {
                 }
             });
         }
+
+        TrackEntry current = tracks.getById(tracks.nowPlaying);
+        if (current != null) {
+            setPlayBtnIcon(current);
+        } else {
+            player.releasePlayer();
+        }
     }
 
     private void setPlayerListeners(){
@@ -192,6 +194,8 @@ public class TracksActivity extends MainActivity {
         setContentView(R.layout.activity_tracks);
         currentView = R.id.tracks_menu;
         super.onCreate(savedInstanceState);
+
+        tracks = new Tracks();
 
         addSearchField();
         showTracks("");

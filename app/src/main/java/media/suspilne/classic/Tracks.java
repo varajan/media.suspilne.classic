@@ -15,10 +15,6 @@ class Tracks {
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
     boolean tracksPlayNext = SettingsHelper.getBoolean( "tracksPlayNext");
 
-    Tracks(String filter){
-        this.filter = filter.toLowerCase();
-    }
-
     TrackEntry getNext(){
         List<TrackEntry> tracks = getTracks();
         boolean skip = true;
@@ -40,7 +36,7 @@ class Tracks {
     }
 
     public TrackEntry getById(int id){
-        for (TrackEntry track:items) {
+        for (TrackEntry track:getTracks()) {
             if (track.id == id) return track;
         }
 
