@@ -10,7 +10,6 @@
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">No tracks to show</string>
     <string name="filterHint">Title or author</string>
-
     <string name="tracks">Tracks</string>
     <string name="settings">Settings</string>
     <string name="exit">Exit</string>
@@ -24,7 +23,8 @@
     <string name="sleep_timeout">Quite application timeout</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
-    <string name="astor">Astor Piazzolla</string>
+
+    <string name="piazzolla">Astor Piazzolla</string>
     <string name="bizet">Alexandre César Léopold Bizet</string>
     <string name="grieg">Edvard Hagerup Grieg</string>
     <string name="offenbach">Jacques Offenbach</string>
@@ -33,33 +33,32 @@
     <string name="dukas">Paul Dukas</string>
     <string name="barber">Samuel Osborne Barber</string>
     <string name="rimsky_korsakov">Nikolai Andreyevich Rimsky-Korsakov</string>
-	
     <string name="beethoven">Ludwig Van Beethoven</string>
     <string name="rachmaninov">Sergey Rachmaninov</string>
     <string name="chaikovsky">Pyotr Tchaikovsky</string>
-	<string name="carl_orff">Carl Orff</string>
+	<string name="orff">Carl Orff</string>
     <string name="medelson">Felix Mendelssohn Bartholdy</string>
-    <string name="sebastian_bach">Johann Sebastian Bach</string>
-    <string name="modest_musorgsky">Modest Mussorgsky</string>
+    <string name="bach">Johann Sebastian Bach</string>
+    <string name="musorgsky">Modest Mussorgsky</string>
     <string name="elgar">Edward Elgar</string>
     <string name="leontovych">Mykola Leontovych</string>
     <string name="bilash">Oleksandr Bilash</string>
-    <string name="vincenzo_bellini">Vincenzo Bellini</string>
-    <string name="mykola_lysenko">Mykola Lysenko</string>
-    <string name="aram_khachaturian">Aram Khachaturian</string>
-    <string name="orff">Dmitri Shostakovich</string>
+    <string name="bellini">Vincenzo Bellini</string>
+    <string name="lysenko">Mykola Lysenko</string>
+    <string name="khachaturian">Aram Khachaturian</string>
+    <string name="shostakovich">Dmitri Shostakovich</string>
     <string name="chopin">Frederic Chopin</string>
-    <string name="bach">Joseph Haydn</string>
-    <string name="musorgsky">Ferencz Liszt</string>
+    <string name="haydn">Joseph Haydn</string>
+    <string name="list">Ferencz Liszt</string>
     <string name="debussy">Claude Debussy</string>
     <string name="ravel">Joseph Maurice Ravel</string>
     <string name="borodin">Alexandr Borodin</string>
-    <string name="bellini">Gioachino Antonio Rossini</string>
-    <string name="lysenko">Camille Saint-Saëns</string>
-    <string name="khachaturian">Richard Wagner</string>
-    <string name="shostakovich">Wolfgang Amadeus Mozart</string>
+    <string name="rossini">Gioachino Antonio Rossini</string>
+    <string name="saint_saens">Camille Saint-Saëns</string>
+    <string name="wagner">Richard Wagner</string>
+    <string name="mozart">Wolfgang Amadeus Mozart</string>
     <string name="strauss_i">Johann Strauss (father)</string>
-    <string name="haydn">Johann Strauss (son)</string>
+    <string name="strauss_ii">Johann Strauss (son)</string>
     <string name="straus_eduard">Eduard Strauss</string>
     <string name="vivaldi">Antonio Lucio Vivaldi</string>
 
@@ -133,4 +132,5 @@
     <string name="track_068">The Sorcerer\'s Apprentice</string>
     <string name="track_069">Adagio for Strings</string>
     <string name="track_070">" The Tale of Tsar Saltan, Flight of the Bumblebee"</string>
+    <string name="verdi">Giuseppe Verdi</string>
 </resources>
