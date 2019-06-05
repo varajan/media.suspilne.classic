@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 public class TracksActivity extends MainActivity {
     private Tracks tracks;
+    private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
     private TextView toolbarTitle;
@@ -52,6 +54,7 @@ public class TracksActivity extends MainActivity {
     private void hideSearch(){
         toolbarTitle.setVisibility(View.VISIBLE);
         searchIcon.setVisibility(View.VISIBLE);
+        favoriteIcon.setVisibility(View.VISIBLE);
         searchField.setVisibility(View.GONE);
 
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
@@ -59,6 +62,7 @@ public class TracksActivity extends MainActivity {
     }
 
     private void addSearchField(){
+        favoriteIcon = findViewById(R.id.showFavorite);
         searchIcon = findViewById(R.id.searchIcon);
         searchField = findViewById(R.id.searchField);
         toolbarTitle = findViewById(R.id.toolbarTitle);
@@ -67,6 +71,7 @@ public class TracksActivity extends MainActivity {
             public void onClick(View v) {
                 toolbarTitle.setVisibility(View.GONE);
                 searchIcon.setVisibility(View.GONE);
+                favoriteIcon.setVisibility(View.GONE);
                 searchField.setVisibility(View.VISIBLE);
                 searchField.requestFocus();
 
@@ -75,12 +80,23 @@ public class TracksActivity extends MainActivity {
             }
         });
 
+        favoriteIcon.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
+                SettingsHelper.setBoolean("showOnlyFavorite", tracks.showOnlyFavorite);
+
+                showTracks();
+            }
+        });
+
         searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    tracks.filter = v.getText().toString();
+
                     hideSearch();
-                    showTracks(v.getText().toString());
+                    showTracks();
                     return true;
                 }
                 return false;
@@ -98,8 +114,8 @@ public class TracksActivity extends MainActivity {
         return super.onKeyDown(keycode, event);
     }
 
-    private void showTracks(String filter){
-        tracks.filter = filter;
+    private void showTracks(){
+        favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
 
         LinearLayout list = findViewById(R.id.list);
         list.removeViews(1, list.getChildCount()-1);
@@ -198,7 +214,7 @@ public class TracksActivity extends MainActivity {
         tracks = new Tracks();
 
         addSearchField();
-        showTracks("");
+        showTracks();
         setPlayerListeners();
     }
 
