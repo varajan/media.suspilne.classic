@@ -1,6 +1,5 @@
 package media.suspilne.classic;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
