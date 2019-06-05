@@ -114,7 +114,7 @@
     <string name="language">Language:</string>
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">No tracks to show</string>
-    <string name="filterHint">Filter by title or author</string>
+    <string name="filterHint">Title or author</string>
     <string name="track_061">Gayane, Sabre Dance</string>
     <string name="track_062">Orpheus in the Underworld, overture</string>
     <string name="offenbach">Jacques Offenbach</string>
