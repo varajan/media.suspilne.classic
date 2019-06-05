@@ -133,4 +133,10 @@
     <string name="track_069">Adagio for Strings</string>
     <string name="track_070">" The Tale of Tsar Saltan, Flight of the Bumblebee"</string>
     <string name="verdi">Giuseppe Verdi</string>
+    <string name="brahms">Johannes Brahms</string>
+    <string name="handel">George Frideric Handel</string>
+    <string name="prokofiev">Sergei Prokofiev</string>
+    <string name="puccini">Giacomo Puccini</string>
+    <string name="donizetti">Gaetano Donizetti</string>
+    <string name="gounod">Charles Gounod</string>
 </resources>

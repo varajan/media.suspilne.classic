@@ -130,4 +130,10 @@
     <string name="track_069">Адажіо для струнних</string>
     <string name="track_070">«Політ джмеля» з опери «Казка про царя Салтана»</string>
     <string name="verdi">Джузеппе Верді</string>
+    <string name="brahms">Йоганнес Брамс</string>
+    <string name="handel">Георг Фрідріх Гендель</string>
+    <string name="prokofiev">Сергій Прокоф’єв</string>
+    <string name="puccini">Джакомо Пуччіні</string>
+    <string name="donizetti">Гаетано Доніцетті</string>
+    <string name="gounod">Шарль Гуно</string>
 </resources>
