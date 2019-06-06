@@ -63,18 +63,15 @@ public class MainActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public String getCurrentLanguage(){
-        return getResources().getConfiguration().locale.getLanguage();
-    }
-
     public void setLanguage(String language){
-        String currentLanguage = getCurrentLanguage();
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        String currentLanguage = configuration.locale.getLanguage();
         Locale myLocale = new Locale(language);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+
+        configuration.locale = myLocale;
+        resources.updateConfiguration(configuration, displayMetrics);
 
         if (!language.equals(currentLanguage)){
             Intent intent = getIntent();

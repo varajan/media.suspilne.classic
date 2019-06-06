@@ -40,10 +40,15 @@ public class TracksActivity extends MainActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        continueTrack(savedInstanceState);
+    }
 
-        tracks.nowPlaying = savedInstanceState.getInt("nowPlaying");
-        tracks.lastPlaying = savedInstanceState.getInt("lastPlaying");
-        tracks.position = savedInstanceState.getLong("position");
+    private void continueTrack(Bundle bundle){
+        if (bundle == null) return;
+
+        tracks.nowPlaying = bundle.getInt("nowPlaying");
+        tracks.lastPlaying = bundle.getInt("lastPlaying");
+        tracks.position = bundle.getLong("position");
 
         if (tracks.nowPlaying > 0){
             playTrack(tracks.getById(tracks.nowPlaying));
@@ -103,13 +108,12 @@ public class TracksActivity extends MainActivity {
             }
         });
 
-
         searchField.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int actionX = (int) event.getX();
                 int viewWidth = v.getWidth();
-                int buttonWidth = SettingsHelper.dpToPx(15);
+                int buttonWidth = SettingsHelper.dpToPx(30);
 
                 if (viewWidth - buttonWidth <= actionX){
                     searchField.setText("");
@@ -237,6 +241,7 @@ public class TracksActivity extends MainActivity {
         addSearchField();
         showTracks();
         setPlayerListeners();
+        continueTrack(savedInstanceState);
     }
 
     private void playTrack(TrackEntry track){

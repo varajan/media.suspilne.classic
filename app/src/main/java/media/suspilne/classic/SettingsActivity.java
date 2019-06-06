@@ -108,7 +108,7 @@ public class SettingsActivity extends MainActivity {
         countries.add( new Country("uk", getResources().getString(R.string.language_ua), R.mipmap.ua));
 
         LanguageArrayAdapter arrayAdapter = new LanguageArrayAdapter(this, R.layout.language, countries);
-        String currentLanguage = getCurrentLanguage();
+        String currentLanguage = getResources().getConfiguration().locale.getLanguage();
 
         languages.setAdapter(arrayAdapter);
 
