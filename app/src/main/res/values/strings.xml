@@ -37,7 +37,7 @@
     <string name="rachmaninov">Sergey Rachmaninov</string>
     <string name="chaikovsky">Pyotr Tchaikovsky</string>
 	<string name="orff">Carl Orff</string>
-    <string name="medelson">Felix Mendelssohn Bartholdy</string>
+    <string name="mendelson">Felix Mendelssohn Bartholdy</string>
     <string name="bach">Johann Sebastian Bach</string>
     <string name="musorgsky">Modest Mussorgsky</string>
     <string name="elgar">Edward Elgar</string>
@@ -59,7 +59,7 @@
     <string name="mozart">Wolfgang Amadeus Mozart</string>
     <string name="strauss_i">Johann Strauss (father)</string>
     <string name="strauss_ii">Johann Strauss (son)</string>
-    <string name="straus_eduard">Eduard Strauss</string>
+    <string name="strauss_eduard">Eduard Strauss</string>
     <string name="vivaldi">Antonio Lucio Vivaldi</string>
     <string name="verdi">Giuseppe Verdi</string>
     <string name="brahms">Johannes Brahms</string>

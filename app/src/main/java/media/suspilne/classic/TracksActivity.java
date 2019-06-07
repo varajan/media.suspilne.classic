@@ -131,7 +131,7 @@ public class TracksActivity extends MainActivity {
 
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event){
-        if (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+        if (searchField.getVisibility() == View.VISIBLE && (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK)){
             hideSearch();
             return false;
         }
