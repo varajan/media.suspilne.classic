@@ -120,7 +120,7 @@ class Tracks {
             new TrackEntry(37, R.string.track_037, R.string.khachaturian),
             new TrackEntry(38, R.string.track_038, R.string.shostakovich),
             new TrackEntry(39, R.string.track_039, R.string.strauss_i),
-            new TrackEntry(40, R.string.track_040, R.string.haydn),
+            new TrackEntry(40, R.string.track_040, R.string.strauss_ii),
             new TrackEntry(41, R.string.track_041, R.string.strauss_eduard),
             new TrackEntry(42, R.string.track_042, R.string.haydn),
             new TrackEntry(43, R.string.track_043, R.string.haydn),
