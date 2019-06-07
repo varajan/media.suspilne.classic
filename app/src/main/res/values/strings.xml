@@ -15,7 +15,7 @@
     <string name="exit">Exit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="confirm_exit">Quite UA: Classical Music?</string>
+    <string name="confirm_exit">Quit UA: Classical Music?</string>
     <string name="x_minutes">%s minutes</string>
     <string name="no_internet">No Internet!</string>
     <string name="confirm_allow_work_in_background">Allow application to work in background. Use it if Android stops music in few minutes.</string>

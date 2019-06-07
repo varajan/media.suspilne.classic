@@ -232,7 +232,6 @@ public class TracksActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_tracks);
         currentView = R.id.tracks_menu;
         super.onCreate(savedInstanceState);
 

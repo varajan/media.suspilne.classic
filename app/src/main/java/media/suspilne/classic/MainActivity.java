@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,10 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,38 +59,12 @@ public class MainActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void setLanguage(String language){
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        String currentLanguage = configuration.locale.getLanguage();
-        Locale myLocale = new Locale(language);
-        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-
-        configuration.locale = myLocale;
-        resources.updateConfiguration(configuration, displayMetrics);
-
-        if (!language.equals(currentLanguage)){
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
-        }
-    }
-
-    private String getDefaultLanguage(){
-        String systemLanguage = Locale.getDefault().getLanguage();
-
-        switch (systemLanguage){
-            case "uk": return "uk";
-            case "en": return "en";
-
-            default: return "en";
-        }
-    }
-
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        setLanguage(SettingsHelper.getString("Language", getDefaultLanguage()));
+
+        String language = SettingsHelper.getString("Language", LacaleManager.getLanguage());
+        LacaleManager.setLanguage(this, language);
     }
 
     @Override
@@ -102,8 +72,12 @@ public class MainActivity extends AppCompatActivity
         MainActivity.context = getApplicationContext();
         MainActivity.activity = this;
 
+        String language = SettingsHelper.getString("Language", LacaleManager.getLanguage());
+        LacaleManager.setLanguage(this, language);
+
+        setContentView(currentView == R.id.tracks_menu ? R.layout.activity_tracks : R.layout.activity_settings);
+
         super.onCreate(savedInstanceState);
-        setLanguage(SettingsHelper.getString("Language", getDefaultLanguage()));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

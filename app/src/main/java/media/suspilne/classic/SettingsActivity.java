@@ -29,7 +29,6 @@ public class SettingsActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_settings);
         currentView = R.id.settings_menu;
         super.onCreate(savedInstanceState);
 
@@ -92,9 +91,16 @@ public class SettingsActivity extends MainActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String code = ((Country) languages.getSelectedItem()).code;
+                String currentLanguage = LacaleManager.getLanguage();
 
                 SettingsHelper.setString("Language", code);
-                SettingsActivity.this.setLanguage(code);
+                LacaleManager.setLanguage(SettingsActivity.this, code);
+
+                if (!code.equals(currentLanguage)){
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
             }
 
             @Override
