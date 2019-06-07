@@ -35,7 +35,7 @@ class Tracks {
         return tracks.size() > 0 ? tracks.get(0) : new TrackEntry();
     }
 
-    public TrackEntry getById(int id){
+    TrackEntry getById(int id){
         for (TrackEntry track:getTracks()) {
             if (track.id == id) return track;
         }
@@ -55,7 +55,7 @@ class Tracks {
         return result;
     }
 
-    public List<TrackEntry> getTracks(){
+    List<TrackEntry> getTracks(){
         List<TrackEntry> tracks = showOnlyFavorite ? getFavorite() : items;
 
         Collections.sort(tracks, new Comparator<TrackEntry>() {
@@ -187,6 +187,20 @@ class Tracks {
             new TrackEntry(107, R.string.track_107, R.string.chaikovsky),
             new TrackEntry(108, R.string.track_108, R.string.chaikovsky),
             new TrackEntry(109, R.string.track_109, R.string.chaikovsky),
-            new TrackEntry(110, R.string.track_110, R.string.chaikovsky)
+            new TrackEntry(110, R.string.track_110, R.string.chaikovsky),
+            new TrackEntry(111, R.string.track_111, R.string.musorgsky),
+            new TrackEntry(112, R.string.track_112, R.string.musorgsky),
+            new TrackEntry(113, R.string.track_113, R.string.musorgsky),
+            new TrackEntry(114, R.string.track_114, R.string.musorgsky),
+            new TrackEntry(115, R.string.track_115, R.string.lysenko),
+            new TrackEntry(116, R.string.track_116, R.string.bellini),
+            new TrackEntry(118, R.string.track_118, R.string.bilash),
+            new TrackEntry(119, R.string.track_119, R.string.leontovych),
+            new TrackEntry(120, R.string.track_120, R.string.leontovych),
+            new TrackEntry(121, R.string.track_121, R.string.leontovych),
+            new TrackEntry(122, R.string.track_122, R.string.leontovych),
+            new TrackEntry(123, R.string.track_123, R.string.leontovych),
+            new TrackEntry(124, R.string.track_124, R.string.elgar),
+            new TrackEntry(125, R.string.track_125, R.string.chaikovsky)
     ));
 }
