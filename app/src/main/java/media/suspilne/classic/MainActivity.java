@@ -1,11 +1,13 @@
 package media.suspilne.classic;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +17,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.gms.common.util.IOUtils;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static java.util.stream.Collectors.toList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    ProgressDialog progress;
     private Timer quitTimer;
     protected Player player;
     protected NavigationView navigation;
@@ -176,5 +187,70 @@ public class MainActivity extends AppCompatActivity
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    void dropDownloads(String extension){
+        for (String file:context.fileList()) {
+            if (file.toLowerCase().contains(extension.toLowerCase())){
+                context.deleteFile(file);
+            }
+        }
+    }
+
+    void download(){
+        if (!this.isNetworkAvailable()){
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
+        } else {
+            Tracks tracks = new Tracks();
+            tracks.showOnlyFavorite = !SettingsHelper.getBoolean("downloadAllTracks");
+            new DownloadAll().execute(tracks.getTracks().toArray(new TrackEntry[0]));
+        }
+    }
+
+    class DownloadAll extends AsyncTask<TrackEntry, Void, Boolean> {
+        protected void onPreExecute() {
+            progress = new ProgressDialog(MainActivity.this);
+            progress.setIcon(R.mipmap.icon_classic);
+            progress.setTitle(R.string.downloading);
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setCancelable(false);
+            progress.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            progress.incrementProgressBy(1);
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (progress.isShowing()) {
+                progress.dismiss();
+            }
+
+            Toast.makeText(MainActivity.this, success ? R.string.done : R.string.downloadFailed, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected Boolean doInBackground(TrackEntry... integers) {
+            try {
+                progress.setMax(integers.length);
+
+                for (TrackEntry track:integers) {
+                    String name = String.format("%d.mp3", track.id);
+
+                    if (context.getFileStreamPath(name).exists()) continue;
+
+                    InputStream is = (InputStream) new URL(track.stream()).getContent();
+                    SettingsHelper.saveFile(name, IOUtils.toByteArray(is));
+                    publishProgress();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -108,24 +108,21 @@ public class TracksActivity extends MainActivity {
             }
         });
 
-        searchField.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int actionX = (int) event.getX();
-                int viewWidth = v.getWidth();
-                int buttonWidth = SettingsHelper.dpToPx(30);
+        searchField.setOnTouchListener((view, event) -> {
+            int actionX = (int) event.getX();
+            int viewWidth = view.getWidth();
+            int buttonWidth = SettingsHelper.dpToPx(30);
 
-                if (viewWidth - buttonWidth <= actionX){
-                    searchField.setText("");
-                    tracks.filter = "";
+            if (viewWidth - buttonWidth <= actionX){
+                searchField.setText("");
+                tracks.filter = "";
 
-                    hideSearch();
-                    showTracks();
-                    return true;
-                }
-
-                return false;
+                hideSearch();
+                showTracks();
+                return true;
             }
+
+            return false;
         });
     }
 

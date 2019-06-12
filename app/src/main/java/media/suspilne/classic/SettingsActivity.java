@@ -121,8 +121,17 @@ public class SettingsActivity extends MainActivity {
         }
     }
 
-    private void doDownload(){}
-    private void doCleanup(){}
+    private void doDownload(){
+        SettingsHelper.setBoolean("downloadAllTracks", true);
+        download();
+        setColorsAndState();
+    }
+
+    private void doCleanup(){
+//        dropDownloads(".mp3");
+        SettingsHelper.setBoolean("downloadAllTracks", false);
+        setColorsAndState();
+    }
 
     private CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
         new AlertDialog.Builder(SettingsActivity.this)

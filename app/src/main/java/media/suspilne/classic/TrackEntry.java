@@ -118,6 +118,10 @@ public class TrackEntry{
     }
 
     String stream(int track){
-        return TracksActivity.getActivity().getResources().getString(R.string.trackUrl, track);
+        String name = String.format("%d.mp3", track);
+
+        return MainActivity.getContext().getFileStreamPath(name).exists()
+            ? MainActivity.getContext().getFilesDir() + "/" + name
+            : TracksActivity.getActivity().getResources().getString(R.string.trackUrl, track);
     }
 }

@@ -85,9 +85,18 @@ public class SettingsHelper {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] bytes = stream.toByteArray();
 
+            saveFile( name, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveFile(String name, byte[] bytes){
+        try {
             FileOutputStream outputStream;
             outputStream = MainActivity.getContext().openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(bytes);
+            outputStream.flush();
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

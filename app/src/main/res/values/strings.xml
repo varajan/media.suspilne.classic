@@ -23,6 +23,9 @@
     <string name="sleep_timeout">Quite application timeout</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
+    <string name="done">Done.</string>
+    <string name="downloadFailed">An error occurred.</string>
+    <string name="downloading">Downloading tracks…</string>
     <string name="download">Download</string>
     <string name="clear">Delete</string>
     <string name="downloadAllTracks">Download all tracks</string>

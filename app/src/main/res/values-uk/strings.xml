@@ -20,7 +20,10 @@
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Немає жодного запису</string>
     <string name="filterHint">Назва чи автор</string>
+    <string name="done">Готово.</string>
+    <string name="downloadFailed">Сталась помилка.</string>
     <string name="download">Скачати</string>
+    <string name="downloading">Завантаження композицій…</string>
     <string name="clear">Видалити</string>
     <string name="downloadAllTracks">Зберігти всі композиції на пристрої</string>
     <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно 2ГБ вільного місця.</string>
