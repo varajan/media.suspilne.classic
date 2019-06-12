@@ -23,6 +23,11 @@
     <string name="sleep_timeout">Quite application timeout</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
+    <string name="download">Download</string>
+    <string name="clear">Delete</string>
+    <string name="downloadAllTracks">Download all tracks</string>
+    <string name="downloadAllTracksQuestion">Are you sure to download all tracks? It will take about 2GB of space.</string>
+    <string name="clearAllTracksQuestion">Are you sure to delete downloaded tracks? Internet will be used to listen the tracks.</string>
 
     <string name="bach">Johann Sebastian Bach</string>
     <string name="barber">Samuel Osborne Barber</string>

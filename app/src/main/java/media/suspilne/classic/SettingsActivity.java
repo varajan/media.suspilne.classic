@@ -8,6 +8,7 @@ import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
@@ -17,8 +18,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class SettingsActivity extends MainActivity {
     private Switch batteryOptimization;
+    private Switch downloadAllTracks;
     private Switch tracksPlayNext;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
@@ -33,6 +36,7 @@ public class SettingsActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         batteryOptimization = this.findViewById(R.id.batteryOptimization);
+        downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
         tracksPlayNext = this.findViewById(R.id.tracksPlayNext);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
@@ -43,28 +47,19 @@ public class SettingsActivity extends MainActivity {
         setLanguages();
         setColorsAndState();
 
-        tracksPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean("tracksPlayNext", isChecked);
-                setColorsAndState();
-            }
+        tracksPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SettingsHelper.setBoolean("tracksPlayNext", isChecked);
+            setColorsAndState();
         });
 
-        showOnlyFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean("showOnlyFavorite", isChecked);
-                setColorsAndState();
-            }
+        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SettingsHelper.setBoolean("showOnlyFavorite", isChecked);
+            setColorsAndState();
         });
 
-        autoQuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean("autoQuit", isChecked);
-                setColorsAndState();
-            }
+        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SettingsHelper.setBoolean("autoQuit", isChecked);
+            setColorsAndState();
         });
 
         batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
@@ -126,13 +121,22 @@ public class SettingsActivity extends MainActivity {
         }
     }
 
-    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            requestIgnoreBatteryOptimization();
-            setColorsAndState();
-        }
+    private void doDownload(){}
+    private void doCleanup(){}
+
+    private CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
+        new AlertDialog.Builder(SettingsActivity.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(isChecked ? R.string.download : R.string.clear)
+            .setMessage(isChecked ? R.string.downloadAllTracksQuestion : R.string.clearAllTracksQuestion)
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(); else doCleanup();})
+            .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
+            .show();
+    };
+
+    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = (buttonView, isChecked) -> {
+        requestIgnoreBatteryOptimization();
+        setColorsAndState();
     };
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -162,6 +166,8 @@ public class SettingsActivity extends MainActivity {
         boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
         boolean isTracksPlayNext = SettingsHelper.getBoolean("tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
+        boolean isDownloadAllTracks = SettingsHelper.getBoolean("downloadAllTracks");
+
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
         String minutes = SettingsHelper.getString("timeout", "5");
@@ -183,6 +189,11 @@ public class SettingsActivity extends MainActivity {
         }else{
             batteryOptimization.setVisibility(View.GONE);
         }
+
+        downloadAllTracks.setOnCheckedChangeListener(null);
+        downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
+        downloadAllTracks.setChecked(isDownloadAllTracks);
+        downloadAllTracks.setOnCheckedChangeListener(onDownloadAllSelect);
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
