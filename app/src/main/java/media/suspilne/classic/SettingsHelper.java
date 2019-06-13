@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
+import android.os.StatFs;
 import android.util.DisplayMetrics;
 
 import java.io.ByteArrayOutputStream;
@@ -116,5 +118,12 @@ public class SettingsHelper {
         }
 
         return null;
+    }
+
+    public static long freeSpace(){
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        long bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+
+        return bytesAvailable / (1024 * 1024);
     }
 }

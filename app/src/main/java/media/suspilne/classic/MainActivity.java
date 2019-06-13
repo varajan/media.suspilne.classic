@@ -18,16 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.android.gms.common.util.IOUtils;
-
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static java.util.stream.Collectors.toList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -207,7 +202,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    class DownloadAll extends AsyncTask<TrackEntry, Void, Boolean> {
+    class DownloadAll extends AsyncTask<TrackEntry, Void, Integer> {
         protected void onPreExecute() {
             progress = new ProgressDialog(MainActivity.this);
             progress.setIcon(R.mipmap.icon_classic);
@@ -223,20 +218,32 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Integer result) {
             if (progress.isShowing()) {
                 progress.dismiss();
             }
 
-            Toast.makeText(MainActivity.this, success ? R.string.done : R.string.downloadFailed, Toast.LENGTH_LONG).show();
+            if (result == 0){
+                Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_LONG).show();
+            }else{
+                new AlertDialog.Builder(MainActivity.getContext())
+                    .setIcon(R.mipmap.icon_classic)
+                    .setMessage(result)
+                    .setNeutralButton(R.string.ok, null)
+                    .show();
+            }
         }
 
         @Override
-        protected Boolean doInBackground(TrackEntry... integers) {
+        protected Integer doInBackground(TrackEntry... integers) {
             try {
                 progress.setMax(integers.length);
 
                 for (TrackEntry track:integers) {
+                    if (SettingsHelper.freeSpace() < 50){
+                        return R.string.not_enough_space_50;
+                    }
+
                     String name = String.format("%d.mp3", track.id);
 
                     if (context.getFileStreamPath(name).exists()) continue;
@@ -247,10 +254,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                return false;
+                return R.string.an_error_occurred;
             }
 
-            return true;
+            return 0;
         }
     }
 }

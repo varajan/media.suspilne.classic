@@ -128,6 +128,7 @@ public class SettingsActivity extends MainActivity {
     }
 
     private void doCleanup(){
+        // TODO
 //        dropDownloads(".mp3");
         SettingsHelper.setBoolean("downloadAllTracks", false);
         setColorsAndState();
