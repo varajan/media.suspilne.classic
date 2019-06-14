@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    class DownloadAll extends AsyncTask<TrackEntry, Void, Integer> {
+    class DownloadAll extends AsyncTask<TrackEntry, Void, String> {
         protected void onPreExecute() {
             progress = new ProgressDialog(MainActivity.this);
             progress.setIcon(R.mipmap.icon_classic);
@@ -218,16 +218,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(final Integer result) {
+        protected void onPostExecute(String result) {
             if (progress.isShowing()) {
                 progress.dismiss();
             }
 
-            if (result == 0){
+            if (result.isEmpty()){
                 Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_LONG).show();
             }else{
-                new AlertDialog.Builder(MainActivity.getContext())
+                new AlertDialog.Builder(MainActivity.this)
                     .setIcon(R.mipmap.icon_classic)
+                    .setTitle(R.string.an_error_occurred)
                     .setMessage(result)
                     .setNeutralButton(R.string.ok, null)
                     .show();
@@ -235,29 +236,50 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected Integer doInBackground(TrackEntry... integers) {
+        protected String doInBackground(TrackEntry... integers) {
             try {
                 progress.setMax(integers.length);
 
                 for (TrackEntry track:integers) {
                     if (SettingsHelper.freeSpace() < 50){
-                        return R.string.not_enough_space_50;
+                        throw new Exception(getResources().getString(R.string.not_enough_space, "50MB"));
                     }
 
-                    String name = String.format("%d.mp3", track.id);
+                    if (track.isDownloaded) continue;
 
-                    if (context.getFileStreamPath(name).exists()) continue;
-
-                    InputStream is = (InputStream) new URL(track.stream()).getContent();
-                    SettingsHelper.saveFile(name, IOUtils.toByteArray(is));
+                    InputStream is = (InputStream) new URL(track.stream).getContent();
+                    SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
                     publishProgress();
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                return R.string.an_error_occurred;
+                return e.getMessage();
             }
 
-            return 0;
+            return "";
         }
+    }
+
+    protected void askToContinueDownloadAllTracks(){
+        if (!SettingsHelper.getBoolean("downloadAllTracks") || !isNetworkAvailable() || SettingsHelper.freeSpace() < 50) return;
+
+        boolean allAreDownloaded = true;
+        Tracks tracks = new Tracks();
+        for (TrackEntry track : tracks.getTracks()){
+            if (!track.isDownloaded){
+                allAreDownloaded = false;
+                break;
+            }
+        }
+
+        if (allAreDownloaded) return;
+
+        new AlertDialog.Builder(MainActivity.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(R.string.continueDownload)
+            .setMessage(R.string.not_all_tracks)
+            .setPositiveButton(R.string.download, (dialog, which) -> download())
+            .setNegativeButton(R.string.no, null)
+            .show();
     }
 }

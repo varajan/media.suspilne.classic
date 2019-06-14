@@ -26,12 +26,14 @@
     <string name="author">Author</string>
     <string name="done">Done.</string>
     <string name="an_error_occurred">An error occurred.</string>
-    <string name="not_enough_space_50">It\'s less than 50MB of free space left on device.</string>
+    <string name="not_enough_space">It\'s less than %s of free space.</string>
     <string name="downloading">Downloading tracks…</string>
     <string name="download">Download</string>
     <string name="clear">Delete</string>
+    <string name="continueDownload">Continue downloading?</string>
+    <string name="not_all_tracks">Not all tracks were downloaded.</string>
     <string name="downloadAllTracks">Download all tracks</string>
-    <string name="downloadAllTracksQuestion">Are you sure to download all tracks? It will take about 2GB of space.</string>
+    <string name="downloadAllTracksQuestion">Are you sure to download all tracks? It will take about 1.4GB of space.</string>
     <string name="clearAllTracksQuestion">Are you sure to delete downloaded tracks? Internet will be used to listen the tracks.</string>
 
     <string name="bach">Johann Sebastian Bach</string>

@@ -47,60 +47,20 @@ public class SettingsActivity extends MainActivity {
         setLanguages();
         setColorsAndState();
 
-        tracksPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SettingsHelper.setBoolean("tracksPlayNext", isChecked);
-            setColorsAndState();
-        });
-
-        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SettingsHelper.setBoolean("showOnlyFavorite", isChecked);
-            setColorsAndState();
-        });
-
-        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SettingsHelper.setBoolean("autoQuit", isChecked);
-            setColorsAndState();
-        });
+        tracksPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("tracksPlayNext", isChecked));
+        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
+        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
 
         batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        timeout.setOnSeekBarChangeListener(onTimeoutChange);
+        languages.setOnItemSelectedListener(omLanguageSelect);
 
-        timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
-                String minutes = SettingsHelper.getString("timeout", "0");
+        askToContinueDownloadAllTracks();
+    }
 
-                timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        languages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String code = ((Country) languages.getSelectedItem()).code;
-                String currentLanguage = LacaleManager.getLanguage();
-
-                SettingsHelper.setString("Language", code);
-                LacaleManager.setLanguage(SettingsActivity.this, code);
-
-                if (!code.equals(currentLanguage)){
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
+    void setSwitch(String title, boolean isChecked){
+        SettingsHelper.setBoolean(title, isChecked);
+        setColorsAndState();
     }
 
     private void setLanguages(){
@@ -210,4 +170,42 @@ public class SettingsActivity extends MainActivity {
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
     }
+
+    AdapterView.OnItemSelectedListener omLanguageSelect = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            String code = ((Country) languages.getSelectedItem()).code;
+            String currentLanguage = LacaleManager.getLanguage();
+
+            SettingsHelper.setString("Language", code);
+            LacaleManager.setLanguage(SettingsActivity.this, code);
+
+            if (!code.equals(currentLanguage)){
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    };
+
+    SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
+            String minutes = SettingsHelper.getString("timeout", "0");
+
+            timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
+    };
 }

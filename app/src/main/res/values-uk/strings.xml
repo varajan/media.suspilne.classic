@@ -23,12 +23,14 @@
     <string name="filterHint">Назва чи автор</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>
-    <string name="not_enough_space_50">Лишилось менше 50МБ вільного місця.</string>
+    <string name="not_enough_space">Лишилось менше %s вільного місця.</string>
     <string name="download">Скачати</string>
     <string name="downloading">Завантаження композицій…</string>
     <string name="clear">Видалити</string>
+    <string name="continueDownload">Продовжити завантаження?</string>
+    <string name="not_all_tracks">Не всі композиції завантажено.</string>
     <string name="downloadAllTracks">Зберігти всі композиції на пристрої</string>
-    <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно 2ГБ вільного місця.</string>
+    <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно 1.4ГБ вільного місця.</string>
     <string name="clearAllTracksQuestion">Видалити всі збережені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
 
     <string name="bach">Йоганн Себастьян Бах</string>

@@ -11,6 +11,9 @@ public class TrackEntry{
     private int titleId;
     private int authorNameId;
     boolean favorite;
+    boolean isDownloaded;
+    String stream;
+    String fileName;
 
     TrackEntry(){ id = -1; }
 
@@ -19,6 +22,9 @@ public class TrackEntry{
         this.titleId = title;
         this.authorNameId = name;
         this.favorite = SettingsHelper.getBoolean("isFavorite_" + id);
+        this.isDownloaded = isDownloaded(this.id);
+        this.stream = stream(id);
+        this.fileName = fileName(id);
     }
 
     public int getAuthorPhoto(){
@@ -113,15 +119,17 @@ public class TrackEntry{
         }
     }
 
-    String stream(){
-        return stream(id);
+    String fileName(int track){
+        return String.format("%d.mp3", track);
+    }
+
+    boolean isDownloaded(int track){
+        return MainActivity.getContext().getFileStreamPath(fileName(track)).exists();
     }
 
     String stream(int track){
-        String name = String.format("%d.mp3", track);
-
-        return MainActivity.getContext().getFileStreamPath(name).exists()
-            ? MainActivity.getContext().getFilesDir() + "/" + name
+        return isDownloaded(track)
+            ? MainActivity.getContext().getFilesDir() + "/" + fileName(track)
             : TracksActivity.getActivity().getResources().getString(R.string.trackUrl, track);
     }
 }

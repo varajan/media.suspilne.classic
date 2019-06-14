@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -94,18 +93,15 @@ public class TracksActivity extends MainActivity {
             }
         });
 
-        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    tracks.filter = v.getText().toString();
+        searchField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                tracks.filter = v.getText().toString();
 
-                    hideSearch();
-                    showTracks();
-                    return true;
-                }
-                return false;
+                hideSearch();
+                showTracks();
+                return true;
             }
+            return false;
         });
 
         searchField.setOnTouchListener((view, event) -> {
@@ -203,27 +199,21 @@ public class TracksActivity extends MainActivity {
     }
 
     private void setPlayerListeners(){
-        player.addListener(new Player.MediaIsEndedListener(){
-            @Override
-            public void mediaIsEnded(){
-                if (tracks.tracksPlayNext){
-                    playTrack(tracks.getNext());
-                }else{
-                    tracks.nowPlaying = -1;
-                    setPlayBtnIcon(new TrackEntry());
-                }
+        player.addListener((Player.MediaIsEndedListener) () -> {
+            if (tracks.tracksPlayNext){
+                playTrack(tracks.getNext());
+            }else{
+                tracks.nowPlaying = -1;
+                setPlayBtnIcon(new TrackEntry());
             }
         });
 
-        player.addListener(new Player.SourceIsNotAccessibleListener(){
-            @Override
-            public void sourceIsNotAccessible(){
-                tracks.nowPlaying = -1;
-                setPlayBtnIcon(new TrackEntry());
-                player.releasePlayer();
+        player.addListener((Player.SourceIsNotAccessibleListener) () -> {
+            tracks.nowPlaying = -1;
+            setPlayBtnIcon(new TrackEntry());
+            player.releasePlayer();
 
-                Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
         });
     }
 
@@ -238,11 +228,12 @@ public class TracksActivity extends MainActivity {
         showTracks();
         setPlayerListeners();
         continueTrack(savedInstanceState);
+        askToContinueDownloadAllTracks();
     }
 
     private void playTrack(TrackEntry track){
         player.releasePlayer();
-        player.initializePlayer(track.stream());
+        player.initializePlayer(track.stream);
         if (track.id == tracks.lastPlaying){
             player.setPosition(tracks.position);
         }
