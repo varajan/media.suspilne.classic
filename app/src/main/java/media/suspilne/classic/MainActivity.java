@@ -241,11 +241,14 @@ public class MainActivity extends AppCompatActivity
                 progress.setMax(tracks.length);
 
                 for (TrackEntry track:tracks) {
+                    if (track.isDownloaded) publishProgress();
+                }
+
+                for (TrackEntry track:tracks) {
+                    if (track.isDownloaded) continue;
                     if (SettingsHelper.freeSpace() < 50){
                         throw new Exception(getResources().getString(R.string.not_enough_space, "50MB"));
                     }
-
-                    if (track.isDownloaded) continue;
 
                     InputStream is = (InputStream) new URL(track.stream).getContent();
                     SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
