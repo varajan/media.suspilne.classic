@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             Tracks tracks = new Tracks();
-            tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
+            tracks.showOnlyFavorite = !SettingsHelper.getBoolean("downloadAllTracks");
             new DownloadAll().execute(tracks.getTracks().toArray(new TrackEntry[0]));
         }
     }

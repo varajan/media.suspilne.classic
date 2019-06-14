@@ -173,7 +173,6 @@ public class SettingsActivity extends MainActivity {
             batteryOptimization.setVisibility(View.GONE);
         }
 
-        downloadAllTracks.setEnabled(!isDownloadFavoriteTracks);
         downloadAllTracks.setOnCheckedChangeListener(null);
         downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
         downloadAllTracks.setChecked(isDownloadAllTracks);
@@ -182,7 +181,7 @@ public class SettingsActivity extends MainActivity {
         downloadFavoriteTracks.setEnabled(!isDownloadAllTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(null);
         downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
-        downloadFavoriteTracks.setChecked(isDownloadFavoriteTracks);
+        downloadFavoriteTracks.setChecked(!isDownloadAllTracks && isDownloadFavoriteTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
