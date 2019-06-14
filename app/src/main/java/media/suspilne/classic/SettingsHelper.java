@@ -19,7 +19,7 @@ import java.util.Map;
 public class SettingsHelper {
     static String application = "media.suspilne.classic";
 
-    static String getString(String setting){
+    private static String getString(String setting){
         return getString(setting, "");
     }
 
@@ -30,7 +30,7 @@ public class SettingsHelper {
     static void setString(String setting, String value){
         SharedPreferences.Editor editor = MainActivity.getContext().getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static ArrayList<String> getAllSettings(String setting){

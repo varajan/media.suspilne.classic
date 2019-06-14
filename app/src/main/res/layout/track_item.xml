@@ -28,7 +28,6 @@
             android:layout_alignEnd="@+id/photo"
             android:layout_alignBottom="@+id/photo"
             android:layout_marginEnd="-30dp"
-            android:layout_marginBottom="0dp"
             app:srcCompat="@mipmap/track_play"
             tools:scaleType="fitXY" />
     </RelativeLayout>

@@ -236,11 +236,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected String doInBackground(TrackEntry... integers) {
+        protected String doInBackground(TrackEntry... tracks) {
             try {
-                progress.setMax(integers.length);
+                progress.setMax(tracks.length);
 
-                for (TrackEntry track:integers) {
+                for (TrackEntry track:tracks) {
                     if (SettingsHelper.freeSpace() < 50){
                         throw new Exception(getResources().getString(R.string.not_enough_space, "50MB"));
                     }
@@ -261,8 +261,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void askToContinueDownloadTracks(){
+        if (SettingsHelper.getBoolean("askedToContinueDownload")) return;
         if (!SettingsHelper.getBoolean("downloadAllTracks") && !SettingsHelper.getBoolean("downloadFavoriteTracks")) return;
         if (SettingsHelper.freeSpace() < 50 || !isNetworkAvailable() ) return;
+
+        SettingsHelper.setBoolean("askedToContinueDownload", true);
 
         boolean allAreDownloaded = true;
         Tracks tracks = new Tracks();
