@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             Tracks tracks = new Tracks();
-            tracks.showOnlyFavorite = !SettingsHelper.getBoolean("downloadAllTracks");
+            tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
             new DownloadAll().execute(tracks.getTracks().toArray(new TrackEntry[0]));
         }
     }
@@ -272,6 +272,8 @@ public class MainActivity extends AppCompatActivity
 
         boolean allAreDownloaded = true;
         Tracks tracks = new Tracks();
+        tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
+
         for (TrackEntry track : tracks.getTracks()){
             if (!track.isDownloaded){
                 allAreDownloaded = false;

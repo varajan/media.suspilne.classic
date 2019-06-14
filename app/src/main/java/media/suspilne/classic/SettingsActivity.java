@@ -85,6 +85,7 @@ public class SettingsActivity extends MainActivity {
 
     private void doDownload(boolean allTracks){
         SettingsHelper.setBoolean(allTracks ? "downloadAllTracks" : "downloadFavoriteTracks", true);
+        SettingsHelper.setBoolean(allTracks ? "downloadFavoriteTracks" : "downloadAllTracks", false);
         download();
         setColorsAndState();
     }
