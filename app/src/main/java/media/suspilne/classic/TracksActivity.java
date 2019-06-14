@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +18,7 @@ public class TracksActivity extends MainActivity {
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
+    private ImageView searchDone;
     private TextView toolbarTitle;
 
     @Override
@@ -71,61 +71,53 @@ public class TracksActivity extends MainActivity {
         searchIcon = findViewById(R.id.searchIcon);
         toolbarTitle = findViewById(R.id.toolbarTitle);
         searchField = findViewById(R.id.searchField);
+        searchDone = findViewById(R.id.searchDone);
 
-        searchIcon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                toolbarTitle.setVisibility(View.GONE);
-                searchIcon.setVisibility(View.GONE);
-                favoriteIcon.setVisibility(View.GONE);
-                searchField.setVisibility(View.VISIBLE);
-                searchField.requestFocus();
+        searchIcon.setOnClickListener(v -> {
+            toolbarTitle.setVisibility(View.GONE);
+            searchIcon.setVisibility(View.GONE);
+            searchDone.setVisibility(View.GONE);
+            favoriteIcon.setVisibility(View.GONE);
+            searchField.setVisibility(View.VISIBLE);
+            searchField.requestFocus();
 
-                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                        .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         });
 
-        favoriteIcon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
-                SettingsHelper.setBoolean("showOnlyFavorite", tracks.showOnlyFavorite);
+        favoriteIcon.setOnClickListener(v -> {
+            tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
+            SettingsHelper.setBoolean("showOnlyFavorite", tracks.showOnlyFavorite);
 
+            showTracks();
+        });
+
+        searchField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                tracks.filter = v.getText().toString();
+
+                hideSearch();
                 showTracks();
+                return true;
             }
+            return false;
         });
 
-        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    tracks.filter = v.getText().toString();
+        searchField.setOnTouchListener((view, event) -> {
+            int actionX = (int) event.getX();
+            int viewWidth = view.getWidth();
+            int buttonWidth = SettingsHelper.dpToPx(50);
 
-                    hideSearch();
-                    showTracks();
-                    return true;
-                }
-                return false;
+            if (viewWidth - buttonWidth <= actionX){
+                searchField.setText("");
+                tracks.filter = "";
+
+                hideSearch();
+                showTracks();
+                return true;
             }
-        });
 
-        searchField.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int actionX = (int) event.getX();
-                int viewWidth = v.getWidth();
-                int buttonWidth = SettingsHelper.dpToPx(30);
-
-                if (viewWidth - buttonWidth <= actionX){
-                    searchField.setText("");
-                    tracks.filter = "";
-
-                    hideSearch();
-                    showTracks();
-                    return true;
-                }
-
-                return false;
-            }
+            return false;
         });
     }
 
@@ -141,6 +133,7 @@ public class TracksActivity extends MainActivity {
 
     private void showTracks(){
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
+        searchDone.setVisibility(tracks.filter.equals("") ? View.GONE : View.VISIBLE);
 
         LinearLayout list = findViewById(R.id.list);
         list.removeViews(1, list.getChildCount()-1);
@@ -206,27 +199,21 @@ public class TracksActivity extends MainActivity {
     }
 
     private void setPlayerListeners(){
-        player.addListener(new Player.MediaIsEndedListener(){
-            @Override
-            public void mediaIsEnded(){
-                if (tracks.tracksPlayNext){
-                    playTrack(tracks.getNext());
-                }else{
-                    tracks.nowPlaying = -1;
-                    setPlayBtnIcon(new TrackEntry());
-                }
+        player.addListener((Player.MediaIsEndedListener) () -> {
+            if (tracks.tracksPlayNext){
+                playTrack(tracks.getNext());
+            }else{
+                tracks.nowPlaying = -1;
+                setPlayBtnIcon(new TrackEntry());
             }
         });
 
-        player.addListener(new Player.SourceIsNotAccessibleListener(){
-            @Override
-            public void sourceIsNotAccessible(){
-                tracks.nowPlaying = -1;
-                setPlayBtnIcon(new TrackEntry());
-                player.releasePlayer();
+        player.addListener((Player.SourceIsNotAccessibleListener) () -> {
+            tracks.nowPlaying = -1;
+            setPlayBtnIcon(new TrackEntry());
+            player.releasePlayer();
 
-                Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
         });
     }
 
@@ -241,11 +228,12 @@ public class TracksActivity extends MainActivity {
         showTracks();
         setPlayerListeners();
         continueTrack(savedInstanceState);
+        askToContinueDownloadTracks();
     }
 
     private void playTrack(TrackEntry track){
         player.releasePlayer();
-        player.initializePlayer(track.stream());
+        player.initializePlayer(track.stream);
         if (track.id == tracks.lastPlaying){
             player.setPosition(tracks.position);
         }

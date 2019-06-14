@@ -1,11 +1,13 @@
 package media.suspilne.classic;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +17,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
+import android.widget.Toast;
+import com.google.android.gms.common.util.IOUtils;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    ProgressDialog progress;
     private Timer quitTimer;
     protected Player player;
     protected NavigationView navigation;
@@ -176,5 +182,113 @@ public class MainActivity extends AppCompatActivity
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    void dropDownloads(String extension){
+        for (String file:context.fileList()) {
+            if (file.toLowerCase().contains(extension.toLowerCase())){
+                context.deleteFile(file);
+            }
+        }
+    }
+
+    void download(){
+        if (!this.isNetworkAvailable()){
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
+        } else {
+            Tracks tracks = new Tracks();
+            tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
+            new DownloadAll().execute(tracks.getTracks().toArray(new TrackEntry[0]));
+        }
+    }
+
+    class DownloadAll extends AsyncTask<TrackEntry, Void, String> {
+        protected void onPreExecute() {
+            progress = new ProgressDialog(MainActivity.this);
+            progress.setIcon(R.mipmap.icon_classic);
+            progress.setTitle(R.string.downloading);
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setCancelable(false);
+            progress.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            progress.incrementProgressBy(1);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (progress.isShowing()) {
+                progress.dismiss();
+            }
+
+            if (result.isEmpty()){
+                Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_LONG).show();
+            }else{
+                new AlertDialog.Builder(MainActivity.this)
+                    .setIcon(R.mipmap.icon_classic)
+                    .setTitle(R.string.an_error_occurred)
+                    .setMessage(result)
+                    .setNeutralButton(R.string.ok, null)
+                    .show();
+            }
+        }
+
+        @Override
+        protected String doInBackground(TrackEntry... tracks) {
+            try {
+                progress.setMax(tracks.length);
+
+                for (TrackEntry track:tracks) {
+                    if (track.isDownloaded) publishProgress();
+                }
+
+                for (TrackEntry track:tracks) {
+                    if (track.isDownloaded) continue;
+                    if (SettingsHelper.freeSpace() < 50){
+                        throw new Exception(getResources().getString(R.string.not_enough_space, "50MB"));
+                    }
+
+                    InputStream is = (InputStream) new URL(track.stream).getContent();
+                    SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
+                    publishProgress();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return e.getMessage();
+            }
+
+            return "";
+        }
+    }
+
+    protected void askToContinueDownloadTracks(){
+        if (SettingsHelper.getBoolean("askedToContinueDownload")) return;
+        if (!SettingsHelper.getBoolean("downloadAllTracks") && !SettingsHelper.getBoolean("downloadFavoriteTracks")) return;
+        if (SettingsHelper.freeSpace() < 50 || !isNetworkAvailable() ) return;
+
+        SettingsHelper.setBoolean("askedToContinueDownload", true);
+
+        boolean allAreDownloaded = true;
+        Tracks tracks = new Tracks();
+        tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
+
+        for (TrackEntry track : tracks.getTracks()){
+            if (!track.isDownloaded){
+                allAreDownloaded = false;
+                break;
+            }
+        }
+
+        if (allAreDownloaded) return;
+
+        new AlertDialog.Builder(MainActivity.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(R.string.continueDownload)
+            .setMessage(SettingsHelper.getBoolean("downloadAllTracks") ? R.string.not_all_tracks : R.string.not_all_tracks)
+            .setPositiveButton(R.string.download, (dialog, which) -> download())
+            .setNegativeButton(R.string.no, null)
+            .show();
     }
 }

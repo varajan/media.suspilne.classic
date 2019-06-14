@@ -3,7 +3,6 @@ package media.suspilne.classic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 class Tracks {
@@ -58,14 +57,10 @@ class Tracks {
     List<TrackEntry> getTracks(){
         List<TrackEntry> tracks = showOnlyFavorite ? getFavorite() : items;
 
-        Collections.sort(tracks, new Comparator<TrackEntry>() {
-            @Override
-            public int compare(TrackEntry track1, TrackEntry track2) {
-                return track1.getAuthor().equals(track2.getAuthor())
-                        ? track1.getTitle().compareTo(track2.getTitle())
-                        : track1.getAuthor().compareTo(track2.getAuthor());
-            }
-        });
+        Collections.sort(tracks, (track1, track2)
+                -> track1.getAuthor().equals(track2.getAuthor())
+                ?  track1.getTitle().compareTo(track2.getTitle())
+                :  track1.getAuthor().compareTo(track2.getAuthor()));
 
         return filter(tracks);
     }

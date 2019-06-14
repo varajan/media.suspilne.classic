@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
+import android.os.StatFs;
 import android.util.DisplayMetrics;
 
 import java.io.ByteArrayOutputStream;
@@ -17,7 +19,7 @@ import java.util.Map;
 public class SettingsHelper {
     static String application = "media.suspilne.classic";
 
-    static String getString(String setting){
+    private static String getString(String setting){
         return getString(setting, "");
     }
 
@@ -28,7 +30,7 @@ public class SettingsHelper {
     static void setString(String setting, String value){
         SharedPreferences.Editor editor = MainActivity.getContext().getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static ArrayList<String> getAllSettings(String setting){
@@ -85,9 +87,18 @@ public class SettingsHelper {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] bytes = stream.toByteArray();
 
+            saveFile( name, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveFile(String name, byte[] bytes){
+        try {
             FileOutputStream outputStream;
             outputStream = MainActivity.getContext().openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(bytes);
+            outputStream.flush();
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,5 +118,12 @@ public class SettingsHelper {
         }
 
         return null;
+    }
+
+    public static long freeSpace(){
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        long bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+
+        return bytesAvailable / (1024 * 1024);
     }
 }

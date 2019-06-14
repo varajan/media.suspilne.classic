@@ -4,6 +4,7 @@
     <string name="tracks">Композиції</string>
     <string name="settings">Налаштування</string>
     <string name="exit">Вийти</string>
+    <string name="ok">OK</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
     <string name="confirm_exit">Закрити UA: Класична музика?</string>
@@ -20,6 +21,20 @@
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Немає жодного запису</string>
     <string name="filterHint">Назва чи автор</string>
+    <string name="done">Готово.</string>
+    <string name="an_error_occurred">Сталась помилка.</string>
+    <string name="not_enough_space">Лишилось менше %s вільного місця.</string>
+    <string name="download">Скачати</string>
+    <string name="downloading">Завантаження композицій…</string>
+    <string name="clear">Видалити</string>
+    <string name="continueDownload">Продовжити завантаження?</string>
+    <string name="not_all_tracks">Не всі композиції завантажено.</string>
+    <string name="not_downloaded_favorite_tracks">Не всі улюблені композиції завантажено.</string>
+    <string name="downloadAllTracks">Зберігати всі композиції на пристрої</string>
+    <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої</string>
+    <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно 1.4ГБ вільного місця.</string>
+    <string name="downloadFavoriteTracksQuestion">Зберігати тільки улюблені композиції на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
+    <string name="clearAllTracksQuestion">Видалити всі збережені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
 
     <string name="bach">Йоганн Себастьян Бах</string>
     <string name="barber">Самюел Барбер</string>

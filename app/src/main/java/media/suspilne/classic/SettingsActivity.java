@@ -8,6 +8,7 @@ import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
@@ -17,8 +18,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class SettingsActivity extends MainActivity {
     private Switch batteryOptimization;
+    private Switch downloadAllTracks;
+    private Switch downloadFavoriteTracks;
     private Switch tracksPlayNext;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
@@ -33,6 +37,8 @@ public class SettingsActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         batteryOptimization = this.findViewById(R.id.batteryOptimization);
+        downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
+        downloadFavoriteTracks = this.findViewById(R.id.downloadFavoriteTracks);
         tracksPlayNext = this.findViewById(R.id.tracksPlayNext);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
@@ -43,69 +49,20 @@ public class SettingsActivity extends MainActivity {
         setLanguages();
         setColorsAndState();
 
-        tracksPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean("tracksPlayNext", isChecked);
-                setColorsAndState();
-            }
-        });
-
-        showOnlyFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean("showOnlyFavorite", isChecked);
-                setColorsAndState();
-            }
-        });
-
-        autoQuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean("autoQuit", isChecked);
-                setColorsAndState();
-            }
-        });
+        tracksPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("tracksPlayNext", isChecked));
+        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
+        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
 
         batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        timeout.setOnSeekBarChangeListener(onTimeoutChange);
+        languages.setOnItemSelectedListener(omLanguageSelect);
 
-        timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
-                String minutes = SettingsHelper.getString("timeout", "0");
+        askToContinueDownloadTracks();
+    }
 
-                timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        languages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String code = ((Country) languages.getSelectedItem()).code;
-                String currentLanguage = LacaleManager.getLanguage();
-
-                SettingsHelper.setString("Language", code);
-                LacaleManager.setLanguage(SettingsActivity.this, code);
-
-                if (!code.equals(currentLanguage)){
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
+    void setSwitch(String title, boolean isChecked){
+        SettingsHelper.setBoolean(title, isChecked);
+        setColorsAndState();
     }
 
     private void setLanguages(){
@@ -126,13 +83,43 @@ public class SettingsActivity extends MainActivity {
         }
     }
 
-    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            requestIgnoreBatteryOptimization();
-            setColorsAndState();
-        }
+    private void doDownload(boolean allTracks){
+        SettingsHelper.setBoolean(allTracks ? "downloadAllTracks" : "downloadFavoriteTracks", true);
+        SettingsHelper.setBoolean(allTracks ? "downloadFavoriteTracks" : "downloadAllTracks", false);
+        download();
+        setColorsAndState();
+    }
+
+    private void doCleanup(){
+        dropDownloads(".mp3");
+        SettingsHelper.setBoolean("downloadAllTracks", false);
+        SettingsHelper.setBoolean("downloadFavoriteTracks", false);
+        setColorsAndState();
+    }
+
+    private CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
+        new AlertDialog.Builder(SettingsActivity.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(isChecked ? R.string.download : R.string.clear)
+            .setMessage(isChecked ? R.string.downloadAllTracksQuestion : R.string.clearAllTracksQuestion)
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(true); else doCleanup();})
+            .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
+            .show();
+    };
+
+    private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) -> {
+        new AlertDialog.Builder(SettingsActivity.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(isChecked ? R.string.download : R.string.clear)
+            .setMessage(isChecked ? R.string.downloadFavoriteTracksQuestion : R.string.clearAllTracksQuestion)
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(false); else doCleanup();})
+            .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
+            .show();
+    };
+
+    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = (buttonView, isChecked) -> {
+        requestIgnoreBatteryOptimization();
+        setColorsAndState();
     };
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -162,6 +149,9 @@ public class SettingsActivity extends MainActivity {
         boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
         boolean isTracksPlayNext = SettingsHelper.getBoolean("tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
+        boolean isDownloadAllTracks = SettingsHelper.getBoolean("downloadAllTracks");
+        boolean isDownloadFavoriteTracks = SettingsHelper.getBoolean("downloadFavoriteTracks");
+
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
         String minutes = SettingsHelper.getString("timeout", "5");
@@ -184,9 +174,58 @@ public class SettingsActivity extends MainActivity {
             batteryOptimization.setVisibility(View.GONE);
         }
 
+        downloadAllTracks.setOnCheckedChangeListener(null);
+        downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
+        downloadAllTracks.setChecked(isDownloadAllTracks);
+        downloadAllTracks.setOnCheckedChangeListener(onDownloadAllSelect);
+
+        downloadFavoriteTracks.setEnabled(!isDownloadAllTracks);
+        downloadFavoriteTracks.setOnCheckedChangeListener(null);
+        downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
+        downloadFavoriteTracks.setChecked(!isDownloadAllTracks && isDownloadFavoriteTracks);
+        downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
+
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
     }
+
+    AdapterView.OnItemSelectedListener omLanguageSelect = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            String code = ((Country) languages.getSelectedItem()).code;
+            String currentLanguage = LacaleManager.getLanguage();
+
+            SettingsHelper.setString("Language", code);
+            LacaleManager.setLanguage(SettingsActivity.this, code);
+
+            if (!code.equals(currentLanguage)){
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    };
+
+    SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
+            String minutes = SettingsHelper.getString("timeout", "0");
+
+            timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
+    };
 }

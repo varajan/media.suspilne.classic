@@ -1,16 +1,26 @@
 package media.suspilne.classic;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.common.util.IOUtils;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class TrackEntry{
     public int id;
     private int titleId;
     private int authorNameId;
     boolean favorite;
+    boolean isDownloaded;
+    String stream;
+    String fileName;
 
     TrackEntry(){ id = -1; }
 
@@ -19,9 +29,12 @@ public class TrackEntry{
         this.titleId = title;
         this.authorNameId = name;
         this.favorite = SettingsHelper.getBoolean("isFavorite_" + id);
+        this.isDownloaded = isDownloaded(this.id);
+        this.stream = stream(id);
+        this.fileName = fileName(id);
     }
 
-    public int getAuthorPhoto(){
+    private int getAuthorPhoto(){
         switch (authorNameId){
             case R.string.beethoven: return R.mipmap.beethoven;
             case R.string.rachmaninov: return R.mipmap.rachmaninov;
@@ -89,6 +102,14 @@ public class TrackEntry{
         SettingsHelper.setBoolean("isFavorite_" + id, favorite);
 
         ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
+
+        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && !favorite){
+            MainActivity.getContext().deleteFile(fileName);
+        }
+
+        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && favorite){
+            new DownloadTrack().execute(this);
+        }
     }
 
     void remove(){
@@ -113,11 +134,36 @@ public class TrackEntry{
         }
     }
 
-    String stream(){
-        return stream(id);
+    @SuppressLint("DefaultLocale")
+    private String fileName(int track){
+        return String.format("%d.mp3", track);
     }
 
-    String stream(int track){
-        return TracksActivity.getActivity().getResources().getString(R.string.trackUrl, track);
+    private boolean isDownloaded(int track){
+        return MainActivity.getContext().getFileStreamPath(fileName(track)).exists();
+    }
+
+    private String stream(int track){
+        return isDownloaded(track)
+            ? MainActivity.getContext().getFilesDir() + "/" + fileName(track)
+            : TracksActivity.getActivity().getResources().getString(R.string.trackUrl, track);
+    }
+
+    static class DownloadTrack extends AsyncTask<TrackEntry, Void, Void> {
+        @Override
+        protected Void doInBackground(TrackEntry... tracks) {
+            try {
+                TrackEntry track = tracks[0];
+                if (!track.isDownloaded)
+                {
+                    InputStream is = (InputStream) new URL(track.stream).getContent();
+                    SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }
