@@ -18,6 +18,7 @@ public class TracksActivity extends MainActivity {
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
+    private ImageView searchDone;
     private TextView toolbarTitle;
 
     @Override
@@ -70,10 +71,12 @@ public class TracksActivity extends MainActivity {
         searchIcon = findViewById(R.id.searchIcon);
         toolbarTitle = findViewById(R.id.toolbarTitle);
         searchField = findViewById(R.id.searchField);
+        searchDone = findViewById(R.id.searchDone);
 
         searchIcon.setOnClickListener(v -> {
             toolbarTitle.setVisibility(View.GONE);
             searchIcon.setVisibility(View.GONE);
+            searchDone.setVisibility(View.GONE);
             favoriteIcon.setVisibility(View.GONE);
             searchField.setVisibility(View.VISIBLE);
             searchField.requestFocus();
@@ -103,7 +106,7 @@ public class TracksActivity extends MainActivity {
         searchField.setOnTouchListener((view, event) -> {
             int actionX = (int) event.getX();
             int viewWidth = view.getWidth();
-            int buttonWidth = SettingsHelper.dpToPx(30);
+            int buttonWidth = SettingsHelper.dpToPx(50);
 
             if (viewWidth - buttonWidth <= actionX){
                 searchField.setText("");
@@ -130,6 +133,7 @@ public class TracksActivity extends MainActivity {
 
     private void showTracks(){
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
+        searchDone.setVisibility(tracks.filter.equals("") ? View.GONE : View.VISIBLE);
 
         LinearLayout list = findViewById(R.id.list);
         list.removeViews(1, list.getChildCount()-1);
