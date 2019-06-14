@@ -29,8 +29,11 @@
     <string name="clear">Видалити</string>
     <string name="continueDownload">Продовжити завантаження?</string>
     <string name="not_all_tracks">Не всі композиції завантажено.</string>
-    <string name="downloadAllTracks">Зберігти всі композиції на пристрої</string>
+    <string name="not_downloaded_favorite_tracks">Не всі улюблені композиції завантажено.</string>
+    <string name="downloadAllTracks">Зберігати всі композиції на пристрої</string>
+    <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої</string>
     <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно 1.4ГБ вільного місця.</string>
+    <string name="downloadFavoriteTracksQuestion">Зберігати тільки улюблені композиції на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTracksQuestion">Видалити всі збережені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
 
     <string name="bach">Йоганн Себастьян Бах</string>

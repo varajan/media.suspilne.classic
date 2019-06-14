@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class SettingsActivity extends MainActivity {
     private Switch batteryOptimization;
     private Switch downloadAllTracks;
+    private Switch downloadFavoriteTracks;
     private Switch tracksPlayNext;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
@@ -37,6 +38,7 @@ public class SettingsActivity extends MainActivity {
 
         batteryOptimization = this.findViewById(R.id.batteryOptimization);
         downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
+        downloadFavoriteTracks = this.findViewById(R.id.downloadFavoriteTracks);
         tracksPlayNext = this.findViewById(R.id.tracksPlayNext);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
@@ -55,7 +57,7 @@ public class SettingsActivity extends MainActivity {
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         languages.setOnItemSelectedListener(omLanguageSelect);
 
-        askToContinueDownloadAllTracks();
+        askToContinueDownloadTracks();
     }
 
     void setSwitch(String title, boolean isChecked){
@@ -81,16 +83,16 @@ public class SettingsActivity extends MainActivity {
         }
     }
 
-    private void doDownload(){
-        SettingsHelper.setBoolean("downloadAllTracks", true);
+    private void doDownload(boolean allTracks){
+        SettingsHelper.setBoolean(allTracks ? "downloadAllTracks" : "downloadFavoriteTracks", true);
         download();
         setColorsAndState();
     }
 
     private void doCleanup(){
-        // TODO
-//        dropDownloads(".mp3");
+        dropDownloads(".mp3");
         SettingsHelper.setBoolean("downloadAllTracks", false);
+        SettingsHelper.setBoolean("downloadFavoriteTracks", false);
         setColorsAndState();
     }
 
@@ -99,7 +101,17 @@ public class SettingsActivity extends MainActivity {
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? R.string.downloadAllTracksQuestion : R.string.clearAllTracksQuestion)
-            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(); else doCleanup();})
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(true); else doCleanup();})
+            .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
+            .show();
+    };
+
+    private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) -> {
+        new AlertDialog.Builder(SettingsActivity.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(isChecked ? R.string.download : R.string.clear)
+            .setMessage(isChecked ? R.string.downloadFavoriteTracksQuestion : R.string.clearAllTracksQuestion)
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(false); else doCleanup();})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
             .show();
     };
@@ -137,6 +149,7 @@ public class SettingsActivity extends MainActivity {
         boolean isTracksPlayNext = SettingsHelper.getBoolean("tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         boolean isDownloadAllTracks = SettingsHelper.getBoolean("downloadAllTracks");
+        boolean isDownloadFavoriteTracks = SettingsHelper.getBoolean("downloadFavoriteTracks");
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -160,10 +173,17 @@ public class SettingsActivity extends MainActivity {
             batteryOptimization.setVisibility(View.GONE);
         }
 
+        downloadAllTracks.setEnabled(!isDownloadFavoriteTracks);
         downloadAllTracks.setOnCheckedChangeListener(null);
         downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
         downloadAllTracks.setChecked(isDownloadAllTracks);
         downloadAllTracks.setOnCheckedChangeListener(onDownloadAllSelect);
+
+        downloadFavoriteTracks.setEnabled(!isDownloadAllTracks);
+        downloadFavoriteTracks.setOnCheckedChangeListener(null);
+        downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
+        downloadFavoriteTracks.setChecked(isDownloadFavoriteTracks);
+        downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);

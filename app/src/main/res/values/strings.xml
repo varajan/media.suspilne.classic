@@ -32,8 +32,11 @@
     <string name="clear">Delete</string>
     <string name="continueDownload">Continue downloading?</string>
     <string name="not_all_tracks">Not all tracks were downloaded.</string>
+    <string name="not_downloaded_favorite_tracks">Not all favorite tracks were downloaded.</string>
     <string name="downloadAllTracks">Download all tracks</string>
+    <string name="downloadFavoriteTracks">Download favorite tracks</string>
     <string name="downloadAllTracksQuestion">Are you sure to download all tracks? It will take about 1.4GB of space.</string>
+    <string name="downloadFavoriteTracksQuestion">Are you sure to download only favorite tracks? Internet will be used to listen other tracks.</string>
     <string name="clearAllTracksQuestion">Are you sure to delete downloaded tracks? Internet will be used to listen the tracks.</string>
 
     <string name="bach">Johann Sebastian Bach</string>

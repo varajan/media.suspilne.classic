@@ -71,26 +71,22 @@ public class TracksActivity extends MainActivity {
         toolbarTitle = findViewById(R.id.toolbarTitle);
         searchField = findViewById(R.id.searchField);
 
-        searchIcon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                toolbarTitle.setVisibility(View.GONE);
-                searchIcon.setVisibility(View.GONE);
-                favoriteIcon.setVisibility(View.GONE);
-                searchField.setVisibility(View.VISIBLE);
-                searchField.requestFocus();
+        searchIcon.setOnClickListener(v -> {
+            toolbarTitle.setVisibility(View.GONE);
+            searchIcon.setVisibility(View.GONE);
+            favoriteIcon.setVisibility(View.GONE);
+            searchField.setVisibility(View.VISIBLE);
+            searchField.requestFocus();
 
-                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                        .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         });
 
-        favoriteIcon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
-                SettingsHelper.setBoolean("showOnlyFavorite", tracks.showOnlyFavorite);
+        favoriteIcon.setOnClickListener(v -> {
+            tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
+            SettingsHelper.setBoolean("showOnlyFavorite", tracks.showOnlyFavorite);
 
-                showTracks();
-            }
+            showTracks();
         });
 
         searchField.setOnEditorActionListener((v, actionId, event) -> {
@@ -228,7 +224,7 @@ public class TracksActivity extends MainActivity {
         showTracks();
         setPlayerListeners();
         continueTrack(savedInstanceState);
-        askToContinueDownloadAllTracks();
+        askToContinueDownloadTracks();
     }
 
     private void playTrack(TrackEntry track){
