@@ -10,7 +10,7 @@
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">No tracks to show</string>
     <string name="filterHint">Title or author</string>
-    <string name="tracks">Tracks</string>
+    <string name="tracks">All tracks</string>
     <string name="settings">Settings</string>
     <string name="exit">Quit</string>
     <string name="ok">OK</string>

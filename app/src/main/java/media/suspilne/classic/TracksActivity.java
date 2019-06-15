@@ -18,7 +18,6 @@ public class TracksActivity extends MainActivity {
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
-    private ImageView searchDone;
     private TextView toolbarTitle;
 
     @Override
@@ -66,24 +65,25 @@ public class TracksActivity extends MainActivity {
                 .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
     }
 
+    private View.OnClickListener search = v -> {
+        toolbarTitle.setVisibility(View.GONE);
+        searchIcon.setVisibility(View.GONE);
+        favoriteIcon.setVisibility(View.GONE);
+        searchField.setVisibility(View.VISIBLE);
+        searchField.requestFocus();
+
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    };
+
     private void addSearchField() {
         favoriteIcon = findViewById(R.id.showFavorite);
         searchIcon = findViewById(R.id.searchIcon);
         toolbarTitle = findViewById(R.id.toolbarTitle);
         searchField = findViewById(R.id.searchField);
-        searchDone = findViewById(R.id.searchDone);
 
-        searchIcon.setOnClickListener(v -> {
-            toolbarTitle.setVisibility(View.GONE);
-            searchIcon.setVisibility(View.GONE);
-            searchDone.setVisibility(View.GONE);
-            favoriteIcon.setVisibility(View.GONE);
-            searchField.setVisibility(View.VISIBLE);
-            searchField.requestFocus();
-
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        });
+        toolbarTitle.setOnClickListener(search);
+        searchIcon.setOnClickListener(search);
 
         favoriteIcon.setOnClickListener(v -> {
             tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
@@ -124,7 +124,9 @@ public class TracksActivity extends MainActivity {
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event){
         if (searchField.getVisibility() == View.VISIBLE && (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK)){
+            tracks.filter = searchField.getText().toString();
             hideSearch();
+            showTracks();
             return false;
         }
 
@@ -133,7 +135,12 @@ public class TracksActivity extends MainActivity {
 
     private void showTracks(){
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
-        searchDone.setVisibility(tracks.filter.equals("") ? View.GONE : View.VISIBLE);
+
+        if (tracks.filter.equals("")){
+            toolbarTitle.setText(R.string.tracks);
+        }else{
+            toolbarTitle.setText("\u2315 " + tracks.filter);
+        }
 
         LinearLayout list = findViewById(R.id.list);
         list.removeViews(1, list.getChildCount()-1);
@@ -150,41 +157,37 @@ public class TracksActivity extends MainActivity {
             track.setViewDetails();
 
             final ImageView playBtn = trackView.findViewById(R.id.play);
-            playBtn.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
-                        tracks.position = player.position();
-                        tracks.lastPlaying = track.id;
+            playBtn.setOnClickListener(v -> {
+                if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
+                    tracks.position = player.position();
+                    tracks.lastPlaying = track.id;
 
-                        player.releasePlayer();
-                        playBtn.setImageResource(R.mipmap.track_play);
-                        playBtn.setTag(R.mipmap.track_play);
-                    }else{
-                        playTrack(track);
-                        TracksActivity.this.setQuiteTimeout();
-                    }
+                    player.releasePlayer();
+                    playBtn.setImageResource(R.mipmap.track_play);
+                    playBtn.setTag(R.mipmap.track_play);
+                }else{
+                    playTrack(track);
+                    TracksActivity.this.setQuiteTimeout();
                 }
             });
 
-            trackView.findViewById(R.id.favorite).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    track.resetFavorite();
+            trackView.findViewById(R.id.favorite).setOnClickListener(v -> {
+                track.resetFavorite();
 
-                    if (tracks.showOnlyFavorite){
+                if (tracks.showOnlyFavorite){
 
-                        if (player.isPlaying() && tracks.tracksPlayNext && tracks.nowPlaying == track.id){
-                            playTrack(tracks.getNext());
-                        }
+                    if (player.isPlaying() && tracks.tracksPlayNext && tracks.nowPlaying == track.id){
+                        playTrack(tracks.getNext());
+                    }
 
-                        if (tracks.nowPlaying == track.id){
-                            player.releasePlayer();
-                        }
+                    if (tracks.nowPlaying == track.id){
+                        player.releasePlayer();
+                    }
 
-                        track.remove();
+                    track.remove();
 
-                        if (tracks.getTracks().size() == 0){
-                            findViewById(R.id.nothingToShow).setVisibility(View.VISIBLE);
-                        }
+                    if (tracks.getTracks().size() == 0){
+                        findViewById(R.id.nothingToShow).setVisibility(View.VISIBLE);
                     }
                 }
             });
