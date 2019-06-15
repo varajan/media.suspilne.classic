@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class TracksActivity extends MainActivity {
@@ -18,7 +17,6 @@ public class TracksActivity extends MainActivity {
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
-    private TextView toolbarTitle;
 
     @Override
     public void onDestroy() {
@@ -56,7 +54,6 @@ public class TracksActivity extends MainActivity {
     }
 
     private void hideSearch(){
-        toolbarTitle.setVisibility(View.VISIBLE);
         searchIcon.setVisibility(View.VISIBLE);
         favoriteIcon.setVisibility(View.VISIBLE);
         searchField.setVisibility(View.GONE);
@@ -66,7 +63,6 @@ public class TracksActivity extends MainActivity {
     }
 
     private View.OnClickListener search = v -> {
-        toolbarTitle.setVisibility(View.GONE);
         searchIcon.setVisibility(View.GONE);
         favoriteIcon.setVisibility(View.GONE);
         searchField.setVisibility(View.VISIBLE);
@@ -79,10 +75,8 @@ public class TracksActivity extends MainActivity {
     private void addSearchField() {
         favoriteIcon = findViewById(R.id.showFavorite);
         searchIcon = findViewById(R.id.searchIcon);
-        toolbarTitle = findViewById(R.id.toolbarTitle);
         searchField = findViewById(R.id.searchField);
 
-        toolbarTitle.setOnClickListener(search);
         searchIcon.setOnClickListener(search);
 
         favoriteIcon.setOnClickListener(v -> {
@@ -137,9 +131,10 @@ public class TracksActivity extends MainActivity {
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
 
         if (tracks.filter.equals("")){
-            toolbarTitle.setText(R.string.tracks);
+            getSupportActionBar().setTitle(R.string.tracks);
+
         }else{
-            toolbarTitle.setText("\u2315 " + tracks.filter);
+            getSupportActionBar().setTitle("\u2315 " + tracks.filter);
         }
 
         LinearLayout list = findViewById(R.id.list);

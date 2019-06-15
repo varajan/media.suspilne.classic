@@ -25,35 +25,25 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <RelativeLayout
+                <EditText
+                    android:id="@+id/searchField"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:hint="@string/filterHint"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:drawableRight="@drawable/ic_cancel">
+                </EditText>
 
-                    <TextView
-                        android:id="@+id/toolbarTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/tracks"
-                        android:gravity="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:layout_alignParentStart="true"/>
-
-                    <EditText
-                        android:id="@+id/searchField"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="5dp"
-                        android:background="@color/colorPrimary"
-                        android:ems="10"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:hint="@string/filterHint"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:drawableRight="@drawable/ic_cancel">
-                    </EditText>
+                <RelativeLayout
+                    android:layout_weight = "0"
+                    android:layout_height="wrap_content"
+                    android:layout_width="140dp">
 
                     <ImageButton
                         android:id="@+id/searchIcon"
@@ -71,7 +61,6 @@
                         android:src="@drawable/ic_favorite"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_alignParentEnd="true"/>
-
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
