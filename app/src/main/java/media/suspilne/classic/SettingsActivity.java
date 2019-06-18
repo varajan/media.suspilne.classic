@@ -67,8 +67,8 @@ public class SettingsActivity extends MainActivity {
 
     private void setLanguages(){
         ArrayList<Country> countries = new ArrayList<>();
-        countries.add( new Country("en", getResources().getString(R.string.language_en), R.mipmap.uk));
-        countries.add( new Country("uk", getResources().getString(R.string.language_ua), R.mipmap.ua));
+        countries.add( new Country("en", getString(R.string.language_en), R.mipmap.uk));
+        countries.add( new Country("uk", getString(R.string.language_ua), R.mipmap.ua));
 
         LanguageArrayAdapter arrayAdapter = new LanguageArrayAdapter(this, R.layout.language, countries);
         String currentLanguage = getResources().getConfiguration().locale.getLanguage();
@@ -84,6 +84,17 @@ public class SettingsActivity extends MainActivity {
     }
 
     private void doDownload(boolean allTracks){
+        long free = SettingsHelper.freeSpace();
+        if (free < 1500 && allTracks){
+            new AlertDialog.Builder(this)
+                    .setIcon(R.mipmap.icon_classic)
+                    .setTitle(R.string.an_error_occurred)
+                    .setMessage(getString(R.string.not_enough_space, free + "MB"))
+                    .setNeutralButton(R.string.ok, null)
+                    .show();
+            return;
+        }
+
         SettingsHelper.setBoolean(allTracks ? "downloadAllTracks" : "downloadFavoriteTracks", true);
         SettingsHelper.setBoolean(allTracks ? "downloadFavoriteTracks" : "downloadAllTracks", false);
         download();
@@ -156,7 +167,7 @@ public class SettingsActivity extends MainActivity {
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
         String minutes = SettingsHelper.getString("timeout", "5");
 
-        timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
+        timeoutText.setText(getString(R.string.x_minutes, minutes));
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
@@ -217,7 +228,7 @@ public class SettingsActivity extends MainActivity {
             SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
             String minutes = SettingsHelper.getString("timeout", "0");
 
-            timeoutText.setText(getResources().getString(R.string.x_minutes, minutes));
+            timeoutText.setText(getString(R.string.x_minutes, minutes));
         }
 
         @Override
