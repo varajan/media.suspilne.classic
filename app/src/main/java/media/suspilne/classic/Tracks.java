@@ -42,38 +42,39 @@ class Tracks {
         return null;
     }
 
-    private List<TrackEntry> filter(List<TrackEntry> tracks){
-        List<TrackEntry> result = new ArrayList<>();
-
-        for (TrackEntry track:tracks) {
-            if (track.getTitle().toLowerCase().contains(filter) || track.getAuthor().toLowerCase().contains(filter)){
-                result.add(track);
-            }
-        }
-
-        return result;
-    }
+//    private List<TrackEntry> filter(List<TrackEntry> tracks){
+//        List<TrackEntry> result = new ArrayList<>();
+//
+//        for (TrackEntry track:tracks) {
+//            if (track.getTitle().toLowerCase().contains(filter) || track.getAuthor().toLowerCase().contains(filter)){
+//                result.add(track);
+//            }
+//        }
+//
+//        return result;
+//    }
 
     List<TrackEntry> getTracks(){
-        List<TrackEntry> tracks = showOnlyFavorite ? getFavorite() : items;
+//        List<TrackEntry> tracks = showOnlyFavorite ? getFavorite() : items;
 
-        Collections.sort(tracks, (track1, track2)
+        Collections.sort(items, (track1, track2)
                 -> track1.getAuthor().equals(track2.getAuthor())
                 ?  track1.getTitle().compareTo(track2.getTitle())
                 :  track1.getAuthor().compareTo(track2.getAuthor()));
 
-        return filter(tracks);
+        return items;
+//        return filter(items);
     }
 
-    private List<TrackEntry> getFavorite(){
-        List<TrackEntry> tracks = new ArrayList<>();
-
-        for (TrackEntry track:items) {
-            if (track.favorite) tracks.add(track);
-        }
-
-        return tracks;
-    }
+//    private List<TrackEntry> getFavorite(){
+//        List<TrackEntry> tracks = new ArrayList<>();
+//
+//        for (TrackEntry track:items) {
+//            if (track.favorite) tracks.add(track);
+//        }
+//
+//        return tracks;
+//    }
 
     private List<TrackEntry> items = new ArrayList<>(Arrays.asList(
             new TrackEntry(1, R.string.track_001, R.string.rachmaninov),

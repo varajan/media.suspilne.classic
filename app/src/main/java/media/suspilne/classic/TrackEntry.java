@@ -112,8 +112,17 @@ public class TrackEntry{
         }
     }
 
-    void remove(){
+    boolean matchesFilter (String filter){
+        filter = filter.toLowerCase();
+        return getTitle().toLowerCase().contains(filter) || getAuthor().toLowerCase().contains(filter);
+    }
+
+    void hide(){
         getTrackView().setVisibility(View.GONE);
+    }
+
+    void show(){
+        getTrackView().setVisibility(View.VISIBLE);
     }
 
     void setViewDetails(){

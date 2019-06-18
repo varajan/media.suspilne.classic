@@ -17,6 +17,7 @@ public class TracksActivity extends MainActivity {
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
+    LinearLayout tracksList;
 
     @Override
     public void onDestroy() {
@@ -83,7 +84,7 @@ public class TracksActivity extends MainActivity {
             tracks.showOnlyFavorite = !tracks.showOnlyFavorite;
             SettingsHelper.setBoolean("showOnlyFavorite", tracks.showOnlyFavorite);
 
-            showTracks();
+            filterTracks();
         });
 
         searchField.setOnEditorActionListener((v, actionId, event) -> {
@@ -91,7 +92,7 @@ public class TracksActivity extends MainActivity {
                 tracks.filter = v.getText().toString();
 
                 hideSearch();
-                showTracks();
+                filterTracks();
                 return true;
             }
             return false;
@@ -107,7 +108,7 @@ public class TracksActivity extends MainActivity {
                 tracks.filter = "";
 
                 hideSearch();
-                showTracks();
+                filterTracks();
                 return true;
             }
 
@@ -120,35 +121,36 @@ public class TracksActivity extends MainActivity {
         if (searchField.getVisibility() == View.VISIBLE && (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK)){
             tracks.filter = searchField.getText().toString();
             hideSearch();
-            showTracks();
+            filterTracks();
             return false;
         }
 
         return super.onKeyDown(keycode, event);
     }
 
-    private void showTracks(){
+    private void filterTracks(){
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
-
-        if (tracks.filter.equals("")){
-            getSupportActionBar().setTitle(R.string.tracks);
-
-        }else{
-            getSupportActionBar().setTitle("\u2315 " + tracks.filter);
-        }
-
-        LinearLayout list = findViewById(R.id.list);
-        list.removeViews(1, list.getChildCount()-1);
-
+        getSupportActionBar().setTitle(tracks.filter.equals("") ? getString(R.string.tracks) : "\u2315 " + tracks.filter);
         View nothing = findViewById(R.id.nothingToShow);
-        nothing.setVisibility(View.VISIBLE);
+        int visibility = View.VISIBLE;
 
         for (final TrackEntry track:tracks.getTracks()) {
-            nothing.setVisibility(View.GONE);
+            if (tracks.showOnlyFavorite && !track.favorite || !track.matchesFilter(tracks.filter)){
+                track.hide();
+            }else{
+                track.show();
+                visibility = View.GONE;
+            }
+        }
 
-            View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, list, false);
+        nothing.setVisibility(visibility);
+    }
+
+    private void showTracks(){
+        for (final TrackEntry track:tracks.getTracks()) {
+            View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, tracksList, false);
             trackView.setTag(track.id);
-            list.addView(trackView);
+            tracksList.addView(trackView);
             track.setViewDetails();
 
             final ImageView playBtn = trackView.findViewById(R.id.play);
@@ -179,11 +181,7 @@ public class TracksActivity extends MainActivity {
                         player.releasePlayer();
                     }
 
-                    track.remove();
-
-                    if (tracks.getTracks().size() == 0){
-                        findViewById(R.id.nothingToShow).setVisibility(View.VISIBLE);
-                    }
+                    filterTracks();
                 }
             });
         }
@@ -220,10 +218,12 @@ public class TracksActivity extends MainActivity {
         currentView = R.id.tracks_menu;
         super.onCreate(savedInstanceState);
 
+        tracksList = findViewById(R.id.list);
         tracks = new Tracks();
 
         addSearchField();
         showTracks();
+        filterTracks();
         setPlayerListeners();
         continueTrack(savedInstanceState);
         askToContinueDownloadTracks();

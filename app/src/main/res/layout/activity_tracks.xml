@@ -41,7 +41,7 @@
                 </EditText>
 
                 <RelativeLayout
-                    android:layout_weight = "0"
+                    android:layout_weight = "1"
                     android:layout_height="wrap_content"
                     android:layout_width="140dp">
 
