@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class TracksActivity extends MainActivity {
+public class ActivityTracks extends ActivityMain {
     private Tracks tracks;
     private ImageView favoriteIcon;
     private ImageView searchIcon;
@@ -50,7 +50,7 @@ public class TracksActivity extends MainActivity {
 
         if (tracks.nowPlaying > 0){
             playTrack(tracks.getById(tracks.nowPlaying));
-            TracksActivity.this.setQuiteTimeout();
+            ActivityTracks.this.setQuiteTimeout();
         }
     }
 
@@ -148,7 +148,7 @@ public class TracksActivity extends MainActivity {
 
     private void showTracks(){
         for (final TrackEntry track:tracks.getTracks()) {
-            View trackView = LayoutInflater.from(TracksActivity.this).inflate(R.layout.track_item, tracksList, false);
+            View trackView = LayoutInflater.from(this).inflate(R.layout.track_item, tracksList, false);
             trackView.setTag(track.id);
             tracksList.addView(trackView);
             track.setViewDetails();
@@ -164,7 +164,7 @@ public class TracksActivity extends MainActivity {
                     playBtn.setTag(R.mipmap.track_play);
                 }else{
                     playTrack(track);
-                    TracksActivity.this.setQuiteTimeout();
+                    setQuiteTimeout();
                 }
             });
 
@@ -209,7 +209,7 @@ public class TracksActivity extends MainActivity {
             setPlayBtnIcon(new TrackEntry());
             player.releasePlayer();
 
-            Toast.makeText(TracksActivity.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+            Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
         });
     }
 

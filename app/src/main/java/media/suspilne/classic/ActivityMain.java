@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity
+public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ProgressDialog progress;
@@ -75,13 +75,25 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MainActivity.context = getApplicationContext();
-        MainActivity.activity = this;
+        ActivityMain.context = getApplicationContext();
+        ActivityMain.activity = this;
 
         String language = SettingsHelper.getString("Language", LacaleManager.getLanguage());
         LacaleManager.setLanguage(this, language);
 
-        setContentView(currentView == R.id.tracks_menu ? R.layout.activity_tracks : R.layout.activity_settings);
+        switch (currentView){
+            case R.id.tracks_menu:
+                setContentView(R.layout.activity_tracks);
+                break;
+
+            case R.id.composers_menu:
+                setContentView(R.layout.activity_composers);
+                break;
+
+            case R.id.settings_menu:
+                setContentView(R.layout.activity_settings);
+                break;
+        }
 
         super.onCreate(savedInstanceState);
 
@@ -117,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if(currentView == R.id.settings_menu){
-            openActivity(TracksActivity.class);
+            openActivity(ActivityTracks.class);
         }
         else {
             showQuitDialog();
@@ -163,14 +175,19 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.tracks_menu:
                 if (currentView != R.id.tracks_menu) {
-                    openActivity(TracksActivity.class);
+                    openActivity(ActivityTracks.class);
                 }
                 break;
 
+            case R.id.composers_menu:
+                if (currentView != R.id.composers_menu) {
+                    openActivity(ActivityComposers.class);
+                }
+                break;
 
             case R.id.settings_menu:
                 if (currentView != R.id.settings_menu) {
-                    openActivity(SettingsActivity.class);
+                    openActivity(ActivitySettings.class);
                 }
                 break;
 
@@ -202,7 +219,7 @@ public class MainActivity extends AppCompatActivity
 
     class DownloadAll extends AsyncTask<TrackEntry, Void, String> {
         protected void onPreExecute() {
-            progress = new ProgressDialog(MainActivity.this);
+            progress = new ProgressDialog(ActivityMain.this);
             progress.setIcon(R.mipmap.icon_classic);
             progress.setTitle(R.string.downloading);
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -222,9 +239,9 @@ public class MainActivity extends AppCompatActivity
             }
 
             if (result.isEmpty()){
-                Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_LONG).show();
+                Toast.makeText(ActivityMain.this, R.string.done, Toast.LENGTH_LONG).show();
             }else{
-                new AlertDialog.Builder(MainActivity.this)
+                new AlertDialog.Builder(ActivityMain.this)
                     .setIcon(R.mipmap.icon_classic)
                     .setTitle(R.string.an_error_occurred)
                     .setMessage(result)
@@ -281,7 +298,7 @@ public class MainActivity extends AppCompatActivity
 
         if (allAreDownloaded) return;
 
-        new AlertDialog.Builder(MainActivity.this)
+        new AlertDialog.Builder(ActivityMain.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(R.string.continueDownload)
             .setMessage(SettingsHelper.getBoolean("downloadAllTracks") ? R.string.not_all_tracks : R.string.not_all_tracks)

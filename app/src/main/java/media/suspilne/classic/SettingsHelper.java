@@ -24,11 +24,11 @@ public class SettingsHelper {
     }
 
     static String getString(String setting, String defaultValue){
-        return MainActivity.getContext().getSharedPreferences(application,0).getString(setting, defaultValue);
+        return ActivityMain.getContext().getSharedPreferences(application,0).getString(setting, defaultValue);
     }
 
     static void setString(String setting, String value){
-        SharedPreferences.Editor editor = MainActivity.getContext().getSharedPreferences(application, 0).edit();
+        SharedPreferences.Editor editor = ActivityMain.getContext().getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
         editor.apply();
     }
@@ -36,7 +36,7 @@ public class SettingsHelper {
     public static ArrayList<String> getAllSettings(String setting){
         ArrayList<String> result = new ArrayList<>();
 
-        Map<String, ?> allEntries = MainActivity.getContext().getSharedPreferences(application, 0).getAll();
+        Map<String, ?> allEntries = ActivityMain.getContext().getSharedPreferences(application, 0).getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             if (entry.getKey().contains(setting)) {
                 result.add(entry.getKey());
@@ -67,17 +67,17 @@ public class SettingsHelper {
     }
 
     public static int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = MainActivity.getContext().getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = ActivityMain.getContext().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static int pxToDp(int px) {
-        DisplayMetrics displayMetrics = MainActivity.getContext().getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = ActivityMain.getContext().getResources().getDisplayMetrics();
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static Boolean fileExists(String name){
-        return MainActivity.getContext().getFileStreamPath(name).exists();
+        return ActivityMain.getContext().getFileStreamPath(name).exists();
     }
 
     public static void saveImage(String name, Drawable drawable){
@@ -96,7 +96,7 @@ public class SettingsHelper {
     public static void saveFile(String name, byte[] bytes){
         try {
             FileOutputStream outputStream;
-            outputStream = MainActivity.getContext().openFileOutput(name, Context.MODE_PRIVATE);
+            outputStream = ActivityMain.getContext().openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(bytes);
             outputStream.flush();
             outputStream.close();
@@ -107,7 +107,7 @@ public class SettingsHelper {
 
     public static Drawable getImage(String name){
         try {
-            FileInputStream stream = MainActivity.getContext().openFileInput(name);
+            FileInputStream stream = ActivityMain.getContext().openFileInput(name);
             Bitmap bitmap = BitmapFactory.decodeStream(stream);
             stream.close();
 

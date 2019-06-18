@@ -78,7 +78,7 @@ public class Player extends Service {
                 new DefaultTrackSelector(), new DefaultLoadControl());
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
-                new DefaultDataSourceFactory(MainActivity.getContext(),"exoplayer-codelab"))
+                new DefaultDataSourceFactory(ActivityMain.getContext(),"exoplayer-codelab"))
                 .createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);

@@ -3,7 +3,7 @@ package media.suspilne.classic;
 import android.app.Application;
 import android.content.SharedPreferences;
 
-public class Classic  extends Application {
+public class Classic extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

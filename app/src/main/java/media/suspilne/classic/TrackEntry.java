@@ -34,7 +34,7 @@ public class TrackEntry{
         this.fileName = fileName(id);
     }
 
-    private int getAuthorPhoto(){
+    public int getAuthorPhoto(){
         switch (authorNameId){
             case R.string.beethoven: return R.mipmap.beethoven;
             case R.string.rachmaninov: return R.mipmap.rachmaninov;
@@ -86,15 +86,15 @@ public class TrackEntry{
     }
 
     String getAuthor(){
-        return TracksActivity.getActivity().getResources().getString(authorNameId);
+        return ActivityTracks.getActivity().getResources().getString(authorNameId);
     }
 
     String getTitle(){
-        return TracksActivity.getActivity().getResources().getString(titleId);
+        return ActivityTracks.getActivity().getResources().getString(titleId);
     }
 
     private View getTrackView(){
-        return  TracksActivity.getActivity().findViewById(R.id.list).findViewWithTag(id);
+        return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(id);
     }
 
     void resetFavorite(){
@@ -104,7 +104,7 @@ public class TrackEntry{
         ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
 
         if (SettingsHelper.getBoolean("downloadFavoriteTracks") && !favorite){
-            MainActivity.getContext().deleteFile(fileName);
+            ActivityMain.getContext().deleteFile(fileName);
         }
 
         if (SettingsHelper.getBoolean("downloadFavoriteTracks") && favorite){
@@ -128,7 +128,7 @@ public class TrackEntry{
     void setViewDetails(){
         try
         {
-            Bitmap author = ImageHelper.getBitmapFromResource(MainActivity.getContext().getResources(), getAuthorPhoto(), 100, 100);
+            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getContext().getResources(), getAuthorPhoto(), 100, 100);
             author = ImageHelper.getCircularDrawable(author);
             View trackView = getTrackView();
 
@@ -149,13 +149,13 @@ public class TrackEntry{
     }
 
     private boolean isDownloaded(int track){
-        return MainActivity.getContext().getFileStreamPath(fileName(track)).exists();
+        return ActivityMain.getContext().getFileStreamPath(fileName(track)).exists();
     }
 
     private String stream(int track){
         return isDownloaded(track)
-            ? MainActivity.getContext().getFilesDir() + "/" + fileName(track)
-            : TracksActivity.getActivity().getResources().getString(R.string.trackUrl, track);
+            ? ActivityMain.getContext().getFilesDir() + "/" + fileName(track)
+            : ActivityTracks.getActivity().getResources().getString(R.string.trackUrl, track);
     }
 
     static class DownloadTrack extends AsyncTask<TrackEntry, Void, Void> {

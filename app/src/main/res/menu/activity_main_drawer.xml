@@ -9,6 +9,11 @@
             android:icon="@drawable/ic_tracks_list"
             android:title="@string/tracks" />
         <item
+            android:visible="false"
+            android:id="@+id/composers_menu"
+            android:icon="@drawable/ic_composers"
+            android:title="@string/composers" />
+        <item
             android:id="@+id/settings_menu"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings" />

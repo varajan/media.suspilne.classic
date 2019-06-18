@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-public class SettingsActivity extends MainActivity {
+public class ActivitySettings extends ActivityMain {
     private Switch batteryOptimization;
     private Switch downloadAllTracks;
     private Switch downloadFavoriteTracks;
@@ -109,7 +109,7 @@ public class SettingsActivity extends MainActivity {
     }
 
     private CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
-        new AlertDialog.Builder(SettingsActivity.this)
+        new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? R.string.downloadAllTracksQuestion : R.string.clearAllTracksQuestion)
@@ -119,7 +119,7 @@ public class SettingsActivity extends MainActivity {
     };
 
     private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) -> {
-        new AlertDialog.Builder(SettingsActivity.this)
+        new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? R.string.downloadFavoriteTracksQuestion : R.string.clearAllTracksQuestion)
@@ -209,7 +209,7 @@ public class SettingsActivity extends MainActivity {
             String currentLanguage = LacaleManager.getLanguage();
 
             SettingsHelper.setString("Language", code);
-            LacaleManager.setLanguage(SettingsActivity.this, code);
+            LacaleManager.setLanguage(ActivitySettings.this, code);
 
             if (!code.equals(currentLanguage)){
                 Intent intent = getIntent();
