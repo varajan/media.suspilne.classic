@@ -162,7 +162,7 @@ public class ActivityMain extends AppCompatActivity
         getSupportActionBar().setTitle(title);
     }
 
-    private void openActivity(Class view){
+    protected void openActivity(Class view){
         if (player != null) player.releasePlayer();
 
         Intent intent = new Intent(this, view);

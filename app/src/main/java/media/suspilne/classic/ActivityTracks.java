@@ -3,6 +3,8 @@ package media.suspilne.classic;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,8 @@ public class ActivityTracks extends ActivityMain {
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
-    LinearLayout tracksList;
+    private LinearLayout tracksList;
+    private boolean returnToComposers = false;
 
     @Override
     public void onDestroy() {
@@ -34,6 +37,7 @@ public class ActivityTracks extends ActivityMain {
         outState.putInt("nowPlaying", player.isPlaying() ? tracks.nowPlaying : -1);
         outState.putInt("lastPlaying", tracks.lastPlaying);
         outState.putLong("position", player.isPlaying() ? player.position() : tracks.position);
+        outState.putBoolean("returnToComposers", returnToComposers);
     }
 
     @Override
@@ -45,6 +49,7 @@ public class ActivityTracks extends ActivityMain {
     private void continueTrack(Bundle bundle){
         if (bundle == null) return;
 
+        returnToComposers = bundle.getBoolean("returnToComposers");
         tracks.nowPlaying = bundle.getInt("nowPlaying");
         tracks.lastPlaying = bundle.getInt("lastPlaying");
         tracks.position = bundle.getLong("position");
@@ -79,10 +84,7 @@ public class ActivityTracks extends ActivityMain {
         searchIcon = findViewById(R.id.searchIcon);
         searchField = findViewById(R.id.searchField);
 
-        // TODO on title bar click
-//        ActionBar a = getSupportActionBar();
-//        a.
-
+        findViewById(R.id.toolbar).setOnClickListener(search);
         searchIcon.setOnClickListener(search);
 
         favoriteIcon.setOnClickListener(v -> {
@@ -95,6 +97,7 @@ public class ActivityTracks extends ActivityMain {
         searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 tracks.filter = v.getText().toString();
+                returnToComposers = false;
 
                 hideSearch();
                 filterTracks();
@@ -111,6 +114,7 @@ public class ActivityTracks extends ActivityMain {
             if (viewWidth - buttonWidth <= actionX){
                 searchField.setText("");
                 tracks.filter = "";
+                returnToComposers = false;
 
                 hideSearch();
                 filterTracks();
@@ -213,6 +217,17 @@ public class ActivityTracks extends ActivityMain {
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (returnToComposers && !drawer.isDrawerOpen(GravityCompat.START)) {
+            openActivity(ActivityComposers.class);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tracks_menu;
@@ -234,6 +249,7 @@ public class ActivityTracks extends ActivityMain {
         askToContinueDownloadTracks();
 
         if (play){
+            returnToComposers = true;
             playTrack(tracks.getNext());
             ActivityTracks.this.setQuiteTimeout();
         }
