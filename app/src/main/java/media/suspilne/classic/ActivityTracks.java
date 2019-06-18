@@ -1,6 +1,7 @@
 package media.suspilne.classic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -78,6 +79,10 @@ public class ActivityTracks extends ActivityMain {
         searchIcon = findViewById(R.id.searchIcon);
         searchField = findViewById(R.id.searchField);
 
+        // TODO on title bar click
+//        ActionBar a = getSupportActionBar();
+//        a.
+
         searchIcon.setOnClickListener(search);
 
         favoriteIcon.setOnClickListener(v -> {
@@ -144,6 +149,13 @@ public class ActivityTracks extends ActivityMain {
         }
 
         nothing.setVisibility(visibility);
+
+        TrackEntry currentTrack = tracks.getById(tracks.nowPlaying);
+        if (player.isPlaying() && !currentTrack.isVisible()) {
+            player.releasePlayer();
+
+            if (tracks.tracksPlayNext) playTrack(tracks.getNext());
+        }
     }
 
     private void showTracks(){
@@ -170,19 +182,7 @@ public class ActivityTracks extends ActivityMain {
 
             trackView.findViewById(R.id.favorite).setOnClickListener(v -> {
                 track.resetFavorite();
-
-                if (tracks.showOnlyFavorite){
-
-                    if (player.isPlaying() && tracks.tracksPlayNext && tracks.nowPlaying == track.id){
-                        playTrack(tracks.getNext());
-                    }
-
-                    if (tracks.nowPlaying == track.id){
-                        player.releasePlayer();
-                    }
-
-                    filterTracks();
-                }
+                filterTracks();
             });
         }
 
@@ -218,8 +218,13 @@ public class ActivityTracks extends ActivityMain {
         currentView = R.id.tracks_menu;
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        String filter = intent.getStringExtra("filter");
+        boolean play = intent.getBooleanExtra("play", false);
+
         tracksList = findViewById(R.id.list);
         tracks = new Tracks();
+        tracks.filter = filter == null ? "" : filter;
 
         addSearchField();
         showTracks();
@@ -227,15 +232,24 @@ public class ActivityTracks extends ActivityMain {
         setPlayerListeners();
         continueTrack(savedInstanceState);
         askToContinueDownloadTracks();
+
+        if (play){
+            playTrack(tracks.getNext());
+            ActivityTracks.this.setQuiteTimeout();
+        }
     }
 
     private void playTrack(TrackEntry track){
         player.releasePlayer();
-        player.initializePlayer(track.stream);
-        if (track.id == tracks.lastPlaying){
-            player.setPosition(tracks.position);
-        }
         setPlayBtnIcon(track);
+
+        if (track.id != -1){
+            player.initializePlayer(track.stream);
+            if (track.id == tracks.lastPlaying){
+                player.setPosition(tracks.position);
+            }
+        }
+
         tracks.nowPlaying = track.id;
         tracks.lastPlaying = track.id;
     }

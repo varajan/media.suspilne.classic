@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UA: Класика</string>
+    <string name="composer_tracks">Кількість композицій: %d</string>
     <string name="tracks">Всі композиції</string>
     <string name="settings">Налаштування</string>
     <string name="composers">Композитори</string>

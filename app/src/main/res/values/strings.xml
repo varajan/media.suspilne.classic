@@ -11,6 +11,7 @@
     <string name="nothingToShow">No tracks to show</string>
     <string name="filterHint">Title or author</string>
     <string name="tracks">All tracks</string>
+    <string name="composer_tracks">Tracks number: %d</string>
     <string name="composers">Composers</string>
     <string name="settings">Settings</string>
     <string name="exit">Quit</string>
