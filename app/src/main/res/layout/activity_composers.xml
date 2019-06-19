@@ -24,6 +24,44 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <EditText
+                    android:id="@+id/searchField"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:hint="@string/filterHint"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:drawableRight="@drawable/ic_cancel">
+                </EditText>
+
+                <RelativeLayout
+                    android:layout_weight = "1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="140dp">
+
+                    <ImageButton
+                        android:id="@+id/searchIcon"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_search"
+                        android:layout_marginEnd="70dp"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_alignParentEnd="true"/>
+
+                    <ImageButton
+                        android:id="@+id/sortIcon"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_sort_alpha"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
