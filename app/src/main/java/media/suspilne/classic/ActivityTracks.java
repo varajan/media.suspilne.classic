@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ public class ActivityTracks extends ActivityMain {
                 .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     private void addSearchField() {
         favoriteIcon = findViewById(R.id.showFavorite);
         searchIcon = findViewById(R.id.searchIcon);

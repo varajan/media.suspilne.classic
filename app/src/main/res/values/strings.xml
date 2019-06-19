@@ -8,7 +8,7 @@
     <string name="language_en">English</string>
     <string name="language">Language:</string>
     <string name="showOnlyFavorite">Show only favorite tracks</string>
-    <string name="nothingToShow">No tracks to show</string>
+    <string name="nothingToShow">Nothing to show</string>
     <string name="filterHint">Title or author</string>
     <string name="tracks">All tracks</string>
     <string name="composer_tracks">Tracks number: %d</string>

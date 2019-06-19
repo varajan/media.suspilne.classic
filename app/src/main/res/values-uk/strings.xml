@@ -21,7 +21,7 @@
     <string name="language_ua">Українська (Ukrainian)</string>
     <string name="language">Мова:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
-    <string name="nothingToShow">Немає жодного запису</string>
+    <string name="nothingToShow">Нічого не знайдено</string>
     <string name="filterHint">Назва чи автор</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>
