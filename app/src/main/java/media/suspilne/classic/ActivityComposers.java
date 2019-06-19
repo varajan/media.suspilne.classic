@@ -76,7 +76,7 @@ public class ActivityComposers extends ActivityMain {
     };
 
     private View.OnClickListener onSortClick = view -> {
-        // save to setting new value
+        SettingsHelper.setBoolean("isAscSorted", !SettingsHelper.getBoolean("isAscSorted"));
 
         showComposers();
         filterComposers();
@@ -136,8 +136,8 @@ public class ActivityComposers extends ActivityMain {
     }
 
     private void showComposers(){
-        // clear list =)
-        // set icon a-Z 9-1
+        sortIcon.setImageResource(Composers.isAscSorted() ? R.drawable.ic_sort_alpha : R.drawable.ic_soft_digits);
+        composersList.removeViews(1, composersList.getChildCount()-1);
         nothing.setVisibility(View.GONE);
 
         for (final Composer composer:new Composers().composers) {

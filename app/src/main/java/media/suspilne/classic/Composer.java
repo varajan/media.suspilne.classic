@@ -17,6 +17,10 @@ class Composer{
         this.tracksCount = getTracksCount();
     }
 
+    public String getName(){
+        return ActivityTracks.getActivity().getResources().getString(name);
+    }
+
     private View getComposerView(){
         return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(name);
     }

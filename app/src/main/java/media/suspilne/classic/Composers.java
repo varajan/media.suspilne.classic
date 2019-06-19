@@ -2,12 +2,24 @@ package media.suspilne.classic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Composers {
     public ArrayList<Composer> composers;
 
     public Composers(){
+
+        if (isAscSorted()){
+            Collections.sort(items, (c1, c2) -> c1.getName().compareTo(c2.getName()));
+        }else{
+            Collections.sort(items, (c1, c2) -> c2.tracksCount.compareTo(c1.tracksCount));
+        }
+
         composers = items;
+    }
+
+    public static boolean isAscSorted(){
+        return SettingsHelper.getBoolean("isAscSorted");
     }
 
     private ArrayList<Composer> items = new ArrayList<>(Arrays.asList(
