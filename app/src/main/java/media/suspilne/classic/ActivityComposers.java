@@ -21,6 +21,13 @@ public class ActivityComposers extends ActivityMain {
     private EditText searchField;
     private TextView nothing;
 
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        filterComposers();
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.composers_menu;
