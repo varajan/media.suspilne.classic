@@ -94,6 +94,7 @@ public class ActivityTracks extends ActivityMain {
             filterTracks();
         });
 
+        searchField.setText(tracks.filter);
         searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 tracks.filter = v.getText().toString();
