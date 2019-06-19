@@ -22,7 +22,7 @@ class Composer{
     }
 
     private View getComposerView(){
-        return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(name);
+        return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(getName());
     }
 
     public void setViewDetails(){

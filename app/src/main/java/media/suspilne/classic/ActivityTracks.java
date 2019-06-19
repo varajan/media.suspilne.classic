@@ -225,7 +225,8 @@ public class ActivityTracks extends ActivityMain {
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (returnToComposers && !drawer.isDrawerOpen(GravityCompat.START)) {
-            openActivity(ActivityComposers.class);
+            player.releasePlayer();
+            finish();
         }else {
             super.onBackPressed();
         }

@@ -39,6 +39,7 @@ public class ActivityComposers extends ActivityMain {
         searchField.setOnTouchListener(onClearIconClick);
 
         showComposers();
+        filterComposers();
     }
 
     private TextView.OnEditorActionListener onSearchKey = (view, actionId, event) -> {
@@ -117,16 +118,15 @@ public class ActivityComposers extends ActivityMain {
     private void filterComposers(){
         boolean anything = false;
         String filter = searchField.getText().toString();
-
         getSupportActionBar().setTitle(filter.equals("") ? getString(R.string.composers) : "\u2315 " + filter);
 
         for (int i = 0; i < composersList.getChildCount(); i++){
             View composer = composersList.getChildAt(i);
             Object tag = composer.getTag();
+
             if (tag == null) continue;
 
-            String name = getString(Integer.parseInt(tag.toString())).toLowerCase();
-            boolean visible = name.contains(filter.toLowerCase());
+            boolean visible = tag.toString().toLowerCase().contains(filter.toLowerCase());
 
             anything = anything || visible;
             composer.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -142,12 +142,12 @@ public class ActivityComposers extends ActivityMain {
 
         for (final Composer composer:new Composers().composers) {
             View composerView = LayoutInflater.from(this).inflate(R.layout.track_item, composersList, false);
-            composerView.setTag(composer.name);
+            composerView.setTag(composer.getName());
             composersList.addView(composerView);
             composer.setViewDetails();
 
             ImageView tracksButton = composerView.findViewById(R.id.play);
-            tracksButton.setTag(getString(composer.name));
+            tracksButton.setTag(composer.getName());
             tracksButton.setImageResource(R.mipmap.track_play);
             tracksButton.setOnClickListener(onPlayClick);
         }
