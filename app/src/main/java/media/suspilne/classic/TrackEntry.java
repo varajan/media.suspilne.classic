@@ -53,7 +53,7 @@ public class TrackEntry{
         ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
 
         if (SettingsHelper.getBoolean("downloadFavoriteTracks") && !favorite){
-            ActivityMain.getContext().deleteFile(fileName);
+            ActivityMain.getActivity().deleteFile(fileName);
         }
 
         if (SettingsHelper.getBoolean("downloadFavoriteTracks") && favorite){
@@ -81,7 +81,7 @@ public class TrackEntry{
     void setViewDetails(){
         try
         {
-            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getContext().getResources(), new Composer(authorNameId).photo, 100, 100);
+            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(authorNameId).photo, 100, 100);
             author = ImageHelper.getCircularDrawable(author);
             View trackView = getTrackView();
 
@@ -102,12 +102,12 @@ public class TrackEntry{
     }
 
     private boolean isDownloaded(int track){
-        return ActivityMain.getContext().getFileStreamPath(fileName(track)).exists();
+        return ActivityMain.getActivity().getFileStreamPath(fileName(track)).exists();
     }
 
     private String stream(int track){
         return isDownloaded(track)
-            ? ActivityMain.getContext().getFilesDir() + "/" + fileName(track)
+            ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(track)
             : ActivityTracks.getActivity().getResources().getString(R.string.trackUrl, track);
     }
 

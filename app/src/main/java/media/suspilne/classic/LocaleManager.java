@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 
 import java.util.Locale;
 
-public class LacaleManager {
+public class LocaleManager {
     public static void setLanguage(Context context, String language){
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();

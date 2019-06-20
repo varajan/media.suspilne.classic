@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -25,17 +26,17 @@ class Composer{
         return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(getName());
     }
 
-    public void setViewDetails(){
+    public void setViewDetails(Context context){
         try
         {
-            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getContext().getResources(), photo, 100, 100);
+            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), photo, 100, 100);
             author = ImageHelper.getCircularDrawable(author);
             View composerView = getComposerView();
 
             composerView.findViewById(R.id.favorite).setVisibility(View.GONE);
             ((ImageView)composerView.findViewById(R.id.photo)).setImageBitmap(author);
             ((TextView) composerView.findViewById(R.id.title)).setText(name);
-            ((TextView) composerView.findViewById(R.id.author)).setText(ActivityMain.getContext().getString(R.string.composer_tracks, tracksCount));
+            ((TextView) composerView.findViewById(R.id.author)).setText(context.getString(R.string.composer_tracks, tracksCount));
         }catch (Exception e){
             Log.e(SettingsHelper.application, e.getMessage());
             e.printStackTrace();

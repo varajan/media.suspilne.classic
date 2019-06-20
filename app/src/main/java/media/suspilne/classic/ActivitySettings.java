@@ -206,10 +206,10 @@ public class ActivitySettings extends ActivityMain {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String code = ((Country) languages.getSelectedItem()).code;
-            String currentLanguage = LacaleManager.getLanguage();
+            String currentLanguage = LocaleManager.getLanguage();
 
             SettingsHelper.setString("Language", code);
-            LacaleManager.setLanguage(ActivitySettings.this, code);
+            LocaleManager.setLanguage(ActivitySettings.this, code);
 
             if (!code.equals(currentLanguage)){
                 Intent intent = getIntent();

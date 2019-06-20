@@ -3,7 +3,6 @@ package media.suspilne.classic;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,9 +31,6 @@ public class ActivityMain extends AppCompatActivity
     protected Player player;
     protected NavigationView navigation;
     protected int currentView;
-
-    private static Context context;
-    public static Context getContext(){ return context; }
 
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
@@ -69,17 +65,16 @@ public class ActivityMain extends AppCompatActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        String language = SettingsHelper.getString("Language", LacaleManager.getLanguage());
-        LacaleManager.setLanguage(this, language);
+        String language = SettingsHelper.getString("Language", LocaleManager.getLanguage());
+        LocaleManager.setLanguage(this, language);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ActivityMain.context = getApplicationContext();
-        ActivityMain.activity = this;
+        String language = SettingsHelper.getString(this, "Language", LocaleManager.getLanguage());
+        LocaleManager.setLanguage(this, language);
 
-        String language = SettingsHelper.getString("Language", LacaleManager.getLanguage());
-        LacaleManager.setLanguage(this, language);
+        ActivityMain.activity = this;
 
         switch (currentView){
             case R.id.tracks_menu:
@@ -137,23 +132,11 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void showQuitDialog(){
-        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    exit();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    //'No' button clicked
-                    break;
-            }
-        };
-
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(R.string.confirm_exit)
-            .setPositiveButton(R.string.yes, dialogClickListener)
-            .setNegativeButton(R.string.no, dialogClickListener)
+            .setPositiveButton(R.string.yes, (dialog, which) -> exit())
+            .setNegativeButton(R.string.no, null)
             .show();
     }
 
@@ -200,9 +183,9 @@ public class ActivityMain extends AppCompatActivity
     }
 
     void dropDownloads(String extension){
-        for (String file:context.fileList()) {
+        for (String file:fileList()) {
             if (file.toLowerCase().contains(extension.toLowerCase())){
-                context.deleteFile(file);
+                deleteFile(file);
             }
         }
     }

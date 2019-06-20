@@ -21,7 +21,6 @@ public class ActivityComposers extends ActivityMain {
     private EditText searchField;
     private TextView nothing;
 
-
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -151,7 +150,7 @@ public class ActivityComposers extends ActivityMain {
             View composerView = LayoutInflater.from(this).inflate(R.layout.track_item, composersList, false);
             composerView.setTag(composer.getName());
             composersList.addView(composerView);
-            composer.setViewDetails();
+            composer.setViewDetails(this);
 
             ImageView tracksButton = composerView.findViewById(R.id.play);
             tracksButton.setTag(composer.getName());
