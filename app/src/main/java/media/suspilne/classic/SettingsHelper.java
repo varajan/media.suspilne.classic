@@ -2,6 +2,8 @@ package media.suspilne.classic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -129,5 +131,15 @@ public class SettingsHelper {
         long bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
 
         return bytesAvailable / (1024 * 1024);
+    }
+
+    public static String getVersionName(){
+        try {
+            return ActivityMain.getActivity().getPackageManager()
+                    .getPackageInfo(ActivityMain.getActivity().getPackageName(), 0)
+                    .versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "1.0.0";
+        }
     }
 }

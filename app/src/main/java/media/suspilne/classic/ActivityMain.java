@@ -2,10 +2,12 @@ package media.suspilne.classic;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -174,12 +176,35 @@ public class ActivityMain extends AppCompatActivity
                 }
                 break;
 
+            case R.id.info_menu:
+                if (currentView != R.id.info_menu) {
+                    openActivity(ActivityInfo.class);
+                }
+                break;
+
+            case R.id.rate_menu:
+                rateApp();
+                break;
+
             case R.id.exit_menu:
                 showQuitDialog();
+                break;
         }
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    private void rateApp(){
+        try {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
     }
 
     void dropDownloads(String extension){
@@ -194,9 +219,10 @@ public class ActivityMain extends AppCompatActivity
         if (!this.isNetworkAvailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
-            Tracks tracks = new Tracks();
-            tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
-            new DownloadAll().execute(tracks.getTracks().toArray(new TrackEntry[0]));
+            boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks") && !SettingsHelper.getBoolean("downloadAllTracks");
+            TrackEntry[] download = new Tracks().getTracks(onlyFavorite).toArray(new TrackEntry[0]);
+
+            new DownloadAll().execute(download);
         }
     }
 

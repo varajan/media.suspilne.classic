@@ -87,16 +87,17 @@ public class ActivitySettings extends ActivityMain {
         long free = SettingsHelper.freeSpace();
         if (free < 1500 && allTracks){
             new AlertDialog.Builder(this)
-                    .setIcon(R.mipmap.icon_classic)
-                    .setTitle(R.string.an_error_occurred)
-                    .setMessage(getString(R.string.not_enough_space, free + "MB"))
-                    .setNeutralButton(R.string.ok, null)
-                    .show();
+                .setIcon(R.mipmap.icon_classic)
+                .setTitle(R.string.an_error_occurred)
+                .setMessage(getString(R.string.not_enough_space, free + "MB"))
+                .setNeutralButton(R.string.ok, null)
+                .show();
+
             return;
         }
 
-        SettingsHelper.setBoolean(allTracks ? "downloadAllTracks" : "downloadFavoriteTracks", true);
-        SettingsHelper.setBoolean(allTracks ? "downloadFavoriteTracks" : "downloadAllTracks", false);
+        SettingsHelper.setBoolean("downloadAllTracks", allTracks);
+        SettingsHelper.setBoolean("downloadFavoriteTracks", true);
         download();
         setColorsAndState();
     }

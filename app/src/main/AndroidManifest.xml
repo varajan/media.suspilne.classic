@@ -41,6 +41,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".ActivityInfo"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <service
             android:name=".Player"
             android:exported="false"/>

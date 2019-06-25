@@ -39,13 +39,23 @@ class Tracks {
         return null;
     }
 
-    List<TrackEntry> getTracks(){
-        Collections.sort(items, (track1, track2)
+    List<TrackEntry> getTracks(boolean onlyFavorite){
+        List<TrackEntry> result = new ArrayList<>();
+
+        for (TrackEntry track:items) {
+            if (!onlyFavorite || (onlyFavorite && track.favorite)) result.add(track);
+        }
+
+        Collections.sort(result, (track1, track2)
                 -> track1.getAuthor().equals(track2.getAuthor())
                 ?  track1.getTitle().compareTo(track2.getTitle())
                 :  track1.getAuthor().compareTo(track2.getAuthor()));
 
-        return items;
+        return result;
+    }
+
+    List<TrackEntry> getTracks(){
+        return getTracks(false);
     }
 
     private List<TrackEntry> items = new ArrayList<>(Arrays.asList(

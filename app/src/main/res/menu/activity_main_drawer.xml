@@ -17,6 +17,14 @@
             android:icon="@drawable/ic_settings"
             android:title="@string/settings" />
         <item
+            android:id="@+id/info_menu"
+            android:icon="@drawable/ic_info"
+            android:title="@string/info" />
+        <item
+            android:id="@+id/rate_menu"
+            android:icon="@drawable/ic_notfavorite"
+            android:title="@string/rate" />
+        <item
             android:id="@+id/exit_menu"
             android:icon="@drawable/ic_exit"
             android:title="@string/exit" />

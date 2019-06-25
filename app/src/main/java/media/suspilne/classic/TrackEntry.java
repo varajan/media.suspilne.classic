@@ -52,13 +52,16 @@ public class TrackEntry{
 
         ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
 
-        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && !favorite){
-            ActivityMain.getActivity().deleteFile(fileName);
-        }
+        // TODO !!!
+//        throw new Exception("not implemented");
 
-        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && favorite){
-            new DownloadTrack().execute(this);
-        }
+//        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && !favorite){
+//            ActivityMain.getActivity().deleteFile(fileName);
+//        }
+//
+//        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && favorite){
+//            new DownloadTrack().execute(this);
+//        }
     }
 
     boolean matchesFilter (String filter){
