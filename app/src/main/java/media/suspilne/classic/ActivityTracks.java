@@ -249,6 +249,7 @@ public class ActivityTracks extends ActivityMain {
         setPlayerListeners();
         continueTrack(savedInstanceState);
         askToContinueDownloadTracks();
+        suggestToDownloadFavoriteTracks();
 
         if (play){
             returnToComposers = true;

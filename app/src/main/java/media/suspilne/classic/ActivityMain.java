@@ -285,7 +285,7 @@ public class ActivityMain extends AppCompatActivity
     protected void askToContinueDownloadTracks(){
         if (SettingsHelper.getBoolean("askedToContinueDownload")) return;
         if (!SettingsHelper.getBoolean("downloadAllTracks") && !SettingsHelper.getBoolean("downloadFavoriteTracks")) return;
-        if (SettingsHelper.freeSpace() < 50 || !isNetworkAvailable() ) return;
+        if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
         SettingsHelper.setBoolean("askedToContinueDownload", true);
 
@@ -306,6 +306,25 @@ public class ActivityMain extends AppCompatActivity
             .setTitle(R.string.continueDownload)
             .setMessage(R.string.not_all_tracks)
             .setPositiveButton(R.string.download, (dialog, which) -> download())
+            .setNegativeButton(R.string.no, null)
+            .show();
+    }
+
+    protected void suggestToDownloadFavoriteTracks(){
+        if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTracks")) return;
+        if (SettingsHelper.getBoolean("downloadAllTracks") || SettingsHelper.getBoolean("downloadFavoriteTracks")) return;
+        if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
+
+        int favorites = new Tracks().getTracks(true).size();
+        if (favorites < 5) return;
+
+        SettingsHelper.setBoolean("suggestToDownloadFavoriteTracks", true);
+
+        new AlertDialog.Builder(ActivityMain.this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(R.string.download)
+            .setMessage(getString(R.string.suggestToDownloadFavorite, favorites))
+            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTracks", true); download();})
             .setNegativeButton(R.string.no, null)
             .show();
     }

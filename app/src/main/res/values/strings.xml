@@ -47,6 +47,7 @@
     <string name="download">Download</string>
     <string name="clear">Delete</string>
     <string name="continueDownload">Continue downloading?</string>
+    <string name="suggestToDownloadFavorite">You have %d favorite tracks. Would you like to download them locally so they will be available off-line?</string>
     <string name="not_all_tracks">Not all tracks were downloaded.</string>
     <string name="not_downloaded_favorite_tracks">Not all favorite tracks were downloaded.</string>
     <string name="freeSpace">\nAvailable: %s of free space.</string>
