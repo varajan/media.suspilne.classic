@@ -177,6 +177,7 @@ public class ActivityTracks extends ActivityMain {
                 if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
                     tracks.position = player.position();
                     tracks.lastPlaying = track.id;
+                    tracks.nowPlaying = -1;
 
                     player.releasePlayer();
                     playBtn.setImageResource(R.mipmap.track_play);
@@ -187,10 +188,7 @@ public class ActivityTracks extends ActivityMain {
                 }
             });
 
-            trackView.findViewById(R.id.favorite).setOnClickListener(v -> {
-                track.resetFavorite();
-                filterTracks();
-            });
+            trackView.findViewById(R.id.favorite).setOnClickListener(v -> { track.resetFavorite(); filterTracks(); });
         }
 
         TrackEntry current = tracks.getById(tracks.nowPlaying);

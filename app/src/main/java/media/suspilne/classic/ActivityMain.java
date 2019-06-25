@@ -293,7 +293,7 @@ public class ActivityMain extends AppCompatActivity
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks") && !SettingsHelper.getBoolean("downloadAllTracks");
 
         for (TrackEntry track : new Tracks().getTracks()){
-            if ((!onlyFavorite || track.isFavorite) && track.isDownloaded){
+            if ((!onlyFavorite || track.isFavorite) && !track.isDownloaded){
                 allAreDownloaded = false;
                 break;
             }
