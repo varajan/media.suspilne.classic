@@ -207,14 +207,6 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    void dropDownloads(String extension){
-        for (String file:fileList()) {
-            if (file.toLowerCase().contains(extension.toLowerCase())){
-                deleteFile(file);
-            }
-        }
-    }
-
     void download(){
         if (!this.isNetworkAvailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
@@ -295,11 +287,10 @@ public class ActivityMain extends AppCompatActivity
         SettingsHelper.setBoolean("askedToContinueDownload", true);
 
         boolean allAreDownloaded = true;
-        Tracks tracks = new Tracks();
-        tracks.showOnlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
+        boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks") && !SettingsHelper.getBoolean("downloadAllTracks");
 
-        for (TrackEntry track : tracks.getTracks()){
-            if (!track.isDownloaded){
+        for (TrackEntry track : new Tracks().getTracks()){
+            if ((!onlyFavorite || track.isFavorite) && track.isDownloaded){
                 allAreDownloaded = false;
                 break;
             }
@@ -310,7 +301,7 @@ public class ActivityMain extends AppCompatActivity
         new AlertDialog.Builder(ActivityMain.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(R.string.continueDownload)
-            .setMessage(SettingsHelper.getBoolean("downloadAllTracks") ? R.string.not_all_tracks : R.string.not_all_tracks)
+            .setMessage(R.string.not_all_tracks)
             .setPositiveButton(R.string.download, (dialog, which) -> download())
             .setNegativeButton(R.string.no, null)
             .show();

@@ -23,7 +23,7 @@
         [Composers] - search composers by name, order by name or number of tracks, open all composer\'s tracks with one click.\n\n
 
         [Settings] - select what tracks to download, set quit timer, others.
-        Android tries to save your phone's battery and stops playback in few minutes.
+        Android tries to save your phone\'s battery and stops playback in few minutes.
         To avoid such situation allow application to run in background.
     </string>
     <string name="rate">Rate application</string>

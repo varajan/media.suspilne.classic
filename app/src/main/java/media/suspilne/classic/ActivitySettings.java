@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
@@ -83,9 +84,9 @@ public class ActivitySettings extends ActivityMain {
         }
     }
 
-    private void doDownload(boolean allTracks){
+    private void doDownloadAll(){
         long free = SettingsHelper.freeSpace();
-        if (free < 1500 && allTracks){
+        if (free < 1500){
             new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.icon_classic)
                 .setTitle(R.string.an_error_occurred)
@@ -96,16 +97,28 @@ public class ActivitySettings extends ActivityMain {
             return;
         }
 
-        SettingsHelper.setBoolean("downloadAllTracks", allTracks);
+        SettingsHelper.setBoolean("downloadAllTracks", true);
         SettingsHelper.setBoolean("downloadFavoriteTracks", true);
         download();
         setColorsAndState();
     }
 
-    private void doCleanup(){
-        dropDownloads(".mp3");
-        SettingsHelper.setBoolean("downloadAllTracks", false);
-        SettingsHelper.setBoolean("downloadFavoriteTracks", false);
+    private void doDownloadFavorite(){
+        SettingsHelper.setBoolean("downloadFavoriteTracks", true);
+        download();
+        setColorsAndState();
+    }
+
+    private void doCleanup(boolean includeFavorite){
+        List<TrackEntry> tracks = new Tracks().getTracks();
+
+        for (TrackEntry track : tracks) {
+            if (includeFavorite || !track.isFavorite){
+                track.deleteFile();
+            }
+        }
+
+        SettingsHelper.setBoolean(includeFavorite ? "downloadFavoriteTracks" : "downloadAllTracks", false);
         setColorsAndState();
     }
 
@@ -114,8 +127,9 @@ public class ActivitySettings extends ActivityMain {
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? R.string.downloadAllTracksQuestion : R.string.clearAllTracksQuestion)
-            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(true); else doCleanup();})
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadAll(); else doCleanup(false);})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
+            .setOnDismissListener(dialog -> setColorsAndState())
             .show();
     };
 
@@ -124,8 +138,9 @@ public class ActivitySettings extends ActivityMain {
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? R.string.downloadFavoriteTracksQuestion : R.string.clearAllTracksQuestion)
-            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownload(false); else doCleanup();})
+            .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadFavorite(); else doCleanup(true);})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
+            .setOnDismissListener(dialog -> setColorsAndState())
             .show();
     };
 

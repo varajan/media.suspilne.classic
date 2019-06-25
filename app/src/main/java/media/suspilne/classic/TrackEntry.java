@@ -17,7 +17,7 @@ public class TrackEntry{
     public int id;
     private int titleId;
     private int authorNameId;
-    boolean favorite;
+    boolean isFavorite;
     boolean isDownloaded;
     String stream;
     String fileName;
@@ -28,7 +28,7 @@ public class TrackEntry{
         this.id = id;
         this.titleId = title;
         this.authorNameId = name;
-        this.favorite = SettingsHelper.getBoolean("isFavorite_" + id);
+        this.isFavorite = SettingsHelper.getBoolean("isFavorite_" + id);
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
         this.fileName = fileName(id);
@@ -47,21 +47,21 @@ public class TrackEntry{
     }
 
     void resetFavorite(){
-        favorite = !favorite;
-        SettingsHelper.setBoolean("isFavorite_" + id, favorite);
+        boolean downloadAll = SettingsHelper.getBoolean("downloadAllTracks");
+        boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks");
 
-        ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
+        isFavorite = !isFavorite;
+        SettingsHelper.setBoolean("isFavorite_" + id, isFavorite);
 
-        // TODO !!!
-//        throw new Exception("not implemented");
+        ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
 
-//        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && !favorite){
-//            ActivityMain.getActivity().deleteFile(fileName);
-//        }
-//
-//        if (SettingsHelper.getBoolean("downloadFavoriteTracks") && favorite){
-//            new DownloadTrack().execute(this);
-//        }
+        if ( isFavorite && downloadFavorite && !downloadAll) this.download();
+        if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
+    }
+
+    void setDownloadedIcon(){
+        isDownloaded = isDownloaded(id);
+        getTrackView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
     }
 
     boolean matchesFilter (String filter){
@@ -88,10 +88,11 @@ public class TrackEntry{
             author = ImageHelper.getCircularDrawable(author);
             View trackView = getTrackView();
 
-            ((ImageView)trackView.findViewById(R.id.favorite)).setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
+            ((ImageView)trackView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
             ((TextView) trackView.findViewById(R.id.title)).setText(titleId);
             ((TextView) trackView.findViewById(R.id.author)).setText(authorNameId);
+            setDownloadedIcon();
         }catch (Exception e){
             Log.e(SettingsHelper.application, "Failed to load track #" + id);
             Log.e(SettingsHelper.application, e.getMessage());
@@ -114,11 +115,28 @@ public class TrackEntry{
             : ActivityTracks.getActivity().getResources().getString(R.string.trackUrl, track);
     }
 
+    public void download(){
+        new DownloadTrack().execute(this);
+    }
+
+    public void deleteFile(){
+        ActivityMain.getActivity().deleteFile(fileName);
+        setDownloadedIcon();
+    }
+
     static class DownloadTrack extends AsyncTask<TrackEntry, Void, Void> {
+        private TrackEntry track;
+
+        @Override
+        protected void onPostExecute(Void result) {
+            track.isDownloaded = true;
+            track.setDownloadedIcon();
+        }
+
         @Override
         protected Void doInBackground(TrackEntry... tracks) {
             try {
-                TrackEntry track = tracks[0];
+                track = tracks[0];
                 if (!track.isDownloaded)
                 {
                     InputStream is = (InputStream) new URL(track.stream).getContent();

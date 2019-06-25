@@ -147,7 +147,7 @@ public class ActivityTracks extends ActivityMain {
         int visibility = View.VISIBLE;
 
         for (final TrackEntry track:tracks.getTracks()) {
-            if (tracks.showOnlyFavorite && !track.favorite || !track.matchesFilter(tracks.filter)){
+            if (tracks.showOnlyFavorite && !track.isFavorite || !track.matchesFilter(tracks.filter)){
                 track.hide();
             }else{
                 track.show();

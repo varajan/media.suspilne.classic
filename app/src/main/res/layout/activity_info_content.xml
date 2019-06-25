@@ -19,8 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Версія: 1.0.0"
-            app:fontFamily="@font/chalkboard"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"/>
+            android:fontFamily="@font/chalkboard"
+            android:textSize="18sp"/>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
