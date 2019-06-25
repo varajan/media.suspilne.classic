@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
@@ -31,6 +30,7 @@ public class ActivitySettings extends ActivityMain {
     private TextView timeoutText;
     private Spinner languages;
     private int step = 5;
+    private long totalRequiredSpace = 1400 * 1024 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +85,15 @@ public class ActivitySettings extends ActivityMain {
     }
 
     private void doDownloadAll(){
-        long free = SettingsHelper.freeSpace();
-        if (free < 1500){
+        long available = SettingsHelper.freeSpace();
+        long usedSpace = SettingsHelper.usedSpace();
+        long required = totalRequiredSpace - usedSpace;
+
+        if (available < required){
             new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.icon_classic)
                 .setTitle(R.string.an_error_occurred)
-                .setMessage(getString(R.string.not_enough_space, free + "MB"))
+                .setMessage(getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required)))
                 .setNeutralButton(R.string.ok, null)
                 .show();
 
@@ -110,23 +113,28 @@ public class ActivitySettings extends ActivityMain {
     }
 
     private void doCleanup(boolean includeFavorite){
-        List<TrackEntry> tracks = new Tracks().getTracks();
-
-        for (TrackEntry track : tracks) {
+        for (TrackEntry track : new Tracks().getTracks()) {
             if (includeFavorite || !track.isFavorite){
                 track.deleteFile();
             }
         }
 
         SettingsHelper.setBoolean(includeFavorite ? "downloadFavoriteTracks" : "downloadAllTracks", false);
+        if (!includeFavorite && new Tracks().getTracks(true).size() == 0){
+            SettingsHelper.setBoolean("downloadFavoriteTracks", false);
+        }
+
         setColorsAndState();
     }
 
     private CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
+        long usedSpace = SettingsHelper.usedSpace();
+        String required = SettingsHelper.formattedSize(totalRequiredSpace - usedSpace);
+
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
-            .setMessage(isChecked ? R.string.downloadAllTracksQuestion : R.string.clearAllTracksQuestion)
+            .setMessage(isChecked ? getString(R.string.downloadAllTracksQuestion, required) : getString(R.string.clearAllTracksQuestion))
             .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadAll(); else doCleanup(false);})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
             .setOnDismissListener(dialog -> setColorsAndState())
@@ -181,6 +189,8 @@ public class ActivitySettings extends ActivityMain {
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
+        String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
+        String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
         String minutes = SettingsHelper.getString("timeout", "5");
 
         timeoutText.setText(getString(R.string.x_minutes, minutes));
@@ -205,12 +215,14 @@ public class ActivitySettings extends ActivityMain {
         downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
         downloadAllTracks.setChecked(isDownloadAllTracks);
         downloadAllTracks.setOnCheckedChangeListener(onDownloadAllSelect);
+        downloadAllTracks.setText(getString(R.string.downloadAllTracks) + (isDownloadAllTracks ? usedSpace : freeSpace));
 
         downloadFavoriteTracks.setEnabled(!isDownloadAllTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(null);
         downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
         downloadFavoriteTracks.setChecked(!isDownloadAllTracks && isDownloadFavoriteTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
+        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (isDownloadFavoriteTracks ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);

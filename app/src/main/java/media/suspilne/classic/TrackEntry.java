@@ -60,8 +60,12 @@ public class TrackEntry{
     }
 
     void setDownloadedIcon(){
-        isDownloaded = isDownloaded(id);
-        getTrackView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
+        View trackView = getTrackView();
+
+        if (trackView != null){
+            isDownloaded = isDownloaded(id);
+            getTrackView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
+        }
     }
 
     boolean matchesFilter (String filter){

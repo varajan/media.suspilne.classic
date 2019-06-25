@@ -38,16 +38,18 @@
     <string name="filterHint">Назва чи автор</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>
-    <string name="not_enough_space">Лишилось менше %s вільного місця.</string>
+    <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>
     <string name="download">Скачати</string>
     <string name="downloading">Завантаження композицій…</string>
     <string name="clear">Видалити</string>
     <string name="continueDownload">Продовжити завантаження?</string>
     <string name="not_all_tracks">Не всі композиції завантажено.</string>
     <string name="not_downloaded_favorite_tracks">Не всі улюблені композиції завантажено.</string>
-    <string name="downloadAllTracks">Зберігати всі композиції на пристрої</string>
-    <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої</string>
-    <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно 1.4ГБ вільного місця.</string>
+    <string name="freeSpace">\nДоступно: %s вільного місця.</string>
+    <string name="usedSpace">\nВикористано: %s.</string>
+    <string name="downloadAllTracks">Зберігати всі композиції на пристрої.</string>
+    <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої.</string>
+    <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно %s вільного місця.</string>
     <string name="downloadFavoriteTracksQuestion">Зберігати тільки улюблені композиції на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTracksQuestion">Видалити всі збережені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
 

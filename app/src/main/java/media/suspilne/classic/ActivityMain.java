@@ -262,8 +262,11 @@ public class ActivityMain extends AppCompatActivity
 
                 for (TrackEntry track:tracks) {
                     if (track.isDownloaded) continue;
-                    if (SettingsHelper.freeSpace() < 50){
-                        throw new Exception(getString(R.string.not_enough_space, "50MB"));
+                    long freeSpace = SettingsHelper.freeSpace();
+                    long required = 100 * 1024 * 1024;
+
+                    if (freeSpace < required){
+                        throw new Exception(getString(R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
                     }
 
                     InputStream is = (InputStream) new URL(track.stream).getContent();

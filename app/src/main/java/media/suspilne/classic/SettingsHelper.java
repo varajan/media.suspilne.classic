@@ -2,7 +2,6 @@ package media.suspilne.classic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,10 +10,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
-
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -126,11 +126,32 @@ public class SettingsHelper {
         return null;
     }
 
+    public static long folderSize(File directory) {
+        long length = 0;
+        for (File file : directory.listFiles()) {
+            if (file.isFile())
+                length += file.length();
+            else
+                length += folderSize(file);
+        }
+        return length;
+    }
+
+    public static String formattedSize(long size){
+        if(size <= 0) return "0";
+        final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
+        int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    public static long usedSpace() {
+        return folderSize(ActivityMain.getActivity().getFilesDir());
+    }
+
     public static long freeSpace(){
         StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-        long bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
 
-        return bytesAvailable / (1024 * 1024);
+        return stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
     }
 
     public static String getVersionName(){
