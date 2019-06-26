@@ -142,7 +142,7 @@ public class ActivityTracks extends ActivityMain {
 
     private void filterTracks(){
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
-        getSupportActionBar().setTitle(tracks.filter.equals("") ? getString(R.string.tracks) : "\u2315 " + tracks.filter);
+        activityTitle.setText(tracks.filter.equals("") ? getString(R.string.tracks) : "\u2315 " + tracks.filter);
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
 

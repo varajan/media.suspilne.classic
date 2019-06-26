@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.util.IOUtils;
 import java.io.InputStream;
@@ -32,6 +33,7 @@ public class ActivityMain extends AppCompatActivity
     private Timer quitTimer;
     protected Player player;
     protected NavigationView navigation;
+    protected TextView activityTitle;
     protected int currentView;
 
     private static Activity activity;
@@ -90,6 +92,10 @@ public class ActivityMain extends AppCompatActivity
             case R.id.settings_menu:
                 setContentView(R.layout.activity_settings);
                 break;
+
+            case R.id.info_menu:
+                setContentView(R.layout.activity_info);
+                break;
         }
 
         super.onCreate(savedInstanceState);
@@ -97,6 +103,7 @@ public class ActivityMain extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        activityTitle = findViewById(R.id.title);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -144,7 +151,7 @@ public class ActivityMain extends AppCompatActivity
 
     private void setTitle() {
         String title = navigation.getMenu().findItem(currentView).getTitle().toString();
-        getSupportActionBar().setTitle(title);
+        activityTitle.setText(title);
     }
 
     protected void openActivity(Class view){

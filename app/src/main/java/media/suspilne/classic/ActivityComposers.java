@@ -124,7 +124,7 @@ public class ActivityComposers extends ActivityMain {
     private void filterComposers(){
         boolean anything = false;
         String filter = searchField.getText().toString();
-        getSupportActionBar().setTitle(filter.equals("") ? getString(R.string.composers) : "\u2315 " + filter);
+        activityTitle.setText(filter.equals("") ? getString(R.string.composers) : "\u2315 " + filter);
 
         for (int i = 0; i < composersList.getChildCount(); i++){
             View composer = composersList.getChildAt(i);
