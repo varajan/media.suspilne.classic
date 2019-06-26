@@ -60,7 +60,8 @@
                             android:maxLines="1"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/abc_primary_text_material_dark"/>
+                            android:textColor="@color/abc_primary_text_material_dark"
+                            tools:ignore="PrivateResource" />
                     </RelativeLayout>
 
                     <RelativeLayout

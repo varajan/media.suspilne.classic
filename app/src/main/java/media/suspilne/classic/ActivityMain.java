@@ -149,7 +149,7 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    private void setTitle() {
+    protected void setTitle() {
         String title = navigation.getMenu().findItem(currentView).getTitle().toString();
         activityTitle.setText(title);
     }
