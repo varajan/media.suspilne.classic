@@ -53,8 +53,8 @@
     <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої.</string>
     <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно %s вільного місця.</string>
     <string name="downloadFavoriteTracksQuestion">Зберігати тільки улюблені композиції на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
-    <string name="clearAllTracksQuestion">Видалити всі збережені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
-
+    <string name="clearAllTracksQuestion">Видалити збережені композиції? Улюблені клмпозиції залишаться на телефоні.</string>
+    <string name="clearFavoriteTracksQuestion">Видалити збережені улюблені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
     <string name="bach">Йоганн Себастьян Бах</string>
     <string name="barber">Самюел Барбер</string>
     <string name="beethoven">Людвіг ван Бетховен</string>

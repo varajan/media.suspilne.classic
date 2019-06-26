@@ -56,8 +56,8 @@
     <string name="downloadFavoriteTracks">Download favorite tracks.</string>
     <string name="downloadAllTracksQuestion">Are you sure to download all tracks? It will take about %s of space.</string>
     <string name="downloadFavoriteTracksQuestion">Are you sure to download only favorite tracks? Internet will be used to listen other tracks.</string>
-    <string name="clearAllTracksQuestion">Are you sure to delete downloaded tracks? Internet will be used to listen the tracks.</string>
-
+    <string name="clearAllTracksQuestion">Are you sure to delete downloaded tracks? Favorite tracks will remain saved on device.</string>
+    <string name="clearFavoriteTracksQuestion">Are you sure to delete downloaded favorite tracks? Internet will be used to listen the tracks.</string>
     <string name="bach">Johann Sebastian Bach</string>
     <string name="barber">Samuel Osborne Barber</string>
     <string name="beethoven">Ludwig Van Beethoven</string>

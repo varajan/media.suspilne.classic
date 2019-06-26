@@ -145,7 +145,7 @@ public class ActivitySettings extends ActivityMain {
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
-            .setMessage(isChecked ? R.string.downloadFavoriteTracksQuestion : R.string.clearAllTracksQuestion)
+            .setMessage(isChecked ? R.string.downloadFavoriteTracksQuestion : R.string.clearFavoriteTracksQuestion)
             .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadFavorite(); else doCleanup(true);})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
             .setOnDismissListener(dialog -> setColorsAndState())
@@ -220,9 +220,9 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTracks.setEnabled(!isDownloadAllTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(null);
         downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
-        downloadFavoriteTracks.setChecked(!isDownloadAllTracks && isDownloadFavoriteTracks);
+        downloadFavoriteTracks.setChecked(isDownloadAllTracks || isDownloadFavoriteTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
-        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (isDownloadFavoriteTracks ? usedSpace : ""));
+        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
