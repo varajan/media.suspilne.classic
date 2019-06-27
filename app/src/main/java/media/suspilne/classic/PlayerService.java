@@ -1,9 +1,14 @@
 package media.suspilne.classic;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -22,6 +27,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 public class PlayerService extends Service {
     private ExoPlayer player;
+    private NotificationManager notificationManager;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,7 +40,21 @@ public class PlayerService extends Service {
 
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
 
-        return START_STICKY;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "ua.classic";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
+
+            notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Title")
+                .setContentText("Text").build();
+
+            startForeground(1, notification);
+        }
+
+        return START_NOT_STICKY;
     }
 
     private void playStream(String stream, long position) {
@@ -42,7 +62,7 @@ public class PlayerService extends Service {
         player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
-                new DefaultDataSourceFactory(ActivityMain.getActivity(),"exoplayer-codelab"))
+                new DefaultDataSourceFactory(this,"exoplayer-codelab"))
                 .createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
@@ -106,14 +126,16 @@ public class PlayerService extends Service {
             player.release();
             player = null;
         }
+
+        notificationManager.cancelAll();
     }
 
     private void sendMessage(String code){
         Intent intent = new Intent();
         intent.setAction(SettingsHelper.application);
         intent.putExtra("code", code);
-        intent.putExtra("duration", player.getDuration());
-        intent.putExtra("position", player.getCurrentPosition());
+//        intent.putExtra("duration", player.getDuration());
+//        intent.putExtra("position", player.getCurrentPosition());
         sendBroadcast(intent);
     }
 }

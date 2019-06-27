@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -223,7 +224,13 @@ public class ActivityTracks extends ActivityMain {
             stream.putExtra("stream", track.stream);
             stream.putExtra("author", track.getAuthorId());
             stream.putExtra("position", track.id == tracks.lastPlaying ? SettingsHelper.getLong("PlayerPosition") : 0);
-            startService(stream);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(stream);
+            }
+            else {
+                startService(stream);
+            }
         }
 
         tracks.nowPlaying = track.id;
@@ -257,11 +264,7 @@ public class ActivityTracks extends ActivityMain {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            long position = intent.getLongExtra("position", 0);
-            long duration = intent.getLongExtra("duration", 0);
-            String code = intent.getStringExtra("code");
-
-            switch (code){
+            switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
                     tracks.nowPlaying = -1;
                     setPlayBtnIcon(new TrackEntry());
@@ -272,10 +275,7 @@ public class ActivityTracks extends ActivityMain {
                 case "MediaIsEnded":
                     playTrack(tracks.getNext());
                     break;
-//
-//                case 1:
-//                    break;
-            }
+           }
         }
     };
 }
