@@ -9,9 +9,7 @@ class Tracks {
     int nowPlaying;
     int lastPlaying;
     String filter = "";
-
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
-    boolean tracksPlayNext = SettingsHelper.getBoolean( "tracksPlayNext");
 
     TrackEntry getNext(){
         List<TrackEntry> tracks = getTracks();

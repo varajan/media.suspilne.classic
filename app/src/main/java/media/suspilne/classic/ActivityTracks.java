@@ -1,8 +1,10 @@
 package media.suspilne.classic;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class ActivityTracks extends ActivityMain {
     private Tracks tracks;
@@ -180,26 +183,6 @@ public class ActivityTracks extends ActivityMain {
         }
     }
 
-    private void setPlayerListeners(){
-//        player.addListener((PlayerService.MediaIsEndedListener) () -> {
-//            if (tracks.tracksPlayNext){
-//                playTrack(tracks.getNext());
-//            }else{
-//                tracks.nowPlaying = -1;
-//                setPlayBtnIcon(new TrackEntry());
-//            }
-//        });
-//
-//        player.addListener((PlayerService.SourceIsNotAccessibleListener) () -> {
-//            tracks.nowPlaying = -1;
-//            setPlayBtnIcon(new TrackEntry());
-//            player.releasePlayer();
-//
-//            Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-//        });
-    }
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -226,7 +209,6 @@ public class ActivityTracks extends ActivityMain {
         addSearchField();
         showTracks();
         filterTracks();
-        setPlayerListeners();
         continueTrack(savedInstanceState);
         askToContinueDownloadTracks();
         suggestToDownloadFavoriteTracks();
@@ -257,4 +239,43 @@ public class ActivityTracks extends ActivityMain {
             btn.setTag(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SettingsHelper.application);
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        this.unregisterReceiver(receiver);
+        super.onDestroy();
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            long position = intent.getLongExtra("position", 0);
+            long duration = intent.getLongExtra("duration", 0);
+            String code = intent.getStringExtra("code");
+
+            switch (code){
+                case "SourceIsNotAccessible":
+                    tracks.nowPlaying = -1;
+                    setPlayBtnIcon(new TrackEntry());
+                    stopPlayerService();
+                    Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+                    break;
+
+                case "MediaIsEnded":
+                    playTrack(tracks.getNext());
+                    break;
+//
+//                case 1:
+//                    break;
+            }
+        }
+    };
 }

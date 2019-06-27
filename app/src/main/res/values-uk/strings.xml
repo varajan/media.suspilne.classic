@@ -24,7 +24,6 @@
     <string name="confirm_exit">Закрити UA: Класична музика?</string>
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>
-    <string name="play_one_by_one">Грати композиції однину за одною</string>
     <string name="sleep_timeout">Таймер сну (закривати програму)</string>
     <string name="title">Назва</string>
     <string name="author">Автор</string>

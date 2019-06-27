@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class ActivitySettings extends ActivityMain {
     private Switch downloadAllTracks;
     private Switch downloadFavoriteTracks;
-    private Switch tracksPlayNext;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
     private SeekBar timeout;
@@ -35,7 +34,6 @@ public class ActivitySettings extends ActivityMain {
 
         downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
         downloadFavoriteTracks = this.findViewById(R.id.downloadFavoriteTracks);
-        tracksPlayNext = this.findViewById(R.id.tracksPlayNext);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
@@ -45,7 +43,6 @@ public class ActivitySettings extends ActivityMain {
         setLanguages();
         setColorsAndState();
 
-        tracksPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("tracksPlayNext", isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
 
@@ -168,7 +165,6 @@ public class ActivitySettings extends ActivityMain {
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
-        tracksPlayNext.setChecked(isTracksPlayNext);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
@@ -187,7 +183,6 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
-        tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
     }

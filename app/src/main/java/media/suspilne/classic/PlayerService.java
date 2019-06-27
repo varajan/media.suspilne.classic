@@ -1,10 +1,10 @@
 package media.suspilne.classic;
 
 import android.app.Service;
-import java.util.ArrayList;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -23,23 +23,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 public class PlayerService extends Service {
     private ExoPlayer player;
 
-    private ArrayList<MediaIsEndedListener> mediaIsEndedListeners = new ArrayList<>();
-    private ArrayList<SourceIsNotAccessibleListener> sourceIsNotAccessibleListeners = new ArrayList<>();
-
-    public void addListener(MediaIsEndedListener listener) {
-        if (!mediaIsEndedListeners.contains(listener)){
-            mediaIsEndedListeners.add(listener);
-        }
-    }
-
-    public void addListener(SourceIsNotAccessibleListener listener) {
-        if (!sourceIsNotAccessibleListeners.contains(listener)){
-            sourceIsNotAccessibleListeners.add(listener);
-        }
-    }
-
-    public PlayerService(){}
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -47,9 +30,11 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        Log.e("SERVICE:" + SettingsHelper.application,intent == null ? "Intent NULL" : "Intent is not null");
+
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     private void playStream(String stream, long position) {
@@ -77,13 +62,11 @@ public class PlayerService extends Service {
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-                        for (SourceIsNotAccessibleListener l : sourceIsNotAccessibleListeners)
-                            l.sourceIsNotAccessible();
+                        sendMessage("SourceIsNotAccessible");
                         break;
 
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        for (MediaIsEndedListener l : mediaIsEndedListeners)
-                            l.mediaIsEnded();
+                        sendMessage("MediaIsEnded");
                         break;
 
                     default:
@@ -111,9 +94,10 @@ public class PlayerService extends Service {
         });
     }
 
-
     @Override
     public void onDestroy() {
+        Log.e("SERVICE:" + SettingsHelper.application,"SERVICE IS DESTROYED");
+
         if (player != null) {
             SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
         }
@@ -124,11 +108,12 @@ public class PlayerService extends Service {
         }
     }
 
-    interface SourceIsNotAccessibleListener {
-        void sourceIsNotAccessible();
-    }
-
-    interface MediaIsEndedListener {
-        void mediaIsEnded();
+    private void sendMessage(String code){
+        Intent intent = new Intent();
+        intent.setAction(SettingsHelper.application);
+        intent.putExtra("code", code);
+        intent.putExtra("duration", player.getDuration());
+        intent.putExtra("position", player.getCurrentPosition());
+        sendBroadcast(intent);
     }
 }

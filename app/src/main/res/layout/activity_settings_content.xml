@@ -93,20 +93,6 @@
             app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTracks"
             tools:typeface="serif" />
 
-        <Switch
-                android:id="@+id/tracksPlayNext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/chalkboard"
-                android:text="@string/play_one_by_one"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
-                tools:typeface="serif" />
-
             <Switch
                 android:id="@+id/autoQuit"
                 android:fontFamily="@font/chalkboard"
@@ -119,7 +105,7 @@
                 android:textSize="16sp"
                 tools:typeface="serif"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tracksPlayNext" />
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
 
             <SeekBar
                 android:id="@+id/timeout"
