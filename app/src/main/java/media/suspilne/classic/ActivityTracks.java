@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class ActivityTracks extends ActivityMain {
     private Tracks tracks;
@@ -27,18 +26,17 @@ public class ActivityTracks extends ActivityMain {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (player.isPlaying())
-            player.releasePlayer();
+        super.stopPlayerService();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("nowPlaying", player.isPlaying() ? tracks.nowPlaying : -1);
-        outState.putInt("lastPlaying", tracks.lastPlaying);
-        outState.putLong("position", player.isPlaying() ? player.position() : tracks.position);
-        outState.putBoolean("returnToComposers", returnToComposers);
+//        outState.putInt("nowPlaying", player.isPlaying() ? tracks.nowPlaying : -1);
+//        outState.putInt("lastPlaying", tracks.lastPlaying);
+//        outState.putLong("position", player.isPlaying() ? player.position() : tracks.position);
+//        outState.putBoolean("returnToComposers", returnToComposers);
     }
 
     @Override
@@ -158,8 +156,8 @@ public class ActivityTracks extends ActivityMain {
         nothing.setVisibility(visibility);
 
         TrackEntry currentTrack = tracks.getById(tracks.nowPlaying);
-        if (player.isPlaying() && !currentTrack.isVisible()) {
-            player.releasePlayer();
+        if (super.isServiceRunning(PlayerService.class) && !currentTrack.isVisible()) {
+            super.stopPlayerService();
 
             if (tracks.tracksPlayNext) playTrack(tracks.getNext());
         }
@@ -173,13 +171,14 @@ public class ActivityTracks extends ActivityMain {
             track.setViewDetails();
 
             final ImageView playBtn = trackView.findViewById(R.id.play);
+            playBtn.setTag(R.mipmap.track_play);
             playBtn.setOnClickListener(v -> {
-                if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.track_pause)){
-                    tracks.position = player.position();
-                    tracks.lastPlaying = track.id;
-                    tracks.nowPlaying = -1;
+                if (playBtn.getTag().equals(R.mipmap.track_pause)){
+//                    tracks.position = player.position();
+//                    tracks.lastPlaying = track.id;
+//                    tracks.nowPlaying = -1;
 
-                    player.releasePlayer();
+                    super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.track_play);
                     playBtn.setTag(R.mipmap.track_play);
                 }else{
@@ -195,27 +194,27 @@ public class ActivityTracks extends ActivityMain {
         if (current != null) {
             setPlayBtnIcon(current);
         } else {
-            player.releasePlayer();
+            super.stopPlayerService();
         }
     }
 
     private void setPlayerListeners(){
-        player.addListener((Player.MediaIsEndedListener) () -> {
-            if (tracks.tracksPlayNext){
-                playTrack(tracks.getNext());
-            }else{
-                tracks.nowPlaying = -1;
-                setPlayBtnIcon(new TrackEntry());
-            }
-        });
-
-        player.addListener((Player.SourceIsNotAccessibleListener) () -> {
-            tracks.nowPlaying = -1;
-            setPlayBtnIcon(new TrackEntry());
-            player.releasePlayer();
-
-            Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-        });
+//        player.addListener((PlayerService.MediaIsEndedListener) () -> {
+//            if (tracks.tracksPlayNext){
+//                playTrack(tracks.getNext());
+//            }else{
+//                tracks.nowPlaying = -1;
+//                setPlayBtnIcon(new TrackEntry());
+//            }
+//        });
+//
+//        player.addListener((PlayerService.SourceIsNotAccessibleListener) () -> {
+//            tracks.nowPlaying = -1;
+//            setPlayBtnIcon(new TrackEntry());
+//            player.releasePlayer();
+//
+//            Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+//        });
     }
 
 
@@ -223,7 +222,7 @@ public class ActivityTracks extends ActivityMain {
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (returnToComposers && !drawer.isDrawerOpen(GravityCompat.START)) {
-            player.releasePlayer();
+            super.stopPlayerService();
             finish();
         }else {
             super.onBackPressed();
@@ -259,14 +258,16 @@ public class ActivityTracks extends ActivityMain {
     }
 
     private void playTrack(TrackEntry track){
-        player.releasePlayer();
+        stopService(new Intent(this, PlayerService.class));
         setPlayBtnIcon(track);
 
         if (track.id != -1){
-            player.initializePlayer(track.stream);
-            if (track.id == tracks.lastPlaying){
-                player.setPosition(tracks.position);
-            }
+            Intent stream = new Intent(this, PlayerService.class);
+            stream.putExtra("stream", track.stream);
+            startService(stream);
+//            if (track.id == tracks.lastPlaying){
+//                player.setPosition(tracks.position);
+//            }
         }
 
         tracks.nowPlaying = track.id;

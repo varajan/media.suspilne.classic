@@ -1,6 +1,7 @@
 package media.suspilne.classic;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -31,7 +32,7 @@ public class ActivityMain extends AppCompatActivity
 
     ProgressDialog progress;
     private Timer quitTimer;
-    protected Player player;
+//    protected PlayerService player;
     protected NavigationView navigation;
     protected TextView activityTitle;
     protected int currentView;
@@ -116,9 +117,8 @@ public class ActivityMain extends AppCompatActivity
         setTitle();
         setQuiteTimeout();
 
-        player = new Player(this);
-        player.UpdateSslProvider();
-        startService(new Intent(this, Player.class));
+//        player = new PlayerService();
+//        startService(new Intent(activity, PlayerService.class));
     }
 
     private void exit(){
@@ -154,8 +154,23 @@ public class ActivityMain extends AppCompatActivity
         activityTitle.setText(title);
     }
 
+    protected boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void stopPlayerService(){
+        stopService(new Intent(this, PlayerService.class));
+    }
+
     protected void openActivity(Class view){
-        if (player != null) player.releasePlayer();
+        stopPlayerService();
+//        if (player != null) player.stopService(new Intent(this, PlayerService.class));
 
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

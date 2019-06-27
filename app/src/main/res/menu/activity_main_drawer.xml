@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/tracks_menu"
-            android:icon="@drawable/ic_tracks_list"
+            android:icon="@drawable/ic_queue_music"
             android:title="@string/tracks" />
         <item
             android:id="@+id/composers_menu"

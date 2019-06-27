@@ -1,13 +1,11 @@
 package media.suspilne.classic;
 
 import android.app.Service;
-import android.content.Context;
 import java.util.ArrayList;
-import javax.net.ssl.SSLContext;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -22,11 +20,10 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.gms.security.ProviderInstaller;
 
-public class Player extends Service {
+public class PlayerService extends Service {
     private ExoPlayer player;
-    private Context context;
+//    private Context context;
 
     private ArrayList<MediaIsEndedListener> mediaIsEndedListeners = new ArrayList<>();
     private ArrayList<SourceIsNotAccessibleListener> sourceIsNotAccessibleListeners = new ArrayList<>();
@@ -43,12 +40,8 @@ public class Player extends Service {
         }
     }
 
-    public Player(){
-        this.context = getBaseContext();
-    }
-
-    public Player(Context context){
-        this.context = context;
+    public void setPosition(long position){
+        player.seekTo(position);
     }
 
     public void releasePlayer() {
@@ -56,10 +49,6 @@ public class Player extends Service {
             player.release();
             player = null;
         }
-    }
-
-    public void setPosition(long position){
-        player.seekTo(position);
     }
 
     public long position(){
@@ -72,10 +61,8 @@ public class Player extends Service {
 
     public void initializePlayer(String stream) {
         Uri uri = Uri.parse(stream);
-
-        player = ExoPlayerFactory.newSimpleInstance(
-                new DefaultRenderersFactory(context),
-                new DefaultTrackSelector(), new DefaultLoadControl());
+        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
+//        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(context), new DefaultTrackSelector(), new DefaultLoadControl());
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
                 new DefaultDataSourceFactory(ActivityMain.getActivity(),"exoplayer-codelab"))
@@ -131,22 +118,89 @@ public class Player extends Service {
         });
     }
 
-    public void UpdateSslProvider(){
-        try {
-            ProviderInstaller.installIfNeeded(context.getApplicationContext());
-
-            SSLContext sslContext;
-            sslContext = SSLContext.getInstance("TLSv1.2");
-            sslContext.init(null, null, null);
-            sslContext.createSSLEngine();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public PlayerService(){
+//    public PlayerService(Context context){
+//        this.context = context;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        playStream(intent.getStringExtra("stream"));
+
+        return START_NOT_STICKY;
+    }
+
+    private void playStream(String stream) {
+        Uri uri = Uri.parse(stream);
+        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
+//        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(context), new DefaultTrackSelector(), new DefaultLoadControl());
+
+        MediaSource mediaSource = new ExtractorMediaSource.Factory(
+                new DefaultDataSourceFactory(ActivityMain.getActivity(),"exoplayer-codelab"))
+                .createMediaSource(uri);
+        player.prepare(mediaSource, true, false);
+        player.setPlayWhenReady(true);
+
+        player.addListener(new ExoPlayer.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {}
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                switch(playbackState) {
+                    case ExoPlayer.DISCONTINUITY_REASON_SEEK:
+                        for (SourceIsNotAccessibleListener l : sourceIsNotAccessibleListeners)
+                            l.sourceIsNotAccessible();
+                        break;
+
+                    case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
+                        for (MediaIsEndedListener l : mediaIsEndedListeners)
+                            l.mediaIsEnded();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {}
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) { }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {}
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
+
+            @Override
+            public void onSeekProcessed() {}
+        });
+    }
+
+
+    @Override
+    public void onDestroy() {
+        if (player != null) {
+            player.release();
+            player = null;
+        }
     }
 
     interface SourceIsNotAccessibleListener {
