@@ -8,7 +8,6 @@ import java.util.List;
 class Tracks {
     int nowPlaying;
     int lastPlaying;
-    long position;
     String filter = "";
 
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
@@ -43,7 +42,7 @@ class Tracks {
         List<TrackEntry> result = new ArrayList<>();
 
         for (TrackEntry track:items) {
-            if (!onlyFavorite || (onlyFavorite && track.isFavorite)) result.add(track);
+            if (!onlyFavorite || track.isFavorite) result.add(track);
         }
 
         Collections.sort(result, (track1, track2)

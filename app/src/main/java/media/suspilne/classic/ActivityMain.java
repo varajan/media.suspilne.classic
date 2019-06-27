@@ -32,7 +32,6 @@ public class ActivityMain extends AppCompatActivity
 
     ProgressDialog progress;
     private Timer quitTimer;
-//    protected PlayerService player;
     protected NavigationView navigation;
     protected TextView activityTitle;
     protected int currentView;
@@ -116,9 +115,6 @@ public class ActivityMain extends AppCompatActivity
 
         setTitle();
         setQuiteTimeout();
-
-//        player = new PlayerService();
-//        startService(new Intent(activity, PlayerService.class));
     }
 
     private void exit(){
@@ -169,9 +165,6 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected void openActivity(Class view){
-        stopPlayerService();
-//        if (player != null) player.stopService(new Intent(this, PlayerService.class));
-
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);

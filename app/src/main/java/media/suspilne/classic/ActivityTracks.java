@@ -24,19 +24,12 @@ public class ActivityTracks extends ActivityMain {
     private boolean returnToComposers = false;
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        super.stopPlayerService();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-//        outState.putInt("nowPlaying", player.isPlaying() ? tracks.nowPlaying : -1);
-//        outState.putInt("lastPlaying", tracks.lastPlaying);
-//        outState.putLong("position", player.isPlaying() ? player.position() : tracks.position);
-//        outState.putBoolean("returnToComposers", returnToComposers);
+        outState.putInt("nowPlaying", super.isServiceRunning(PlayerService.class) ? tracks.nowPlaying : -1);
+        outState.putInt("lastPlaying", tracks.lastPlaying);
+        outState.putBoolean("returnToComposers", returnToComposers);
     }
 
     @Override
@@ -51,11 +44,10 @@ public class ActivityTracks extends ActivityMain {
         returnToComposers = bundle.getBoolean("returnToComposers");
         tracks.nowPlaying = bundle.getInt("nowPlaying");
         tracks.lastPlaying = bundle.getInt("lastPlaying");
-        tracks.position = bundle.getLong("position");
 
         if (tracks.nowPlaying > 0){
-            playTrack(tracks.getById(tracks.nowPlaying));
-            ActivityTracks.this.setQuiteTimeout();
+            setPlayBtnIcon(tracks.getById(tracks.nowPlaying));
+            super.setQuiteTimeout();
         }
     }
 
@@ -154,13 +146,6 @@ public class ActivityTracks extends ActivityMain {
         }
 
         nothing.setVisibility(visibility);
-
-        TrackEntry currentTrack = tracks.getById(tracks.nowPlaying);
-        if (super.isServiceRunning(PlayerService.class) && !currentTrack.isVisible()) {
-            super.stopPlayerService();
-
-            if (tracks.tracksPlayNext) playTrack(tracks.getNext());
-        }
     }
 
     private void showTracks(){
@@ -174,9 +159,8 @@ public class ActivityTracks extends ActivityMain {
             playBtn.setTag(R.mipmap.track_play);
             playBtn.setOnClickListener(v -> {
                 if (playBtn.getTag().equals(R.mipmap.track_pause)){
-//                    tracks.position = player.position();
-//                    tracks.lastPlaying = track.id;
-//                    tracks.nowPlaying = -1;
+                    tracks.lastPlaying = track.id;
+                    tracks.nowPlaying = -1;
 
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.track_play);
@@ -193,8 +177,6 @@ public class ActivityTracks extends ActivityMain {
         TrackEntry current = tracks.getById(tracks.nowPlaying);
         if (current != null) {
             setPlayBtnIcon(current);
-        } else {
-            super.stopPlayerService();
         }
     }
 
@@ -253,21 +235,19 @@ public class ActivityTracks extends ActivityMain {
         if (play){
             returnToComposers = true;
             playTrack(tracks.getNext());
-            ActivityTracks.this.setQuiteTimeout();
+            super.setQuiteTimeout();
         }
     }
 
     private void playTrack(TrackEntry track){
-        stopService(new Intent(this, PlayerService.class));
+        this.stopPlayerService();
         setPlayBtnIcon(track);
 
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("stream", track.stream);
+            stream.putExtra("position", track.id == tracks.lastPlaying ? SettingsHelper.getLong("PlayerPosition") : 0);
             startService(stream);
-//            if (track.id == tracks.lastPlaying){
-//                player.setPosition(tracks.position);
-//            }
         }
 
         tracks.nowPlaying = track.id;
