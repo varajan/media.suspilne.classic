@@ -90,7 +90,7 @@
             android:text="@string/showOnlyFavorite"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
+            app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTracks"
             tools:typeface="serif" />
 
         <Switch
@@ -104,7 +104,7 @@
                 android:text="@string/play_one_by_one"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
                 tools:typeface="serif" />
 
             <Switch

@@ -48,7 +48,6 @@ public class PlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
-        SettingsHelper.setInt("nowPlayingAuthor", intent.getIntExtra("author", -1));
 
         return START_NOT_STICKY;
     }

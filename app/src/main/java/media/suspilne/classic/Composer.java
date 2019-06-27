@@ -19,11 +19,11 @@ class Composer{
     }
 
     public String getName(){
-        return ActivityTracks.getActivity().getResources().getString(name);
+        return ActivityMain.getActivity().getResources().getString(name);
     }
 
     private View getComposerView(){
-        return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(getName());
+        return ActivityMain.getActivity().findViewById(R.id.list).findViewWithTag(getName());
     }
 
     public void setViewDetails(Context context){
@@ -32,15 +32,14 @@ class Composer{
             Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), photo, 100, 100);
             author = ImageHelper.getCircularDrawable(author);
             View composerView = getComposerView();
-            int nowPlayingAuthor = SettingsHelper.getInt("nowPlayingAuthor");
 
             composerView.findViewById(R.id.favorite).setVisibility(View.GONE);
             ((ImageView)composerView.findViewById(R.id.photo)).setImageBitmap(author);
             ((TextView) composerView.findViewById(R.id.title)).setText(name);
             ((TextView) composerView.findViewById(R.id.author)).setText(context.getString(R.string.composer_tracks, tracksCount));
-            ((ImageView)composerView.findViewById(R.id.play)).setImageResource(nowPlayingAuthor == name ? R.mipmap.track_pause : R.mipmap.track_play);
         }catch (Exception e){
             Log.e(SettingsHelper.application, e.getMessage());
+            Log.e(SettingsHelper.application, e.getStackTrace().toString());
             e.printStackTrace();
         }
     }

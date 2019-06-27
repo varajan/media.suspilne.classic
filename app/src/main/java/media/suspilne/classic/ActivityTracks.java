@@ -217,7 +217,7 @@ public class ActivityTracks extends ActivityMain {
 
         Intent intent = getIntent();
         String filter = intent.getStringExtra("filter");
-        boolean play = intent.getBooleanExtra("play", false);
+        returnToComposers = intent.getBooleanExtra("returnToComposers", false);
 
         tracksList = findViewById(R.id.list);
         tracks = new Tracks();
@@ -230,12 +230,6 @@ public class ActivityTracks extends ActivityMain {
         continueTrack(savedInstanceState);
         askToContinueDownloadTracks();
         suggestToDownloadFavoriteTracks();
-
-        if (play){
-            returnToComposers = true;
-            playTrack(tracks.getNext());
-            super.setQuiteTimeout();
-        }
     }
 
     private void playTrack(TrackEntry track){
