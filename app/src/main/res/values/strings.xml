@@ -23,9 +23,7 @@
 
         [Composers] - search composers by name, order by name or number of tracks, open all composer\'s tracks with one click.\n\n
 
-        [Settings] - select what tracks to download, set quit timer, others.
-        Android tries to save your phone\'s battery and stops playback in few minutes.
-        To avoid such situation allow application to run in background.\n
+        [Settings] - select what tracks to download, set quit timer, others.\n
     </string>
     <string name="rate">Rate application</string>
     <string name="exit">Quit</string>
@@ -35,7 +33,6 @@
     <string name="confirm_exit">Quit UA: Classical Music?</string>
     <string name="x_minutes">%s minutes</string>
     <string name="no_internet">No Internet!</string>
-    <string name="confirm_allow_work_in_background">Allow application to work in background. Use it if Android stops music in few minutes.</string>
     <string name="play_one_by_one">Play tracks one by one</string>
     <string name="sleep_timeout">Quite application timeout</string>
     <string name="title">Title</string>

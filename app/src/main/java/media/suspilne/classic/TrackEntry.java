@@ -34,6 +34,10 @@ public class TrackEntry{
         this.fileName = fileName(id);
     }
 
+    int getAuthorId(){
+        return authorNameId;
+    }
+
     String getAuthor(){
         return ActivityTracks.getActivity().getResources().getString(authorNameId);
     }

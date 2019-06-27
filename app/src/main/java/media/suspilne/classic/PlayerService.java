@@ -48,6 +48,7 @@ public class PlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
+        SettingsHelper.setInt("nowPlayingAuthor", intent.getIntExtra("author", -1));
 
         return START_NOT_STICKY;
     }
@@ -118,20 +119,10 @@ public class PlayerService extends Service {
             SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
         }
 
-        long pp = player.getCurrentPosition();
-        String sp = SettingsHelper.getString("PlayerPosition");
-
         while (player != null){
             player.release();
             player = null;
         }
-//        if (player != null) {
-//            SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
-//            long pp = player.getCurrentPosition();
-//            String sp = SettingsHelper.getString("PlayerPosition");
-//            player.release();
-//            player = null;
-//        }
     }
 
     interface SourceIsNotAccessibleListener {

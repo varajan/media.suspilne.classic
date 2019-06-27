@@ -204,7 +204,6 @@ public class ActivityTracks extends ActivityMain {
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (returnToComposers && !drawer.isDrawerOpen(GravityCompat.START)) {
-            super.stopPlayerService();
             finish();
         }else {
             super.onBackPressed();
@@ -246,6 +245,7 @@ public class ActivityTracks extends ActivityMain {
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("stream", track.stream);
+            stream.putExtra("author", track.getAuthorId());
             stream.putExtra("position", track.id == tracks.lastPlaying ? SettingsHelper.getLong("PlayerPosition") : 0);
             startService(stream);
         }

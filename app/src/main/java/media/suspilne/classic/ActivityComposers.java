@@ -154,7 +154,6 @@ public class ActivityComposers extends ActivityMain {
 
             ImageView tracksButton = composerView.findViewById(R.id.play);
             tracksButton.setTag(composer.getName());
-            tracksButton.setImageResource(R.mipmap.track_play);
             tracksButton.setOnClickListener(onPlayClick);
         }
     }
