@@ -42,7 +42,7 @@ public class PlayerService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             showNotification(intent.getIntExtra("icon", 0), intent.getStringExtra("author"), intent.getStringExtra("title"));
-        }
+        } else showNotification2(intent.getIntExtra("icon", 0), intent.getStringExtra("author"), intent.getStringExtra("title"));
 
         return START_NOT_STICKY;
     }
@@ -95,6 +95,50 @@ public class PlayerService extends Service {
         // stop
 
         startForeground(2107, notificationBuilder.build());
+    }
+
+    private void showNotification2(int icon, String author, String title){
+        String CHANNEL_ID = "classic";
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        // open application
+        Intent notificationIntent = new Intent(this, ActivityTracks.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // open application
+
+        // photo
+        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
+        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
+        // photo
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_track)
+                .setContentTitle(author)
+                .setContentText(title)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(VISIBILITY_PUBLIC)
+                .setLargeIcon(authorPhoto)
+                .setSound(null)
+                .setContentIntent(openTracksIntent);
+
+        // playNext
+        Intent playNextIntent = new Intent();
+        playNextIntent.setAction(SettingsHelper.application + "next");
+        playNextIntent.putExtra("code", "PlayNext");
+        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationBuilder.addAction(R.drawable.exo_controls_next, getString(R.string.next), playNextPendingIntent);
+        // playNext
+
+        // stop
+        Intent stopIntent = new Intent();
+        stopIntent.setAction(SettingsHelper.application + "stop");
+        stopIntent.putExtra("code", "StopPlay");
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationBuilder.addAction(R.drawable.exo_controls_pause, getString(R.string.stop), stopPendingIntent);
+        // stop
+
+        notificationManager.notify(2107, notificationBuilder.build());
     }
 
     private void playStream(String stream, long position) {
