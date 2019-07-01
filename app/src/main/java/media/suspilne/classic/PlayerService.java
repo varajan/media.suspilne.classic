@@ -76,7 +76,7 @@ public class PlayerService extends Service {
                 .setVisibility(VISIBILITY_PUBLIC)
                 .setLargeIcon(authorPhoto)
                 .setSound(null)
-                .setUsesChronometer(true)
+//                .setUsesChronometer(true)
                 .setContentIntent(openTracksIntent);
 
         // playNext
