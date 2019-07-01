@@ -222,7 +222,9 @@ public class ActivityTracks extends ActivityMain {
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("stream", track.stream);
-            stream.putExtra("author", track.getAuthorId());
+            stream.putExtra("icon", track.getAuthorId());
+            stream.putExtra("author", track.getAuthor());
+            stream.putExtra("title", track.getTitle());
             stream.putExtra("position", track.id == tracks.lastPlaying ? SettingsHelper.getLong("PlayerPosition") : 0);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -273,6 +275,10 @@ public class ActivityTracks extends ActivityMain {
                     break;
 
                 case "MediaIsEnded":
+                    playTrack(tracks.getNext());
+                    break;
+
+                case "PlayNext":
                     playTrack(tracks.getNext());
                     break;
            }

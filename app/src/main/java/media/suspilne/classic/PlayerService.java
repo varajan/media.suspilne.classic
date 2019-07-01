@@ -3,14 +3,15 @@ package media.suspilne.classic;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -25,6 +26,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
+import static android.app.Notification.VISIBILITY_PUBLIC;
+
 public class PlayerService extends Service {
     private ExoPlayer player;
     private NotificationManager notificationManager;
@@ -36,25 +39,54 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        Log.e("SERVICE:" + SettingsHelper.application,intent == null ? "Intent NULL" : "Intent is not null");
-
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String CHANNEL_ID = "ua.classic";
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
-
-            notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Title")
-                .setContentText("Text").build();
-
-            startForeground(1, notification);
+            showNotification(intent.getIntExtra("icon", 0), intent.getStringExtra("author"), intent.getStringExtra("title"));
         }
 
         return START_NOT_STICKY;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void showNotification(int icon, String author, String title){
+        String CHANNEL_ID = "ua.classic";
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setSound(null, null);
+        notificationChannel.setShowBadge(false);
+
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+        Intent playNextIntent = new Intent(this, ActivityTracks.class);
+        playNextIntent.setAction("STOP");
+        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
+
+        // open application
+        Intent notificationIntent = new Intent(this, ActivityTracks.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        // open application
+
+        // photo
+        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
+        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
+        // photo
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_track)
+                .setContentTitle(author)
+                .setContentText(title)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(VISIBILITY_PUBLIC)
+                .setLargeIcon(authorPhoto)
+                .setSound(null)
+                .setUsesChronometer(true)
+                .setContentIntent(openTracksIntent)
+                .addAction(R.drawable.ic_track, "NEXT", playNextPendingIntent)
+                .build();
+
+        startForeground(2107, notification);
     }
 
     private void playStream(String stream, long position) {
@@ -116,8 +148,6 @@ public class PlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.e("SERVICE:" + SettingsHelper.application,"SERVICE IS DESTROYED");
-
         if (player != null) {
             SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
         }
