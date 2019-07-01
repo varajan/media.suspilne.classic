@@ -50,7 +50,7 @@ public class PlayerService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showNotification(int icon, String author, String title){
-        String CHANNEL_ID = "ua.classic";
+        String CHANNEL_ID = "classic";
         NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
         notificationChannel.setSound(null, null);
         notificationChannel.setShowBadge(false);
@@ -58,9 +58,12 @@ public class PlayerService extends Service {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(notificationChannel);
 
+        // playNext
         Intent playNextIntent = new Intent(this, ActivityTracks.class);
-        playNextIntent.setAction("STOP");
+        playNextIntent.setAction(SettingsHelper.application);
+        playNextIntent.putExtra("code", "PlayNext");
         PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
+        // playNext
 
         // open application
         Intent notificationIntent = new Intent(this, ActivityTracks.class);
@@ -84,6 +87,7 @@ public class PlayerService extends Service {
                 .setUsesChronometer(true)
                 .setContentIntent(openTracksIntent)
                 .addAction(R.drawable.ic_track, "NEXT", playNextPendingIntent)
+//                .addAction(new NotificationCompat.Action(R.drawable.ic_track, "NEXT", playNextPendingIntent))
                 .build();
 
         startForeground(2107, notification);
