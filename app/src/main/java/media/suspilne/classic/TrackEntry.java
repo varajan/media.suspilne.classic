@@ -72,13 +72,16 @@ public class TrackEntry{
         }
     }
 
-    boolean matchesFilter (String filter){
-        filter = filter.toLowerCase();
-        return getTitle().toLowerCase().contains(filter) || getAuthor().toLowerCase().contains(filter);
+    boolean shouldBeShown(){
+        boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
+        String filter = SettingsHelper.getString("tracksFilter");
+
+        return (!showOnlyFavorite || isFavorite) && matchesFilter(filter);
     }
 
-    public boolean isVisible(){
-        return getTrackView().getVisibility() == View.VISIBLE;
+    boolean matchesFilter(String filter){
+        filter = filter.toLowerCase();
+        return getTitle().toLowerCase().contains(filter) || getAuthor().toLowerCase().contains(filter);
     }
 
     void hide(){

@@ -96,6 +96,7 @@ public class ActivityTracks extends ActivityMain {
         searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 tracks.filter = v.getText().toString();
+                SettingsHelper.setString("tracksFilter", tracks.filter);
                 returnToComposers = false;
 
                 hideSearch();

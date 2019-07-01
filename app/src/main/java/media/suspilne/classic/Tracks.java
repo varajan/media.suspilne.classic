@@ -8,24 +8,24 @@ import java.util.List;
 class Tracks {
     int nowPlaying;
     int lastPlaying;
-    String filter = "";
+    String filter = SettingsHelper.getString("tracksFilter");
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
 
     TrackEntry getNext(){
-        List<TrackEntry> tracks = getTracks();
-        boolean skip = (nowPlaying > 0 && tracks.get(nowPlaying).isVisible());
+        List<TrackEntry> tracks = getTracks(showOnlyFavorite);
+        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown());
 
         for (int i = 0; i < tracks.size(); i++){
             TrackEntry track = tracks.get(i);
 
-            if (!track.isVisible()) { continue; }
+            if (!track.shouldBeShown()) { continue; }
             if (track.id != nowPlaying && skip) { continue; }
             if (track.id == nowPlaying) { skip = false; continue; }
 
-            return tracks.get(i);
+            return track;
         }
 
-        return new TrackEntry();
+        return tracks.size() == 0 ? new TrackEntry() : tracks.get(0);
     }
 
     TrackEntry getById(int id){
