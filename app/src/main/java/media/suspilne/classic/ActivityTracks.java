@@ -1,7 +1,6 @@
 package media.suspilne.classic;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -262,12 +261,21 @@ public class ActivityTracks extends ActivityMain {
         filter.addAction(SettingsHelper.application + "stop");
 
         registerReceiver(receiver, filter);
+        scrollToCurrentTrack();
     }
 
     @Override
     public void onDestroy() {
         this.unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+    private void scrollToCurrentTrack(){
+        TrackEntry currentTrack = tracks.getById(tracks.nowPlaying);
+
+        if (currentTrack != null){
+            currentTrack.scrollIntoView();
+        }
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {

@@ -76,7 +76,6 @@ public class PlayerService extends Service {
                 .setVisibility(VISIBILITY_PUBLIC)
                 .setLargeIcon(authorPhoto)
                 .setSound(null)
-//                .setUsesChronometer(true)
                 .setContentIntent(openTracksIntent);
 
         // playNext
@@ -166,7 +165,9 @@ public class PlayerService extends Service {
             player = null;
         }
 
-        notificationManager.cancelAll();
+        if (notificationManager != null){
+            notificationManager.cancelAll();
+        }
     }
 
     private void sendMessage(String code){
