@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,7 +10,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import static android.app.Notification.VISIBILITY_PUBLIC;
 
 public class PlayerService extends Service {
+    private String CHANNEL_ID = "classic";
     private ExoPlayer player;
     private NotificationManager notificationManager;
 
@@ -38,67 +39,30 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        String author = intent.getStringExtra("author");
+        String title = intent.getStringExtra("title");
+        int icon = intent.getIntExtra("icon", 0);
+
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
 
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            showNotification(intent.getIntExtra("icon", 0), intent.getStringExtra("author"), intent.getStringExtra("title"));
-        } else showNotification2(intent.getIntExtra("icon", 0), intent.getStringExtra("author"), intent.getStringExtra("title"));
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            startForeground(2107, getNotification(icon, author, title));
+        } else{
+            notificationManager.notify(2107, getNotification(icon, author, title));
+        }
 
         return START_NOT_STICKY;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showNotification(int icon, String author, String title){
-        String CHANNEL_ID = "classic";
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-        notificationChannel.setSound(null, null);
-        notificationChannel.setShowBadge(false);
-
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(notificationChannel);
-
-        // open application
-        Intent notificationIntent = new Intent(this, ActivityTracks.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // open application
-
-        // photo
-        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
-        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
-        // photo
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_track)
-                .setContentTitle(author)
-                .setContentText(title)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(VISIBILITY_PUBLIC)
-                .setLargeIcon(authorPhoto)
-                .setSound(null)
-                .setContentIntent(openTracksIntent);
-
-        // playNext
-        Intent playNextIntent = new Intent();
-        playNextIntent.setAction(SettingsHelper.application + "next");
-        playNextIntent.putExtra("code", "PlayNext");
-        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notificationBuilder.addAction(R.drawable.exo_controls_next, getString(R.string.next), playNextPendingIntent);
-        // playNext
-
-        // stop
-        Intent stopIntent = new Intent();
-        stopIntent.setAction(SettingsHelper.application + "stop");
-        stopIntent.putExtra("code", "StopPlay");
-        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notificationBuilder.addAction(R.drawable.exo_controls_pause, getString(R.string.stop), stopPendingIntent);
-        // stop
-
-        startForeground(2107, notificationBuilder.build());
-    }
-
-    private void showNotification2(int icon, String author, String title){
-        String CHANNEL_ID = "classic";
+    private Notification getNotification(int icon, String author, String title){
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         // open application
@@ -138,7 +102,7 @@ public class PlayerService extends Service {
         notificationBuilder.addAction(R.drawable.exo_controls_pause, getString(R.string.stop), stopPendingIntent);
         // stop
 
-        notificationManager.notify(2107, notificationBuilder.build());
+        return notificationBuilder.build();
     }
 
     private void playStream(String stream, long position) {
