@@ -43,18 +43,22 @@ public class ActivityMain extends AppCompatActivity
         if (SettingsHelper.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt("timeout");
+            timeout = timeout==0 ? 5 : timeout;
 
             quitTimer = new Timer();
-            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+            quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60 * 1000);
         } else {
             if (quitTimer != null) quitTimer.cancel();
         }
     }
 
-    class stopRadioOnTimeout extends TimerTask {
+    class stopPlaybackOnTimeout extends TimerTask {
         @Override
         public void run() {
-            exit();
+            Intent intent = new Intent();
+            intent.setAction(SettingsHelper.application);
+            intent.putExtra("code", "StopPlay");
+            sendBroadcast(intent);
         }
     }
 

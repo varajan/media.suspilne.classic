@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -281,30 +280,27 @@ public class ActivityTracks extends ActivityMain {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String code = intent.getStringExtra("code");
-            Log.e(SettingsHelper.application, code);
+        switch (intent.getStringExtra("code")){
+            case "SourceIsNotAccessible":
+                tracks.nowPlaying = -1;
+                setPlayBtnIcon(new TrackEntry());
+                stopPlayerService();
+                Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+                break;
 
-            switch (intent.getStringExtra("code")){
-                case "SourceIsNotAccessible":
-                    tracks.nowPlaying = -1;
-                    setPlayBtnIcon(new TrackEntry());
-                    stopPlayerService();
-                    Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-                    break;
+            case "MediaIsEnded":
+                playTrack(tracks.getNext());
+                break;
 
-                case "MediaIsEnded":
-                    playTrack(tracks.getNext());
-                    break;
+            case "PlayNext":
+                playTrack(tracks.getNext());
+                break;
 
-                case "PlayNext":
-                    playTrack(tracks.getNext());
-                    break;
-
-                case "StopPlay":
-                    setPlayBtnIcon(new TrackEntry());
-                    stopPlayerService();
-                    break;
-           }
+            case "StopPlay":
+                setPlayBtnIcon(new TrackEntry());
+                stopPlayerService();
+                break;
+       }
         }
     };
 }

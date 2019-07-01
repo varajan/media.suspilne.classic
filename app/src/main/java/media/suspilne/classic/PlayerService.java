@@ -25,8 +25,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
-import static android.app.Notification.VISIBILITY_PUBLIC;
-
 public class PlayerService extends Service {
     private String CHANNEL_ID = "classic";
     private ExoPlayer player;
@@ -77,14 +75,15 @@ public class PlayerService extends Service {
         // photo
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_track)
-                .setContentTitle(author)
-                .setContentText(title)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(VISIBILITY_PUBLIC)
-                .setLargeIcon(authorPhoto)
-                .setSound(null)
-                .setContentIntent(openTracksIntent);
+            .setSmallIcon(R.drawable.ic_track)
+            .setContentTitle(author)
+            .setContentText(title)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(authorPhoto)
+            .setUsesChronometer(true)
+            .setSound(null)
+            .setContentIntent(openTracksIntent);
 
         // playNext
         Intent playNextIntent = new Intent();
