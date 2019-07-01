@@ -78,8 +78,8 @@ public class ActivityComposers extends ActivityMain {
         Intent intent = new Intent(this, ActivityTracks.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("filter", view.getTag().toString());
-        intent.putExtra("play", true);
-        startActivity(intent);
+        intent.putExtra("returnToComposers", true);
+        startActivityForResult(intent, 0);
     };
 
     private View.OnClickListener onSortClick = view -> {
@@ -154,8 +154,8 @@ public class ActivityComposers extends ActivityMain {
 
             ImageView tracksButton = composerView.findViewById(R.id.play);
             tracksButton.setTag(composer.getName());
-            tracksButton.setImageResource(R.mipmap.track_play);
-            tracksButton.setOnClickListener(onPlayClick);
+            tracksButton.setVisibility(View.GONE);
+            composerView.setOnClickListener(onPlayClick);
         }
     }
 }

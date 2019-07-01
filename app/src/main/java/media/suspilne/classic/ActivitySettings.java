@@ -1,10 +1,7 @@
 package media.suspilne.classic;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
-import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -20,10 +17,8 @@ import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
-    private Switch batteryOptimization;
     private Switch downloadAllTracks;
     private Switch downloadFavoriteTracks;
-    private Switch tracksPlayNext;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
     private SeekBar timeout;
@@ -37,10 +32,8 @@ public class ActivitySettings extends ActivityMain {
         currentView = R.id.settings_menu;
         super.onCreate(savedInstanceState);
 
-        batteryOptimization = this.findViewById(R.id.batteryOptimization);
         downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
         downloadFavoriteTracks = this.findViewById(R.id.downloadFavoriteTracks);
-        tracksPlayNext = this.findViewById(R.id.tracksPlayNext);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
@@ -50,11 +43,9 @@ public class ActivitySettings extends ActivityMain {
         setLanguages();
         setColorsAndState();
 
-        tracksPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("tracksPlayNext", isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
 
-        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         languages.setOnItemSelectedListener(omLanguageSelect);
 
@@ -141,7 +132,7 @@ public class ActivitySettings extends ActivityMain {
             .show();
     };
 
-    private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) -> {
+    private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) ->
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
@@ -150,29 +141,6 @@ public class ActivitySettings extends ActivityMain {
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
             .setOnDismissListener(dialog -> setColorsAndState())
             .show();
-    };
-
-    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = (buttonView, isChecked) -> {
-        requestIgnoreBatteryOptimization();
-        setColorsAndState();
-    };
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private boolean isIgnoringBatteryOptimizations(){
-        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-
-        return pm.isIgnoringBatteryOptimizations(this.getPackageName());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestIgnoreBatteryOptimization(){
-        if (isIgnoringBatteryOptimizations()){
-            startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
-        }else{
-            Uri packageUri = Uri.parse("package:" + this.getPackageName());
-            startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, packageUri), 0);
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,19 +165,9 @@ public class ActivitySettings extends ActivityMain {
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
-        tracksPlayNext.setChecked(isTracksPlayNext);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
-
-        if (Build.VERSION.SDK_INT > 23){
-            batteryOptimization.setOnCheckedChangeListener(null);
-            batteryOptimization.setTextColor(isIgnoringBatteryOptimizations() ? primaryDark : primary);
-            batteryOptimization.setChecked(isIgnoringBatteryOptimizations());
-            batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
-        }else{
-            batteryOptimization.setVisibility(View.GONE);
-        }
 
         downloadAllTracks.setOnCheckedChangeListener(null);
         downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
@@ -225,7 +183,6 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
-        tracksPlayNext.setTextColor(isTracksPlayNext ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
     }

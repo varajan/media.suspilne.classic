@@ -10,6 +10,7 @@ public class Classic extends Application {
 
         SharedPreferences.Editor editor = getSharedPreferences(SettingsHelper.application, 0).edit();
         editor.putString("askedToContinueDownload", String.valueOf(false));
+        editor.putString("tracksFilter", "");
         editor.apply();
     }
 }

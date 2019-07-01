@@ -1,6 +1,7 @@
 package media.suspilne.classic;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -31,7 +32,6 @@ public class ActivityMain extends AppCompatActivity
 
     ProgressDialog progress;
     private Timer quitTimer;
-    protected Player player;
     protected NavigationView navigation;
     protected TextView activityTitle;
     protected int currentView;
@@ -43,18 +43,22 @@ public class ActivityMain extends AppCompatActivity
         if (SettingsHelper.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt("timeout");
+            timeout = timeout==0 ? 5 : timeout;
 
             quitTimer = new Timer();
-            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+            quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60 * 1000);
         } else {
             if (quitTimer != null) quitTimer.cancel();
         }
     }
 
-    class stopRadioOnTimeout extends TimerTask {
+    class stopPlaybackOnTimeout extends TimerTask {
         @Override
         public void run() {
-            exit();
+            Intent intent = new Intent();
+            intent.setAction(SettingsHelper.application);
+            intent.putExtra("code", "StopPlay");
+            sendBroadcast(intent);
         }
     }
 
@@ -115,10 +119,6 @@ public class ActivityMain extends AppCompatActivity
 
         setTitle();
         setQuiteTimeout();
-
-        player = new Player(this);
-        player.UpdateSslProvider();
-        startService(new Intent(this, Player.class));
     }
 
     private void exit(){
@@ -154,9 +154,21 @@ public class ActivityMain extends AppCompatActivity
         activityTitle.setText(title);
     }
 
-    protected void openActivity(Class view){
-        if (player != null) player.releasePlayer();
+    protected boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    protected void stopPlayerService(){
+        stopService(new Intent(this, PlayerService.class));
+    }
+
+    protected void openActivity(Class view){
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);

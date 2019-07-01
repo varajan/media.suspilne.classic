@@ -21,7 +21,7 @@ import java.util.Map;
 public class SettingsHelper {
     static String application = "media.suspilne.classic";
 
-    private static String getString(String setting){
+    static String getString(String setting){
         return getString(setting, "");
     }
 
@@ -69,6 +69,14 @@ public class SettingsHelper {
     }
 
     public static void setInt(String setting, int value){
+        setString(setting, String.valueOf(value));
+    }
+
+    public static long getLong(String setting){
+        return Long.parseLong(getString(setting, "0"));
+    }
+
+    public static void setLong(String setting, long value){
         setString(setting, String.valueOf(value));
     }
 

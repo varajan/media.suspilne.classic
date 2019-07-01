@@ -19,11 +19,11 @@ class Composer{
     }
 
     public String getName(){
-        return ActivityTracks.getActivity().getResources().getString(name);
+        return ActivityMain.getActivity().getResources().getString(name);
     }
 
     private View getComposerView(){
-        return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(getName());
+        return ActivityMain.getActivity().findViewById(R.id.list).findViewWithTag(getName());
     }
 
     public void setViewDetails(Context context){
@@ -39,6 +39,7 @@ class Composer{
             ((TextView) composerView.findViewById(R.id.author)).setText(context.getString(R.string.composer_tracks, tracksCount));
         }catch (Exception e){
             Log.e(SettingsHelper.application, e.getMessage());
+            Log.e(SettingsHelper.application, e.getStackTrace().toString());
             e.printStackTrace();
         }
     }

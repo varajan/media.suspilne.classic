@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.util.IOUtils;
@@ -34,6 +35,10 @@ public class TrackEntry{
         this.fileName = fileName(id);
     }
 
+    int getAuthorId(){
+        return authorNameId;
+    }
+
     String getAuthor(){
         return ActivityTracks.getActivity().getResources().getString(authorNameId);
     }
@@ -43,7 +48,7 @@ public class TrackEntry{
     }
 
     private View getTrackView(){
-        return  ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(id);
+        return ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(id);
     }
 
     void resetFavorite(){
@@ -68,13 +73,27 @@ public class TrackEntry{
         }
     }
 
-    boolean matchesFilter (String filter){
+    boolean shouldBeShown(){
+        boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
+        String filter = SettingsHelper.getString("tracksFilter");
+
+        return (!showOnlyFavorite || isFavorite) && matchesFilter(filter);
+    }
+
+    boolean matchesFilter(String filter){
         filter = filter.toLowerCase();
         return getTitle().toLowerCase().contains(filter) || getAuthor().toLowerCase().contains(filter);
     }
 
-    public boolean isVisible(){
-        return getTrackView().getVisibility() == View.VISIBLE;
+    void scrollIntoView(){
+        try
+        {
+            ScrollView scrollView = ActivityTracks.getActivity().findViewById(R.id.scrollView);
+            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 100);
+        }
+        catch (Exception e){
+            Log.e(SettingsHelper.application, e.getMessage());
+        }
     }
 
     void hide(){
