@@ -1,6 +1,7 @@
 package media.suspilne.classic;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -253,7 +255,11 @@ public class ActivityTracks extends ActivityMain {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter();
+
         filter.addAction(SettingsHelper.application);
+        filter.addAction(SettingsHelper.application + "next");
+        filter.addAction(SettingsHelper.application + "stop");
+
         registerReceiver(receiver, filter);
     }
 
@@ -266,6 +272,9 @@ public class ActivityTracks extends ActivityMain {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            String code = intent.getStringExtra("code");
+            Log.e(SettingsHelper.application, code);
+
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
                     tracks.nowPlaying = -1;
@@ -280,6 +289,11 @@ public class ActivityTracks extends ActivityMain {
 
                 case "PlayNext":
                     playTrack(tracks.getNext());
+                    break;
+
+                case "StopPlay":
+                    setPlayBtnIcon(new TrackEntry());
+                    stopPlayerService();
                     break;
            }
         }
