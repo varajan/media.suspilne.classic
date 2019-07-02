@@ -35,7 +35,7 @@
     <string name="confirm_exit">Quit UA: Classical Music?</string>
     <string name="x_minutes">%s minutes</string>
     <string name="no_internet">No Internet!</string>
-    <string name="sleep_timeout">Quite application timeout</string>
+    <string name="sleep_timeout">Stop playback timeout</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="done">Done.</string>
