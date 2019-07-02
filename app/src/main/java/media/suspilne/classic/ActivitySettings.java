@@ -150,7 +150,6 @@ public class ActivitySettings extends ActivityMain {
 
     private void setColorsAndState() {
         boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
-        boolean isTracksPlayNext = SettingsHelper.getBoolean("tracksPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         boolean isDownloadAllTracks = SettingsHelper.getBoolean("downloadAllTracks");
         boolean isDownloadFavoriteTracks = SettingsHelper.getBoolean("downloadFavoriteTracks");
@@ -180,7 +179,7 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
         downloadFavoriteTracks.setChecked(isDownloadAllTracks || isDownloadFavoriteTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
-        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks ? usedSpace : ""));
+        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks && SettingsHelper.usedSpace() > 0 ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
