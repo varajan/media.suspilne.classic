@@ -32,8 +32,6 @@ public class ActivityTracks extends ActivityMain {
         super.onSaveInstanceState(outState);
         unregisterReceiver();
 
-        outState.putInt("nowPlaying", super.isServiceRunning(PlayerService.class) ? tracks.nowPlaying : -1);
-        outState.putInt("lastPlaying", tracks.lastPlaying);
         outState.putBoolean("returnToComposers", returnToComposers);
     }
 
@@ -48,11 +46,9 @@ public class ActivityTracks extends ActivityMain {
         if (bundle == null) return;
 
         returnToComposers = bundle.getBoolean("returnToComposers");
-        tracks.nowPlaying = bundle.getInt("nowPlaying");
-        tracks.lastPlaying = bundle.getInt("lastPlaying");
 
-        if (tracks.nowPlaying > 0){
-            setPlayBtnIcon(tracks.getById(tracks.nowPlaying));
+        if (tracks.getNowPlaying() > 0){
+            setPlayBtnIcon(tracks.getById(tracks.getNowPlaying()));
             super.setQuiteTimeout();
         }
     }
@@ -166,8 +162,8 @@ public class ActivityTracks extends ActivityMain {
             playBtn.setTag(R.mipmap.track_play);
             playBtn.setOnClickListener(v -> {
                 if (playBtn.getTag().equals(R.mipmap.track_pause)){
-                    tracks.lastPlaying = track.id;
-                    tracks.nowPlaying = -1;
+                    tracks.setLastPlaying(track.id);
+                    tracks.setNowPlaying(-1);
 
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.track_play);
@@ -181,7 +177,7 @@ public class ActivityTracks extends ActivityMain {
             trackView.findViewById(R.id.favorite).setOnClickListener(v -> { track.resetFavorite(); filterTracks(); });
         }
 
-        TrackEntry current = tracks.getById(tracks.nowPlaying);
+        TrackEntry current = tracks.getById(tracks.getNowPlaying());
         if (current != null) {
             setPlayBtnIcon(current);
         }
@@ -220,7 +216,7 @@ public class ActivityTracks extends ActivityMain {
     }
 
     private void playTrack(TrackEntry track){
-        this.stopPlayerService();
+        super.stopPlayerService();
         setPlayBtnIcon(track);
 
         if (track.id != -1){
@@ -229,7 +225,7 @@ public class ActivityTracks extends ActivityMain {
             stream.putExtra("icon", track.getAuthorId());
             stream.putExtra("author", track.getAuthor());
             stream.putExtra("title", track.getTitle());
-            stream.putExtra("position", track.id == tracks.lastPlaying ? SettingsHelper.getLong("PlayerPosition") : 0);
+            stream.putExtra("position", track.id == tracks.getLastPlaying() ? SettingsHelper.getLong("PlayerPosition") : 0);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(stream);
@@ -239,8 +235,13 @@ public class ActivityTracks extends ActivityMain {
             }
         }
 
-        tracks.nowPlaying = track.id;
-        tracks.lastPlaying = track.id;
+        tracks.setNowPlaying(track.id);
+        tracks.setLastPlaying(track.id);
+    }
+
+    private void setPlayBtnIcon(){
+        TrackEntry track = tracks.getById(tracks.getNowPlaying());
+        setPlayBtnIcon(track);
     }
 
     private void setPlayBtnIcon(TrackEntry track){
@@ -248,8 +249,8 @@ public class ActivityTracks extends ActivityMain {
 
         for (TrackEntry item:tracks.getTracks()){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
-            btn.setImageResource(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
-            btn.setTag(item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+            btn.setImageResource(track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+            btn.setTag(track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
         }
     }
 
@@ -258,6 +259,7 @@ public class ActivityTracks extends ActivityMain {
         super.onStart();
         registerReceiver();
         scrollToCurrentTrack();
+        setPlayBtnIcon();
     }
 
     private void registerReceiver(){
@@ -286,7 +288,7 @@ public class ActivityTracks extends ActivityMain {
     }
 
     private void scrollToCurrentTrack(){
-        TrackEntry currentTrack = tracks.getById(tracks.nowPlaying);
+        TrackEntry currentTrack = tracks.getById(tracks.getNowPlaying());
 
         if (currentTrack != null){
             currentTrack.scrollIntoView();
@@ -298,23 +300,12 @@ public class ActivityTracks extends ActivityMain {
         public void onReceive(Context context, Intent intent) {
         switch (intent.getStringExtra("code")){
             case "SourceIsNotAccessible":
-                tracks.nowPlaying = -1;
                 setPlayBtnIcon(new TrackEntry());
-                stopPlayerService();
                 Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
                 break;
 
-            case "MediaIsEnded":
-                playTrack(tracks.getNext());
-                break;
-
-            case "PlayNext":
-                playTrack(tracks.getNext());
-                break;
-
-            case "StopPlay":
-                setPlayBtnIcon(new TrackEntry());
-                stopPlayerService();
+            case "SetPlayBtnIcon":
+                setPlayBtnIcon();
                 break;
             }
         }

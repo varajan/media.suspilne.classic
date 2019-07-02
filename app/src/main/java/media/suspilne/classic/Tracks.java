@@ -6,12 +6,27 @@ import java.util.Collections;
 import java.util.List;
 
 class Tracks {
-    int nowPlaying;
-    int lastPlaying;
     String filter = SettingsHelper.getString("tracksFilter");
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
 
+    public void setLastPlaying(int value){
+        SettingsHelper.setInt("tracks.lastPlaying", value);
+    }
+
+    public int getLastPlaying(){
+        return SettingsHelper.getInt("tracks.lastPlaying");
+    }
+
+    public void setNowPlaying(int value){
+        SettingsHelper.setInt("tracks.nowPlaying", value);
+    }
+
+    public int getNowPlaying(){
+        return SettingsHelper.getInt("tracks.nowPlaying");
+    }
+
     TrackEntry getNext(){
+        int nowPlaying = getNowPlaying();
         List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);
         boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
 

@@ -5,12 +5,16 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -36,6 +40,7 @@ public class PlayerService extends Service {
 
     @Override
     public void onCreate(){
+        registerReceiver();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -173,11 +178,19 @@ public class PlayerService extends Service {
             SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
         }
 
+        releasePlayer();
+        clearNotifications();
+        unregisterReceiver();
+    }
+
+    private void releasePlayer(){
         while (player != null){
             player.release();
             player = null;
         }
+    }
 
+    private void clearNotifications(){
         if (notificationManager != null){
             notificationManager.cancelAll();
         }
@@ -189,4 +202,75 @@ public class PlayerService extends Service {
         intent.putExtra("code", code);
         sendBroadcast(intent);
     }
+
+    private void registerReceiver(){
+        try{
+            IntentFilter filter = new IntentFilter();
+
+            filter.addAction(SettingsHelper.application);
+            filter.addAction(SettingsHelper.application + "next");
+            filter.addAction(SettingsHelper.application + "stop");
+
+            this.registerReceiver(receiver, filter);
+        }catch (Exception e){ /*nothing*/ }
+    }
+
+    private void unregisterReceiver(){
+        try{
+            this.unregisterReceiver(receiver);
+        }catch (Exception e){ /*nothing*/ }
+    }
+
+    private void playTrack(TrackEntry track){
+        if (track.id != -1){
+            playStream(track.stream, 0);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.setSound(null, null);
+                notificationChannel.setShowBadge(false);
+
+                this.startForeground(1, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+            } else{
+                notificationManager.notify(1, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+            }
+        } else {
+            releasePlayer();
+            clearNotifications();
+        }
+
+        SettingsHelper.setInt("tracks.nowPlaying", track.id);
+        SettingsHelper.setInt("tracks.lastPlaying", track.id);
+        sendMessage("SetPlayBtnIcon");
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Tracks tracks = new Tracks();
+
+            switch (intent.getStringExtra("code")){
+                case "SourceIsNotAccessible":
+                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    break;
+
+                case "MediaIsEnded":
+                    releasePlayer();
+                    playTrack(tracks.getNext());
+                    break;
+
+                case "PlayNext":
+                    releasePlayer();
+                    playTrack(tracks.getNext());
+                    break;
+
+                case "StopPlay":
+                    tracks.setNowPlaying(-1);
+                    tracks.setLastPlaying(-1);
+                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    sendMessage("SetPlayBtnIcon");
+                    break;
+            }
+        }
+    };
 }
