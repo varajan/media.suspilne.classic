@@ -12,13 +12,12 @@ class Tracks {
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
 
     TrackEntry getNext(){
-        List<TrackEntry> tracks = getTracks(showOnlyFavorite);
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown());
+        List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);
+        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
 
         for (int i = 0; i < tracks.size(); i++){
             TrackEntry track = tracks.get(i);
 
-            if (!track.shouldBeShown()) { continue; }
             if (track.id != nowPlaying && skip) { continue; }
             if (track.id == nowPlaying) { skip = false; continue; }
 
@@ -36,7 +35,19 @@ class Tracks {
         return null;
     }
 
-    List<TrackEntry> getTracks(boolean onlyFavorite){
+        List<TrackEntry> getTracks(boolean onlyFavorite, String filter){
+            List<TrackEntry> result = new ArrayList<>();
+
+            for (TrackEntry track:getTracks()) {
+                if (track.shouldBeShown(onlyFavorite, filter)){
+                    result.add(track);
+                }
+            }
+
+            return result;
+        }
+
+        List<TrackEntry> getTracks(boolean onlyFavorite){
         List<TrackEntry> result = new ArrayList<>();
 
         for (TrackEntry track:items) {

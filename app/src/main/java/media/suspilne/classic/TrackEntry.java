@@ -73,10 +73,7 @@ public class TrackEntry{
         }
     }
 
-    boolean shouldBeShown(){
-        boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
-        String filter = SettingsHelper.getString("tracksFilter");
-
+    boolean shouldBeShown(boolean showOnlyFavorite, String filter){
         return (!showOnlyFavorite || isFavorite) && matchesFilter(filter);
     }
 

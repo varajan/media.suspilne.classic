@@ -165,7 +165,9 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected void stopPlayerService(){
-        stopService(new Intent(this, PlayerService.class));
+        if (isServiceRunning(PlayerService.class)){
+            stopService(new Intent(this, PlayerService.class));
+        }
     }
 
     protected void openActivity(Class view){

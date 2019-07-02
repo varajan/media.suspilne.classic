@@ -30,6 +30,7 @@ public class ActivityTracks extends ActivityMain {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        unregisterReceiver();
 
         outState.putInt("nowPlaying", super.isServiceRunning(PlayerService.class) ? tracks.nowPlaying : -1);
         outState.putInt("lastPlaying", tracks.lastPlaying);
@@ -39,6 +40,7 @@ public class ActivityTracks extends ActivityMain {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        registerReceiver();
         continueTrack(savedInstanceState);
     }
 
@@ -94,7 +96,6 @@ public class ActivityTracks extends ActivityMain {
         searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 tracks.filter = v.getText().toString();
-                SettingsHelper.setString("tracksFilter", tracks.filter);
                 returnToComposers = false;
 
                 hideSearch();
@@ -136,6 +137,7 @@ public class ActivityTracks extends ActivityMain {
     }
 
     private void filterTracks(){
+        SettingsHelper.setString("tracksFilter", tracks.filter);
         favoriteIcon.setImageResource(tracks.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
         activityTitle.setText(tracks.filter.equals("") ? getString(R.string.tracks) : "\u2315 " + tracks.filter);
         View nothing = findViewById(R.id.nothingToShow);
@@ -214,6 +216,7 @@ public class ActivityTracks extends ActivityMain {
         continueTrack(savedInstanceState);
         askToContinueDownloadTracks();
         suggestToDownloadFavoriteTracks();
+        registerReceiver();
     }
 
     private void playTrack(TrackEntry track){
@@ -253,19 +256,32 @@ public class ActivityTracks extends ActivityMain {
     @Override
     protected void onStart() {
         super.onStart();
-        IntentFilter filter = new IntentFilter();
-
-        filter.addAction(SettingsHelper.application);
-        filter.addAction(SettingsHelper.application + "next");
-        filter.addAction(SettingsHelper.application + "stop");
-
-        registerReceiver(receiver, filter);
+        registerReceiver();
         scrollToCurrentTrack();
+    }
+
+    private void registerReceiver(){
+        try{
+            IntentFilter filter = new IntentFilter();
+
+            filter.addAction(SettingsHelper.application);
+            filter.addAction(SettingsHelper.application + "next");
+            filter.addAction(SettingsHelper.application + "stop");
+
+            this.registerReceiver(receiver, filter);
+        }catch (Exception e){
+        }
+    }
+
+    private void unregisterReceiver(){
+        try{
+            this.unregisterReceiver(receiver);
+        }catch (Exception e){ /*nothing*/ }
     }
 
     @Override
     public void onDestroy() {
-        this.unregisterReceiver(receiver);
+       unregisterReceiver();
         super.onDestroy();
     }
 
@@ -300,7 +316,7 @@ public class ActivityTracks extends ActivityMain {
                 setPlayBtnIcon(new TrackEntry());
                 stopPlayerService();
                 break;
-       }
+            }
         }
     };
 }

@@ -26,7 +26,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
 public class PlayerService extends Service {
-    private String CHANNEL_ID = "classic";
     private ExoPlayer player;
     private NotificationManager notificationManager;
 
@@ -37,7 +36,11 @@ public class PlayerService extends Service {
 
     @Override
     public void onCreate(){
-        startForeground(1, getNotification(-1, "", ""));
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForeground(1, getNotification(-1, "", ""));
+        }
     }
 
     @Override
@@ -48,16 +51,14 @@ public class PlayerService extends Service {
 
         playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
 
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setSound(null, null);
             notificationChannel.setShowBadge(false);
 
             notificationManager.createNotificationChannel(notificationChannel);
 
-            startForeground(1, getNotification(icon, author, title));
+            this.startForeground(1, getNotification(icon, author, title));
         } else{
             notificationManager.notify(1, getNotification(icon, author, title));
         }
@@ -71,7 +72,7 @@ public class PlayerService extends Service {
         // open application
         Intent notificationIntent = new Intent(this, ActivityTracks.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         // open application
 
         // photo
@@ -79,7 +80,7 @@ public class PlayerService extends Service {
         authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
         // photo
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
             .setSmallIcon(R.drawable.ic_track)
             .setContentTitle(author)
             .setContentText(title)
@@ -94,7 +95,7 @@ public class PlayerService extends Service {
         Intent playNextIntent = new Intent();
         playNextIntent.setAction(SettingsHelper.application + "next");
         playNextIntent.putExtra("code", "PlayNext");
-        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
         notificationBuilder.addAction(R.drawable.exo_controls_next, getString(R.string.next), playNextPendingIntent);
         // playNext
 
@@ -102,7 +103,7 @@ public class PlayerService extends Service {
         Intent stopIntent = new Intent();
         stopIntent.setAction(SettingsHelper.application + "stop");
         stopIntent.putExtra("code", "StopPlay");
-        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
         notificationBuilder.addAction(R.drawable.exo_controls_pause, getString(R.string.stop), stopPendingIntent);
         // stop
 
