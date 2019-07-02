@@ -15,7 +15,6 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -24,6 +23,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
 public class PlayerService extends Service {
     private String CHANNEL_ID = "classic";
@@ -33,6 +33,11 @@ public class PlayerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onCreate(){
+        startForeground(1, getNotification(-1, "", ""));
     }
 
     @Override
@@ -52,9 +57,9 @@ public class PlayerService extends Service {
 
             notificationManager.createNotificationChannel(notificationChannel);
 
-            startForeground(2107, getNotification(icon, author, title));
+            startForeground(1, getNotification(icon, author, title));
         } else{
-            notificationManager.notify(2107, getNotification(icon, author, title));
+            notificationManager.notify(1, getNotification(icon, author, title));
         }
 
         return START_NOT_STICKY;
@@ -106,7 +111,7 @@ public class PlayerService extends Service {
 
     private void playStream(String stream, long position) {
         Uri uri = Uri.parse(stream);
-        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
+        player = newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
                 new DefaultDataSourceFactory(this,"exoplayer-codelab"))
@@ -181,8 +186,6 @@ public class PlayerService extends Service {
         Intent intent = new Intent();
         intent.setAction(SettingsHelper.application);
         intent.putExtra("code", code);
-//        intent.putExtra("duration", player.getDuration());
-//        intent.putExtra("position", player.getCurrentPosition());
         sendBroadcast(intent);
     }
 }
