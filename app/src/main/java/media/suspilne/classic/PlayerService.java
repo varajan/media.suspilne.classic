@@ -74,16 +74,12 @@ public class PlayerService extends Service {
     private Notification getNotification(int icon, String author, String title){
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
-        // open application
         Intent notificationIntent = new Intent(this, ActivityTracks.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        // open application
 
-        // photo
         Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
         authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
-        // photo
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
             .setSmallIcon(R.drawable.ic_track)
@@ -96,21 +92,23 @@ public class PlayerService extends Service {
             .setSound(null)
             .setContentIntent(openTracksIntent);
 
-        // playNext
-        Intent playNextIntent = new Intent();
-        playNextIntent.setAction(SettingsHelper.application + "next");
-        playNextIntent.putExtra("code", "PlayNext");
-        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
-        notificationBuilder.addAction(R.drawable.exo_controls_next, getString(R.string.next), playNextPendingIntent);
-        // playNext
+        Intent playPrevIntent = new Intent();
+        playPrevIntent.setAction(SettingsHelper.application + "previous");
+        playPrevIntent.putExtra("code", "PlayPrevious");
+        PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
+        notificationBuilder.addAction(0, getString(R.string.prev), playPrevPendingIntent);
 
-        // stop
         Intent stopIntent = new Intent();
         stopIntent.setAction(SettingsHelper.application + "stop");
         stopIntent.putExtra("code", "StopPlay");
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(R.drawable.exo_controls_pause, getString(R.string.stop), stopPendingIntent);
-        // stop
+        notificationBuilder.addAction(0, getString(R.string.stop), stopPendingIntent);
+
+        Intent playNextIntent = new Intent();
+        playNextIntent.setAction(SettingsHelper.application + "next");
+        playNextIntent.putExtra("code", "PlayNext");
+        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
+        notificationBuilder.addAction(0, getString(R.string.next), playNextPendingIntent);
 
         return notificationBuilder.build();
     }
@@ -208,6 +206,7 @@ public class PlayerService extends Service {
             IntentFilter filter = new IntentFilter();
 
             filter.addAction(SettingsHelper.application);
+            filter.addAction(SettingsHelper.application + "previous");
             filter.addAction(SettingsHelper.application + "next");
             filter.addAction(SettingsHelper.application + "stop");
 
@@ -262,6 +261,11 @@ public class PlayerService extends Service {
                 case "PlayNext":
                     releasePlayer();
                     playTrack(tracks.getNext());
+                    break;
+
+                case "PlayPrevious":
+                    releasePlayer();
+                    playTrack(tracks.getPrevious());
                     break;
 
                 case "StopPlay":

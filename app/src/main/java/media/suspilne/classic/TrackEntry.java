@@ -86,7 +86,7 @@ public class TrackEntry{
         try
         {
             ScrollView scrollView = ActivityTracks.getActivity().findViewById(R.id.scrollView);
-            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 100);
+            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
         }
         catch (Exception e){
             Log.e(SettingsHelper.application, e.getMessage());

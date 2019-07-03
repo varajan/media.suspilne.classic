@@ -16,6 +16,7 @@
 
         [Налаштування] - виберіть скачати всі записи чи тільки улюблені, встановіть таймер сну, тощо.\n
     </string>
+    <string name="prev">Попередня</string>
     <string name="next">Наступна</string>
     <string name="stop">Зупинити</string>
     <string name="rate">Оцінити</string>

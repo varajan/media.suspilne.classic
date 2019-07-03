@@ -25,6 +25,23 @@ class Tracks {
         return SettingsHelper.getInt("tracks.nowPlaying");
     }
 
+    TrackEntry getPrevious(){
+        int nowPlaying = getNowPlaying();
+        List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);
+        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
+
+        for (int i = tracks.size() - 1; i >= 0; i--){
+            TrackEntry track = tracks.get(i);
+
+            if (track.id != nowPlaying && skip) { continue; }
+            if (track.id == nowPlaying) { skip = false; continue; }
+
+            return track;
+        }
+
+        return tracks.size() == 0 ? new TrackEntry() : tracks.get(tracks.size() - 1);
+    }
+
     TrackEntry getNext(){
         int nowPlaying = getNowPlaying();
         List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);

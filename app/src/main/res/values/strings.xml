@@ -25,6 +25,7 @@
 
         [Settings] - select what tracks to download, set quit timer, others.\n
     </string>
+    <string name="prev">Previous</string>
     <string name="next">Next</string>
     <string name="stop">Stop</string>
     <string name="rate">Rate application</string>
