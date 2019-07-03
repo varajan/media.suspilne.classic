@@ -233,10 +233,12 @@ public class ActivityTracks extends ActivityMain {
 
         tracks.setNowPlaying(track.id);
         tracks.setLastPlaying(track.id);
-        setPlayBtnIcon();
+        setPlayBtnIcon(false);
     }
 
-    private void setPlayBtnIcon(){
+    private void setPlayBtnIcon(){ setPlayBtnIcon(true); }
+
+    private void setPlayBtnIcon(boolean scrollToTrack){
         LinearLayout list = findViewById(R.id.list);
         TrackEntry track = tracks.getById(tracks.getNowPlaying());
 
@@ -246,7 +248,7 @@ public class ActivityTracks extends ActivityMain {
             btn.setTag(track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
         }
 
-        if (track != null){
+        if (scrollToTrack && track != null){
             track.scrollIntoView();
         }
     }
