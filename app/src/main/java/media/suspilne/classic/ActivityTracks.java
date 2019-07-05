@@ -221,7 +221,7 @@ public class ActivityTracks extends ActivityMain {
             stream.putExtra("icon", track.getAuthorId());
             stream.putExtra("author", track.getAuthor());
             stream.putExtra("title", track.getTitle());
-            stream.putExtra("position", track.id == tracks.getLastPlaying() ? SettingsHelper.getLong("PlayerPosition") : 0);
+            stream.putExtra("position", track.id == tracks.getLastPlaying() ? tracks.getLastPosition() : 0);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(stream);

@@ -173,7 +173,7 @@ public class PlayerService extends Service {
     @Override
     public void onDestroy() {
         if (player != null) {
-            SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
+            new Tracks().setLastPosition(player.getCurrentPosition());
         }
 
         releasePlayer();
@@ -271,6 +271,7 @@ public class PlayerService extends Service {
                 case "StopPlay":
                     tracks.setNowPlaying(-1);
                     tracks.setLastPlaying(-1);
+                    tracks.setLastPosition(player.getCurrentPosition());
                     stopService(new Intent(PlayerService.this, PlayerService.class));
                     sendMessage("SetPlayBtnIcon");
                     break;

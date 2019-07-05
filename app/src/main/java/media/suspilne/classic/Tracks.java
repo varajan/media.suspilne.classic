@@ -9,7 +9,15 @@ class Tracks {
     String filter = SettingsHelper.getString("tracksFilter");
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
 
-    public void setLastPlaying(int value){
+    public void setLastPosition(long value){
+        SettingsHelper.setLong("PlayerPosition", value);
+    }
+
+    public long getLastPosition(){
+        return SettingsHelper.getLong("PlayerPosition");
+    }
+
+    public void setLastPlaying(int value) {
         SettingsHelper.setInt("tracks.lastPlaying", value);
     }
 
