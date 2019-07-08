@@ -42,6 +42,13 @@ public class ActivityTracks extends ActivityMain {
         continueTrack(savedInstanceState);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+        setPlayBtnIcon(true);
+    }
+
     private void continueTrack(Bundle bundle){
         if (bundle == null) return;
 

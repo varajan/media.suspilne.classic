@@ -270,7 +270,6 @@ public class PlayerService extends Service {
 
                 case "StopPlay":
                     tracks.setNowPlaying(-1);
-                    tracks.setLastPlaying(-1);
                     tracks.setLastPosition(player.getCurrentPosition());
                     stopService(new Intent(PlayerService.this, PlayerService.class));
                     sendMessage("SetPlayBtnIcon");
