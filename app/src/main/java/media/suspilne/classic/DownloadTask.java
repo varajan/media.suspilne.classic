@@ -1,10 +1,12 @@
 package media.suspilne.classic;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import com.google.android.gms.common.util.IOUtils;
@@ -38,16 +40,20 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
     }
 
     private void showCompletedNotification(){
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
-            .setSmallIcon(R.drawable.ic_cloud_done)
-            .setContentTitle(ActivityMain.getActivity().getString(R.string.download_completed, count))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setLargeIcon(ImageHelper.getBitmap(image))
-            .setContentIntent(openApplication)
-            .setSound(null);
+        if (count == 0){
+            notificationManager.cancel(notificationId);
+        } else {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
+                    .setSmallIcon(R.drawable.ic_cloud_done)
+                    .setContentTitle(ActivityMain.getActivity().getString(R.string.download_completed, count))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setLargeIcon(ImageHelper.getBitmap(image))
+                    .setContentIntent(openApplication)
+                    .setSound(null);
 
-        notificationManager.notify(notificationId, notificationBuilder.build());
+            notificationManager.notify(notificationId, notificationBuilder.build());
+        }
     }
 
     private void showFailedNotification(String errorMessage){
@@ -67,6 +73,14 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
     protected void onPreExecute() {
         notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(notificationId);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
 
         Intent notificationIntent = new Intent(ActivityMain.getActivity(), ActivityMain.getActivity().getClass());
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

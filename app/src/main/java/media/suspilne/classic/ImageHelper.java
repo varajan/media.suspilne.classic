@@ -17,8 +17,13 @@ public class ImageHelper {
         return new BitmapDrawable(bitmapResized);
     }
 
-    public static Bitmap getBitmap(Drawable drawable){
-        return ((BitmapDrawable)drawable).getBitmap();
+    public static Bitmap getBitmap(Drawable drawable) {
+        final Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     public static Drawable getDrawable(Bitmap bitmap){

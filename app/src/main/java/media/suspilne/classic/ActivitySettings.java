@@ -26,6 +26,7 @@ public class ActivitySettings extends ActivityMain {
     private Spinner languages;
     private int step = 5;
     private long totalRequiredSpace = 1400 * 1024 * 1024;
+    private long hundred_kb  = 100 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +81,7 @@ public class ActivitySettings extends ActivityMain {
         long usedSpace = SettingsHelper.usedSpace();
         long required = totalRequiredSpace - usedSpace;
 
-        // todo undo
-        if (false && available < required){
+        if (available < required){
             String title = getString(R.string.an_error_occurred);
             String message = getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required));
 
@@ -171,14 +171,14 @@ public class ActivitySettings extends ActivityMain {
         downloadAllTracks.setTextColor(isDownloadAllTracks ? primaryDark : primary);
         downloadAllTracks.setChecked(isDownloadAllTracks);
         downloadAllTracks.setOnCheckedChangeListener(onDownloadAllSelect);
-        downloadAllTracks.setText(getString(R.string.downloadAllTracks) + (isDownloadAllTracks ? usedSpace : freeSpace));
+        downloadAllTracks.setText(getString(R.string.downloadAllTracks) + (isDownloadAllTracks && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
 
         downloadFavoriteTracks.setEnabled(!isDownloadAllTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(null);
         downloadFavoriteTracks.setTextColor(isDownloadFavoriteTracks ? primaryDark : primary);
         downloadFavoriteTracks.setChecked(isDownloadAllTracks || isDownloadFavoriteTracks);
         downloadFavoriteTracks.setOnCheckedChangeListener(onDownloadFavoriteSelect);
-        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks && SettingsHelper.usedSpace() > 0 ? usedSpace : ""));
+        downloadFavoriteTracks.setText(getString(R.string.downloadFavoriteTracks) + (!isDownloadAllTracks && isDownloadFavoriteTracks && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
