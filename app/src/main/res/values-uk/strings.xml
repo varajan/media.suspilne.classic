@@ -36,7 +36,7 @@
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Нічого не знайдено</string>
     <string name="filterHint">Назва чи автор</string>
-    <string name="download_completed">Завантажено %d композицій.</string>
+    <string name="download_completed">Завантажено композицій: %d</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>
     <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>

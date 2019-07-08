@@ -14,6 +14,7 @@ public class Classic extends Application {
         editor.putString("tracks.lastPlaying", String.valueOf(-1));
         editor.putString("tracks.nowPlaying", String.valueOf(-1));
         editor.putString("tracksFilter", "");
+        editor.putString("errorMessage", "");
         editor.apply();
     }
 

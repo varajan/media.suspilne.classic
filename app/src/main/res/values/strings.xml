@@ -40,7 +40,7 @@
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="done">Done.</string>
-    <string name="download_completed">%d tracks are downloaded.</string>
+    <string name="download_completed">Tracks downloaded: %d</string>
     <string name="an_error_occurred">An error occurred.</string>
     <string name="not_enough_space">Download failed. It\'s %s of free space, while required at least %s</string>
     <string name="downloading">Downloading tracks…</string>

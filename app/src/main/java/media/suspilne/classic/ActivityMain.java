@@ -115,6 +115,24 @@ public class ActivityMain extends AppCompatActivity
 
         setTitle();
         setQuiteTimeout();
+        showErrorMessage();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        showErrorMessage();
+    }
+
+    private void showErrorMessage(){
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        String errorMessage = SettingsHelper.getString("errorMessage");
+
+        if (!errorMessage.isEmpty()){
+            showAlert(getString(R.string.an_error_occurred), errorMessage);
+            notificationManager.cancel(DownloadTask.notificationId);
+            SettingsHelper.setString("errorMessage", "");
+        }
     }
 
     private void exit(){
@@ -226,7 +244,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    protected void showAlert(String title, String message){
+    public void showAlert(String title, String message){
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(title)

@@ -1,6 +1,8 @@
 package media.suspilne.classic;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
@@ -13,54 +15,62 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
     private NotificationManager notificationManager;
+    private PendingIntent openApplication;
 
     private Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.icon_classic);
-    private int notificationId = 2;
     private int count;
     private int current;
+    static int notificationId = 2;
 
     private void showProgressNotification(String text){
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
-                .setSmallIcon(R.drawable.ic_download)
-                .setContentTitle(ActivityMain.getActivity().getString(R.string.downloading))
-                .setContentText(text)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(ImageHelper.getBitmap(image))
-                .setProgress(count, current, false)
-                .setSound(null);
+            .setSmallIcon(R.drawable.ic_cloud_download)
+            .setContentTitle(ActivityMain.getActivity().getString(R.string.downloading))
+            .setContentText(text)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(ImageHelper.getBitmap(image))
+            .setProgress(count, current, false)
+            .setContentIntent(openApplication)
+            .setSound(null);
 
         notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
     private void showCompletedNotification(){
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
-                .setSmallIcon(R.drawable.ic_download)
-                .setContentTitle(ActivityMain.getActivity().getString(R.string.download_completed, count))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(ImageHelper.getBitmap(image))
-                .setSound(null);
-
-        notificationManager.notify(notificationId, notificationBuilder.build());
-    }
-
-    private void showFailedNotification(String text){
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
-            .setSmallIcon(R.drawable.ic_error)
-            .setContentTitle(ActivityMain.getActivity().getString(R.string.an_error_occurred))
-            .setContentText(text)
+            .setSmallIcon(R.drawable.ic_cloud_done)
+            .setContentTitle(ActivityMain.getActivity().getString(R.string.download_completed, count))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setLargeIcon(ImageHelper.getBitmap(image))
+            .setContentIntent(openApplication)
             .setSound(null);
 
         notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
+    private void showFailedNotification(String errorMessage){
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
+            .setSmallIcon(R.drawable.ic_error)
+            .setContentTitle(ActivityMain.getActivity().getString(R.string.an_error_occurred))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(ImageHelper.getBitmap(image))
+            .setContentIntent(openApplication)
+            .setSound(null);
+
+        notificationManager.notify(notificationId, notificationBuilder.build());
+        SettingsHelper.setString("errorMessage", errorMessage);
+    }
+
     protected void onPreExecute() {
         notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(notificationId);
+
+        Intent notificationIntent = new Intent(ActivityMain.getActivity(), ActivityMain.getActivity().getClass());
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        openApplication = PendingIntent.getActivity(ActivityMain.getActivity(), 0, notificationIntent, 0);
     }
 
     @Override
