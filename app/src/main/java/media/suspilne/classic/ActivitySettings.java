@@ -80,13 +80,12 @@ public class ActivitySettings extends ActivityMain {
         long usedSpace = SettingsHelper.usedSpace();
         long required = totalRequiredSpace - usedSpace;
 
-        if (available < required){
-            new AlertDialog.Builder(this)
-                .setIcon(R.mipmap.icon_classic)
-                .setTitle(R.string.an_error_occurred)
-                .setMessage(getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required)))
-                .setNeutralButton(R.string.ok, null)
-                .show();
+        // todo undo
+        if (false && available < required){
+            String title = getString(R.string.an_error_occurred);
+            String message = getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required));
+
+            showAlert(title, message);
 
             return;
         }

@@ -36,10 +36,11 @@
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Нічого не знайдено</string>
     <string name="filterHint">Назва чи автор</string>
+    <string name="download_completed">Завантажено %d композицій.</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>
     <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>
-    <string name="download">Завантажти</string>
+    <string name="download">Завантажити</string>
     <string name="suggestToDownloadFavorite">У вас %d улюблених композцій. Хочете завантажити їх на телефон, і вони будуть доступні офф-лайн?</string>
     <string name="downloading">Завантаження композицій…</string>
     <string name="clear">Видалити</string>

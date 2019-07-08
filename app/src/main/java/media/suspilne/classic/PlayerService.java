@@ -250,7 +250,7 @@ public class PlayerService extends Service {
 
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
-                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    stopSelf();
                     break;
 
                 case "MediaIsEnded":
@@ -271,7 +271,7 @@ public class PlayerService extends Service {
                 case "StopPlay":
                     tracks.setNowPlaying(-1);
                     tracks.setLastPosition(player.getCurrentPosition());
-                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    stopSelf();
                     sendMessage("SetPlayBtnIcon");
                     break;
             }

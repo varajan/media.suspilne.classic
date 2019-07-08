@@ -1,15 +1,13 @@
 package media.suspilne.classic;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ProgressDialog;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,17 +19,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.common.util.IOUtils;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ProgressDialog progress;
+    private NotificationManager notificationManager;
     private Timer quitTimer;
+
     protected NavigationView navigation;
     protected TextView activityTitle;
     protected int currentView;
@@ -123,7 +119,7 @@ public class ActivityMain extends AppCompatActivity
 
     private void exit(){
         moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
+        stopPlayerService();
         System.exit(1);
     }
 
@@ -154,20 +150,11 @@ public class ActivityMain extends AppCompatActivity
         activityTitle.setText(title);
     }
 
-    protected boolean isServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     protected void stopPlayerService(){
-        if (isServiceRunning(PlayerService.class)){
-            stopService(new Intent(this, PlayerService.class));
-        }
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        stopService(new Intent(this, PlayerService.class));
+        notificationManager.cancelAll();
     }
 
     protected void openActivity(Class view){
@@ -235,72 +222,17 @@ public class ActivityMain extends AppCompatActivity
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks") && !SettingsHelper.getBoolean("downloadAllTracks");
             TrackEntry[] download = new Tracks().getTracks(onlyFavorite).toArray(new TrackEntry[0]);
 
-            new DownloadAll().execute(download);
+            new DownloadTask().execute(download);
         }
     }
 
-    class DownloadAll extends AsyncTask<TrackEntry, Void, String> {
-        protected void onPreExecute() {
-            progress = new ProgressDialog(ActivityMain.this);
-            progress.setIcon(R.mipmap.icon_classic);
-            progress.setTitle(R.string.downloading);
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.setCancelable(false);
-            progress.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            progress.incrementProgressBy(1);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (progress.isShowing()) {
-                progress.dismiss();
-            }
-
-            if (result.isEmpty()){
-                Toast.makeText(ActivityMain.this, R.string.done, Toast.LENGTH_LONG).show();
-            }else{
-                new AlertDialog.Builder(ActivityMain.this)
-                    .setIcon(R.mipmap.icon_classic)
-                    .setTitle(R.string.an_error_occurred)
-                    .setMessage(result)
-                    .setNeutralButton(R.string.ok, null)
-                    .show();
-            }
-        }
-
-        @Override
-        protected String doInBackground(TrackEntry... tracks) {
-            try {
-                progress.setMax(tracks.length);
-
-                for (TrackEntry track:tracks) {
-                    if (track.isDownloaded) publishProgress();
-                }
-
-                for (TrackEntry track:tracks) {
-                    if (track.isDownloaded) continue;
-                    long freeSpace = SettingsHelper.freeSpace();
-                    long required = 100 * 1024 * 1024;
-
-                    if (freeSpace < required){
-                        throw new Exception(getString(R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
-                    }
-
-                    InputStream is = (InputStream) new URL(track.stream).getContent();
-                    SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
-                    publishProgress();
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                return e.getMessage();
-            }
-
-            return "";
-        }
+    protected void showAlert(String title, String message){
+        new AlertDialog.Builder(this)
+            .setIcon(R.mipmap.icon_classic)
+            .setTitle(title)
+            .setMessage(message)
+            .setNeutralButton(R.string.ok, null)
+            .show();
     }
 
     protected void askToContinueDownloadTracks(){
