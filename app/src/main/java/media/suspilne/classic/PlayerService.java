@@ -72,6 +72,7 @@ public class PlayerService extends Service {
     }
 
     private Notification getNotification(int icon, String author, String title){
+        LocaleManager.setLanguage(this, SettingsHelper.getString("Language"));
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         Intent notificationIntent = new Intent(this, ActivityTracks.class);
@@ -90,25 +91,26 @@ public class PlayerService extends Service {
             .setLargeIcon(authorPhoto)
             .setUsesChronometer(true)
             .setSound(null)
+            .setChannelId(SettingsHelper.application)
             .setContentIntent(openTracksIntent);
 
         Intent playPrevIntent = new Intent();
         playPrevIntent.setAction(SettingsHelper.application + "previous");
         playPrevIntent.putExtra("code", "PlayPrevious");
         PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
-        notificationBuilder.addAction(0, getString(R.string.prev), playPrevPendingIntent);
+        notificationBuilder.addAction(0, getResources().getString(R.string.prev), playPrevPendingIntent);
 
         Intent stopIntent = new Intent();
         stopIntent.setAction(SettingsHelper.application + "stop");
         stopIntent.putExtra("code", "StopPlay");
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(0, getString(R.string.stop), stopPendingIntent);
+        notificationBuilder.addAction(0, getResources().getString(R.string.stop), stopPendingIntent);
 
         Intent playNextIntent = new Intent();
         playNextIntent.setAction(SettingsHelper.application + "next");
         playNextIntent.putExtra("code", "PlayNext");
         PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
-        notificationBuilder.addAction(0, getString(R.string.next), playNextPendingIntent);
+        notificationBuilder.addAction(0, getResources().getString(R.string.next), playNextPendingIntent);
 
         return notificationBuilder.build();
     }
