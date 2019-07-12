@@ -172,7 +172,11 @@ public class ActivityMain extends AppCompatActivity
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         stopService(new Intent(this, PlayerService.class));
-        notificationManager.cancelAll();
+        try {
+            notificationManager.cancelAll();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     protected void openActivity(Class view){

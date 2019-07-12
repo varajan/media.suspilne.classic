@@ -94,7 +94,7 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        notificationManager.cancel(2);
+        notificationManager.cancel(notificationId);
 
         if (result.isEmpty()){
             showCompletedNotification();
