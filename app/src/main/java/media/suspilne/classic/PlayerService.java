@@ -15,23 +15,25 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
 public class PlayerService extends Service {
     private ExoPlayer player;
     private NotificationManager notificationManager;
+    private PlayerNotificationManager playerNotificationManager;
+
+    public static int Channel = 11;
+    public static int ExoChannel = 21;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -44,29 +46,19 @@ public class PlayerService extends Service {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(1, getNotification(-1, "", ""));
+            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            this.startForeground(PlayerService.Channel, getNotification(-1, "", ""));
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        String author = intent.getStringExtra("author");
-        String title = intent.getStringExtra("title");
-        int icon = intent.getIntExtra("icon", 0);
-
-        playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
-
-            notificationManager.createNotificationChannel(notificationChannel);
-
-            this.startForeground(1, getNotification(icon, author, title));
-        } else{
-            notificationManager.notify(1, getNotification(icon, author, title));
-        }
+        TrackEntry track = new Tracks().getById(intent.getIntExtra("track.id", -1));
+        playTrack(track);
 
         return START_NOT_STICKY;
     }
@@ -117,7 +109,7 @@ public class PlayerService extends Service {
 
     private void playStream(String stream, long position) {
         Uri uri = Uri.parse(stream);
-        player = newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
+        player = ExoPlayerFactory.newSimpleInstance(this);
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
                 new DefaultDataSourceFactory(this,"exoplayer-codelab"))
@@ -175,7 +167,7 @@ public class PlayerService extends Service {
     @Override
     public void onDestroy() {
         if (player != null) {
-            new Tracks().setLastPosition(player.getCurrentPosition());
+            Tracks.setLastPosition(player.getCurrentPosition());
         }
 
         releasePlayer();
@@ -224,16 +216,14 @@ public class PlayerService extends Service {
 
     private void playTrack(TrackEntry track){
         if (track.id != -1){
-            playStream(track.stream, 0);
+            long position = track.id == Tracks.getLastPlaying() ? Tracks.getLastPosition() : 0;
+
+            playStream(track.stream, position);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-                notificationChannel.setSound(null, null);
-                notificationChannel.setShowBadge(false);
-
-                this.startForeground(1, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+                this.startForeground(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
             } else{
-                notificationManager.notify(1, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+                notificationManager.notify(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
             }
         } else {
             releasePlayer();
@@ -271,8 +261,8 @@ public class PlayerService extends Service {
                     break;
 
                 case "StopPlay":
-                    tracks.setNowPlaying(-1);
-                    tracks.setLastPosition(player.getCurrentPosition());
+                    Tracks.setNowPlaying(-1);
+                    Tracks.setLastPosition(player.getCurrentPosition());
                     stopSelf();
                     sendMessage("SetPlayBtnIcon");
                     break;

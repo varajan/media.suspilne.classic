@@ -54,7 +54,7 @@ public class ActivityTracks extends ActivityMain {
 
         returnToComposers = bundle.getBoolean("returnToComposers");
 
-        if (tracks.getNowPlaying() > 0){
+        if (Tracks.getNowPlaying() > 0){
             setPlayBtnIcon();
             super.setQuiteTimeout();
         }
@@ -169,8 +169,8 @@ public class ActivityTracks extends ActivityMain {
             playBtn.setTag(R.mipmap.track_play);
             playBtn.setOnClickListener(v -> {
                 if (playBtn.getTag().equals(R.mipmap.track_pause)){
-                    tracks.setLastPlaying(track.id);
-                    tracks.setNowPlaying(-1);
+                    Tracks.setLastPlaying(track.id);
+                    Tracks.setNowPlaying(-1);
 
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.track_play);
@@ -224,11 +224,7 @@ public class ActivityTracks extends ActivityMain {
 
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
-            stream.putExtra("stream", track.stream);
-            stream.putExtra("icon", track.getAuthorId());
-            stream.putExtra("author", track.getAuthor());
-            stream.putExtra("title", track.getTitle());
-            stream.putExtra("position", track.id == tracks.getLastPlaying() ? tracks.getLastPosition() : 0);
+            stream.putExtra("track.id", track.id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(stream);
@@ -238,8 +234,8 @@ public class ActivityTracks extends ActivityMain {
             }
         }
 
-        tracks.setNowPlaying(track.id);
-        tracks.setLastPlaying(track.id);
+        Tracks.setNowPlaying(track.id);
+        Tracks.setLastPlaying(track.id);
         setPlayBtnIcon(false);
     }
 
@@ -247,7 +243,7 @@ public class ActivityTracks extends ActivityMain {
 
     private void setPlayBtnIcon(boolean scrollToTrack){
         LinearLayout list = findViewById(R.id.list);
-        TrackEntry track = tracks.getById(tracks.getNowPlaying());
+        TrackEntry track = tracks.getById(Tracks.getNowPlaying());
 
         for (TrackEntry item:tracks.getTracks()){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
@@ -273,6 +269,7 @@ public class ActivityTracks extends ActivityMain {
             filter.addAction(SettingsHelper.application);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){
+            // nothing
         }
     }
 
