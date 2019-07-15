@@ -227,7 +227,8 @@ public class ActivityTracks extends ActivityMain {
             stream.putExtra("track.id", track.id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(stream);
+                startService(stream);
+//                startForegroundService(stream);
             }
             else {
                 startService(stream);

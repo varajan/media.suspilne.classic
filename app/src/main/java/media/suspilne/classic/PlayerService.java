@@ -1,10 +1,10 @@
 package media.suspilne.classic;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -27,13 +28,20 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
-public class PlayerService extends Service {
+public class PlayerService extends IntentService {
     private ExoPlayer player;
     private NotificationManager notificationManager;
     private PlayerNotificationManager playerNotificationManager;
 
-    public static int Channel = 11;
-    public static int ExoChannel = 21;
+    public static String CHANNEL = SettingsHelper.application;
+    public static int NOTIFICATION_ID = 21;
+
+    public PlayerService() {
+        super(CHANNEL);
+    }
+    public PlayerService(String name) {
+        super(name);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -41,9 +49,15 @@ public class PlayerService extends Service {
     }
 
     @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        // not implemented
+    }
+
+    @Override
     public void onCreate(){
         registerReceiver();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        playerNotificationManager = new PlayerNotificationManager(this, PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID, new PlayerAdapter());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
@@ -51,7 +65,7 @@ public class PlayerService extends Service {
             notificationChannel.setShowBadge(false);
             notificationManager.createNotificationChannel(notificationChannel);
 
-            this.startForeground(PlayerService.Channel, getNotification(-1, "", ""));
+//            this.startForeground(PlayerService.Channel, getNotification(-1, "", ""));
         }
     }
 
@@ -65,7 +79,6 @@ public class PlayerService extends Service {
 
     private Notification getNotification(int icon, String author, String title){
         LocaleManager.setLanguage(this, SettingsHelper.getString("Language"));
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         Intent notificationIntent = new Intent(this, ActivityTracks.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -117,6 +130,8 @@ public class PlayerService extends Service {
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
         player.seekTo(position);
+
+        playerNotificationManager.setPlayer(player);
 
         player.addListener(new ExoPlayer.EventListener() {
             @Override
@@ -170,6 +185,8 @@ public class PlayerService extends Service {
             Tracks.setLastPosition(player.getCurrentPosition());
         }
 
+        playerNotificationManager.setPlayer(null);
+
         releasePlayer();
         clearNotifications();
         unregisterReceiver();
@@ -220,10 +237,13 @@ public class PlayerService extends Service {
 
             playStream(track.stream, position);
 
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                this.startForeground(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+//            } else{
+//                notificationManager.notify(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+//            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                this.startForeground(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
-            } else{
-                notificationManager.notify(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
+//                this.startForeground(PlayerService.NOTIFICATION_ID, playerNotificationManager);
             }
         } else {
             releasePlayer();
