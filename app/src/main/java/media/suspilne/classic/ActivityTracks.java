@@ -225,14 +225,7 @@ public class ActivityTracks extends ActivityMain {
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("track.id", track.id);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startService(stream);
-//                startForegroundService(stream);
-            }
-            else {
-                startService(stream);
-            }
+            startService(stream);
         }
 
         Tracks.setNowPlaying(track.id);

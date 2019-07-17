@@ -1,6 +1,8 @@
 package media.suspilne.classic;
 
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
@@ -8,33 +10,34 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class PlayerAdapter implements PlayerNotificationManager.MediaDescriptionAdapter{
+    private Context context;
+
+    public PlayerAdapter(Context context) {
+        this.context = context;
+    }
+
+    private TrackEntry track(){
+        return new Tracks().getById(Tracks.getNowPlaying());
+    }
+
     @Override
     public String getCurrentContentTitle(Player player) {
-        int window = player.getCurrentWindowIndex();
-//        return getTitle(window);
-        return "getCurrentContentTitle";
+        return track().getTitle();
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        int window = player.getCurrentWindowIndex();
-        return "getCurrentContentText";
+        return track().getAuthor();
     }
 
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-//        int window = player.getCurrentWindowIndex();
-//        Bitmap largeIcon = getLargeIcon(window);
-//        if (largeIcon == null && getLargeIconUri(window) != null) {
-//            // load bitmap async
-//            loadBitmap(getLargeIconUri(window), callback);
-//            return getPlaceholderBitmap();
-//        }
-//        return largeIcon;
+        if (!SettingsHelper.getBoolean("show_composer_photo")) return null;
 
-        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(5).photo, 100, 100);
+        Composer composer = new Composer((track().getAuthorId()));
+        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), composer.photo, 100, 100);
         authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
 
         return authorPhoto;
@@ -43,14 +46,10 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
-        int window = player.getCurrentWindowIndex();
-//        return createPendingIntent(window);
-        return null;
+        Intent notificationIntent = new Intent(context, ActivityTracks.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-//        Intent notificationIntent = new Intent(this, ActivityTracks.class);
-//        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-//
-//        return openTracksIntent;
+        return openTracksIntent;
     }
 }

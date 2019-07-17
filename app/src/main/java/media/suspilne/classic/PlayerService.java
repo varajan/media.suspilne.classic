@@ -1,21 +1,16 @@
 package media.suspilne.classic;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -39,6 +34,7 @@ public class PlayerService extends IntentService {
     public PlayerService() {
         super(CHANNEL);
     }
+
     public PlayerService(String name) {
         super(name);
     }
@@ -57,15 +53,13 @@ public class PlayerService extends IntentService {
     public void onCreate(){
         registerReceiver();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        playerNotificationManager = new PlayerNotificationManager(this, PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID, new PlayerAdapter());
+        playerNotificationManager = new PlayerNotificationManager(this, PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID, new PlayerAdapter(this));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setSound(null, null);
             notificationChannel.setShowBadge(false);
             notificationManager.createNotificationChannel(notificationChannel);
-
-//            this.startForeground(PlayerService.Channel, getNotification(-1, "", ""));
         }
     }
 
@@ -77,48 +71,48 @@ public class PlayerService extends IntentService {
         return START_NOT_STICKY;
     }
 
-    private Notification getNotification(int icon, String author, String title){
-        LocaleManager.setLanguage(this, SettingsHelper.getString("Language"));
-
-        Intent notificationIntent = new Intent(this, ActivityTracks.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
-        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
-            .setSmallIcon(R.drawable.ic_track)
-            .setContentTitle(author)
-            .setContentText(title)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setLargeIcon(authorPhoto)
-            .setUsesChronometer(true)
-            .setSound(null)
-            .setChannelId(SettingsHelper.application)
-            .setContentIntent(openTracksIntent);
-
-        Intent playPrevIntent = new Intent();
-        playPrevIntent.setAction(SettingsHelper.application + "previous");
-        playPrevIntent.putExtra("code", "PlayPrevious");
-        PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
-        notificationBuilder.addAction(0, getResources().getString(R.string.prev), playPrevPendingIntent);
-
-        Intent stopIntent = new Intent();
-        stopIntent.setAction(SettingsHelper.application + "stop");
-        stopIntent.putExtra("code", "StopPlay");
-        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(0, getResources().getString(R.string.stop), stopPendingIntent);
-
-        Intent playNextIntent = new Intent();
-        playNextIntent.setAction(SettingsHelper.application + "next");
-        playNextIntent.putExtra("code", "PlayNext");
-        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
-        notificationBuilder.addAction(0, getResources().getString(R.string.next), playNextPendingIntent);
-
-        return notificationBuilder.build();
-    }
+//    private Notification getNotification(int icon, String author, String title){
+//        LocaleManager.setLanguage(this, SettingsHelper.getString("Language"));
+//
+//        Intent notificationIntent = new Intent(this, ActivityTracks.class);
+//        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+//
+//        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
+//        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
+//
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
+//            .setSmallIcon(R.drawable.ic_track)
+//            .setContentTitle(author)
+//            .setContentText(title)
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+//            .setLargeIcon(authorPhoto)
+//            .setUsesChronometer(true)
+//            .setSound(null)
+//            .setChannelId(SettingsHelper.application)
+//            .setContentIntent(openTracksIntent);
+//
+//        Intent playPrevIntent = new Intent();
+//        playPrevIntent.setAction(SettingsHelper.application + "previous");
+//        playPrevIntent.putExtra("code", "PlayPrevious");
+//        PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
+//        notificationBuilder.addAction(0, getResources().getString(R.string.prev), playPrevPendingIntent);
+//
+//        Intent stopIntent = new Intent();
+//        stopIntent.setAction(SettingsHelper.application + "stop");
+//        stopIntent.putExtra("code", "StopPlay");
+//        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
+//        notificationBuilder.addAction(0, getResources().getString(R.string.stop), stopPendingIntent);
+//
+//        Intent playNextIntent = new Intent();
+//        playNextIntent.setAction(SettingsHelper.application + "next");
+//        playNextIntent.putExtra("code", "PlayNext");
+//        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
+//        notificationBuilder.addAction(0, getResources().getString(R.string.next), playNextPendingIntent);
+//
+//        return notificationBuilder.build();
+//    }
 
     private void playStream(String stream, long position) {
         Uri uri = Uri.parse(stream);
@@ -188,7 +182,7 @@ public class PlayerService extends IntentService {
         playerNotificationManager.setPlayer(null);
 
         releasePlayer();
-        clearNotifications();
+//        clearNotifications();
         unregisterReceiver();
     }
 
@@ -199,11 +193,11 @@ public class PlayerService extends IntentService {
         }
     }
 
-    private void clearNotifications(){
-        if (notificationManager != null){
-            notificationManager.cancelAll();
-        }
-    }
+//    private void clearNotifications(){
+//        if (notificationManager != null){
+//            notificationManager.cancelAll();
+//        }
+//    }
 
     private void sendMessage(String code){
         Intent intent = new Intent();
@@ -234,20 +228,10 @@ public class PlayerService extends IntentService {
     private void playTrack(TrackEntry track){
         if (track.id != -1){
             long position = track.id == Tracks.getLastPlaying() ? Tracks.getLastPosition() : 0;
-
             playStream(track.stream, position);
-
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                this.startForeground(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
-//            } else{
-//                notificationManager.notify(PlayerService.Channel, getNotification(track.getAuthorId(), track.getAuthor(), track.getTitle()));
-//            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                this.startForeground(PlayerService.NOTIFICATION_ID, playerNotificationManager);
-            }
         } else {
             releasePlayer();
-            clearNotifications();
+//            clearNotifications();
         }
 
         SettingsHelper.setInt("tracks.nowPlaying", track.id);
