@@ -53,7 +53,10 @@ public class PlayerService extends IntentService {
     public void onCreate(){
         registerReceiver();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        playerNotificationManager = new PlayerNotificationManager(this, PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID, new PlayerAdapter(this));
+        playerNotificationManager = new PlayerNotificationManager(this,
+                PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID,
+                new PlayerAdapter(this),
+                new PlayerActionReceiver());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
