@@ -3,14 +3,13 @@ package media.suspilne.classic;
 import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -25,7 +24,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 public class PlayerService extends IntentService {
     private ExoPlayer player;
-    private NotificationManager notificationManager;
     private PlayerNotificationManager playerNotificationManager;
 
     public static String CHANNEL = SettingsHelper.application;
@@ -51,12 +49,13 @@ public class PlayerService extends IntentService {
 
     @Override
     public void onCreate(){
-        registerReceiver();
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         playerNotificationManager = new PlayerNotificationManager(this,
-                PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID,
-                new PlayerAdapter(this),
-                new PlayerActionReceiver());
+                PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID, new PlayerAdapter(this));
+
+        playerNotificationManager.setFastForwardIncrementMs(10_000_000);
+        playerNotificationManager.setRewindIncrementMs(10_000_000);
+        playerNotificationManager.setUseNavigationActions(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
@@ -74,50 +73,9 @@ public class PlayerService extends IntentService {
         return START_NOT_STICKY;
     }
 
-//    private Notification getNotification(int icon, String author, String title){
-//        LocaleManager.setLanguage(this, SettingsHelper.getString("Language"));
-//
-//        Intent notificationIntent = new Intent(this, ActivityTracks.class);
-//        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-//
-//        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Composer(icon).photo, 100, 100);
-//        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
-//
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
-//            .setSmallIcon(R.drawable.ic_track)
-//            .setContentTitle(author)
-//            .setContentText(title)
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//            .setLargeIcon(authorPhoto)
-//            .setUsesChronometer(true)
-//            .setSound(null)
-//            .setChannelId(SettingsHelper.application)
-//            .setContentIntent(openTracksIntent);
-//
-//        Intent playPrevIntent = new Intent();
-//        playPrevIntent.setAction(SettingsHelper.application + "previous");
-//        playPrevIntent.putExtra("code", "PlayPrevious");
-//        PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
-//        notificationBuilder.addAction(0, getResources().getString(R.string.prev), playPrevPendingIntent);
-//
-//        Intent stopIntent = new Intent();
-//        stopIntent.setAction(SettingsHelper.application + "stop");
-//        stopIntent.putExtra("code", "StopPlay");
-//        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-//        notificationBuilder.addAction(0, getResources().getString(R.string.stop), stopPendingIntent);
-//
-//        Intent playNextIntent = new Intent();
-//        playNextIntent.setAction(SettingsHelper.application + "next");
-//        playNextIntent.putExtra("code", "PlayNext");
-//        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
-//        notificationBuilder.addAction(0, getResources().getString(R.string.next), playNextPendingIntent);
-//
-//        return notificationBuilder.build();
-//    }
-
     private void playStream(String stream, long position) {
+        releasePlayer();
+
         Uri uri = Uri.parse(stream);
         player = ExoPlayerFactory.newSimpleInstance(this);
 
@@ -135,20 +93,27 @@ public class PlayerService extends IntentService {
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
 
             @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+                Log.e(SettingsHelper.application, "onTracksChanged");
+            }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {}
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                Log.e(SettingsHelper.application, "onPlayerStateChanged: " + playWhenReady + " : " + playbackState);
+
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-                        sendMessage("SourceIsNotAccessible");
+                        Tracks.setNowPlaying(-1);
+                        Tracks.setLastPosition(player.getCurrentPosition());
+                        stopSelf();
+                        sendMessage("SetPlayBtnIcon");
                         break;
 
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        sendMessage("MediaIsEnded");
+                        playTrack(new Tracks().getNext());
                         break;
 
                     default:
@@ -163,16 +128,37 @@ public class PlayerService extends IntentService {
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
 
             @Override
-            public void onPlayerError(ExoPlaybackException error) { }
+            public void onPlayerError(ExoPlaybackException error) {
+                Log.e(SettingsHelper.application, "onPlayerError: " + error);
+                Log.e(SettingsHelper.application, "onPlayerError: " + error.getMessage());
+
+                stopSelf();
+                sendMessage("SourceIsNotAccessible");
+            }
 
             @Override
-            public void onPositionDiscontinuity(int reason) {}
+            public void onPositionDiscontinuity(int reason) {
+                Log.e(SettingsHelper.application, "onPositionDiscontinuity: " + reason);
+            }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
 
             @Override
-            public void onSeekProcessed() {}
+            public void onSeekProcessed() {
+                Log.e(SettingsHelper.application, "onSeekProcessed: " + player.getCurrentPosition());
+                Log.e(SettingsHelper.application, "onSeekProcessed: " + player.getContentDuration());
+
+                long position = player.getCurrentPosition();
+                long duration = player.getContentDuration();
+                Tracks tracks = new Tracks();
+
+                if (position < 0) {
+                    playTrack(tracks.getPrevious());
+                } else if(position > duration && duration > 0){
+                    playTrack(tracks.getNext());
+                }
+            }
         });
     }
 
@@ -183,10 +169,7 @@ public class PlayerService extends IntentService {
         }
 
         playerNotificationManager.setPlayer(null);
-
         releasePlayer();
-//        clearNotifications();
-        unregisterReceiver();
     }
 
     private void releasePlayer(){
@@ -196,36 +179,11 @@ public class PlayerService extends IntentService {
         }
     }
 
-//    private void clearNotifications(){
-//        if (notificationManager != null){
-//            notificationManager.cancelAll();
-//        }
-//    }
-
     private void sendMessage(String code){
         Intent intent = new Intent();
         intent.setAction(SettingsHelper.application);
         intent.putExtra("code", code);
         sendBroadcast(intent);
-    }
-
-    private void registerReceiver(){
-        try{
-            IntentFilter filter = new IntentFilter();
-
-            filter.addAction(SettingsHelper.application);
-            filter.addAction(SettingsHelper.application + "previous");
-            filter.addAction(SettingsHelper.application + "next");
-            filter.addAction(SettingsHelper.application + "stop");
-
-            this.registerReceiver(receiver, filter);
-        }catch (Exception e){ /*nothing*/ }
-    }
-
-    private void unregisterReceiver(){
-        try{
-            this.unregisterReceiver(receiver);
-        }catch (Exception e){ /*nothing*/ }
     }
 
     private void playTrack(TrackEntry track){
@@ -234,46 +192,10 @@ public class PlayerService extends IntentService {
             playStream(track.stream, position);
         } else {
             releasePlayer();
-//            clearNotifications();
         }
 
         SettingsHelper.setInt("tracks.nowPlaying", track.id);
         SettingsHelper.setInt("tracks.lastPlaying", track.id);
         sendMessage("SetPlayBtnIcon");
     }
-
-    BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Tracks tracks = new Tracks();
-
-            switch (intent.getStringExtra("code")){
-                case "SourceIsNotAccessible":
-                    stopSelf();
-                    break;
-
-                case "MediaIsEnded":
-                    releasePlayer();
-                    playTrack(tracks.getNext());
-                    break;
-
-                case "PlayNext":
-                    releasePlayer();
-                    playTrack(tracks.getNext());
-                    break;
-
-                case "PlayPrevious":
-                    releasePlayer();
-                    playTrack(tracks.getPrevious());
-                    break;
-
-                case "StopPlay":
-                    Tracks.setNowPlaying(-1);
-                    Tracks.setLastPosition(player.getCurrentPosition());
-                    stopSelf();
-                    sendMessage("SetPlayBtnIcon");
-                    break;
-            }
-        }
-    };
 }
