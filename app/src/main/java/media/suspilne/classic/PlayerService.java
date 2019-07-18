@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -93,16 +92,15 @@ public class PlayerService extends IntentService {
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
 
             @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                Log.e(SettingsHelper.application, "onTracksChanged");
-            }
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
 
             @Override
             public void onLoadingChanged(boolean isLoading) {}
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                Log.e(SettingsHelper.application, "onPlayerStateChanged: " + playWhenReady + " : " + playbackState);
+                Tracks.setPause(!playWhenReady);
+                sendMessage("setPlayBtnIcon");
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
@@ -129,26 +127,18 @@ public class PlayerService extends IntentService {
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                Log.e(SettingsHelper.application, "onPlayerError: " + error);
-                Log.e(SettingsHelper.application, "onPlayerError: " + error.getMessage());
-
                 stopSelf();
                 sendMessage("SourceIsNotAccessible");
             }
 
             @Override
-            public void onPositionDiscontinuity(int reason) {
-                Log.e(SettingsHelper.application, "onPositionDiscontinuity: " + reason);
-            }
+            public void onPositionDiscontinuity(int reason) { }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
 
             @Override
             public void onSeekProcessed() {
-                Log.e(SettingsHelper.application, "onSeekProcessed: " + player.getCurrentPosition());
-                Log.e(SettingsHelper.application, "onSeekProcessed: " + player.getContentDuration());
-
                 long position = player.getCurrentPosition();
                 long duration = player.getContentDuration();
                 Tracks tracks = new Tracks();

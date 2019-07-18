@@ -33,6 +33,14 @@ class Tracks {
         return SettingsHelper.getInt("tracks.nowPlaying");
     }
 
+    public static void setPause(boolean value){
+        SettingsHelper.setBoolean("tracks.paused", value);
+    }
+
+    public static boolean getPause(){
+        return SettingsHelper.getBoolean("tracks.paused");
+    }
+
     TrackEntry getPrevious(){
         int nowPlaying = getNowPlaying();
         List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);

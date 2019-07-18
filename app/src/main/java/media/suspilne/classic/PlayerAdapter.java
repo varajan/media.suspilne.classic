@@ -34,7 +34,7 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        if (!SettingsHelper.getBoolean("show_composer_photo")) return null;
+//        if (!SettingsHelper.getBoolean("show_composer_photo")) return null;
 
         Composer composer = new Composer((track().getAuthorId()));
         Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), composer.photo, 100, 100);
