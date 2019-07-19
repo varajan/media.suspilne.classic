@@ -9,28 +9,36 @@ class Tracks {
     String filter = SettingsHelper.getString("tracksFilter");
     boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
 
-    public void setLastPosition(long value){
+    public static void setLastPosition(long value){
         SettingsHelper.setLong("PlayerPosition", value);
     }
 
-    public long getLastPosition(){
+    public static long getLastPosition(){
         return SettingsHelper.getLong("PlayerPosition");
     }
 
-    public void setLastPlaying(int value) {
+    public static void setLastPlaying(int value) {
         SettingsHelper.setInt("tracks.lastPlaying", value);
     }
 
-    public int getLastPlaying(){
+    public static int getLastPlaying(){
         return SettingsHelper.getInt("tracks.lastPlaying");
     }
 
-    public void setNowPlaying(int value){
+    public static void setNowPlaying(int value){
         SettingsHelper.setInt("tracks.nowPlaying", value);
     }
 
-    public int getNowPlaying(){
+    public static int getNowPlaying(){
         return SettingsHelper.getInt("tracks.nowPlaying");
+    }
+
+    public static void setPause(boolean value){
+        SettingsHelper.setBoolean("tracks.paused", value);
+    }
+
+    public static boolean isPaused(){
+        return SettingsHelper.getBoolean("tracks.paused");
     }
 
     TrackEntry getPrevious(){
@@ -75,19 +83,19 @@ class Tracks {
         return null;
     }
 
-        List<TrackEntry> getTracks(boolean onlyFavorite, String filter){
-            List<TrackEntry> result = new ArrayList<>();
+    List<TrackEntry> getTracks(boolean onlyFavorite, String filter){
+        List<TrackEntry> result = new ArrayList<>();
 
-            for (TrackEntry track:getTracks()) {
-                if (track.shouldBeShown(onlyFavorite, filter)){
-                    result.add(track);
-                }
+        for (TrackEntry track:getTracks()) {
+            if (track.shouldBeShown(onlyFavorite, filter)){
+                result.add(track);
             }
-
-            return result;
         }
 
-        List<TrackEntry> getTracks(boolean onlyFavorite){
+        return result;
+    }
+
+    List<TrackEntry> getTracks(boolean onlyFavorite){
         List<TrackEntry> result = new ArrayList<>();
 
         for (TrackEntry track:items) {

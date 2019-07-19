@@ -54,7 +54,7 @@ public class ActivityTracks extends ActivityMain {
 
         returnToComposers = bundle.getBoolean("returnToComposers");
 
-        if (tracks.getNowPlaying() > 0){
+        if (Tracks.getNowPlaying() > 0){
             setPlayBtnIcon();
             super.setQuiteTimeout();
         }
@@ -169,8 +169,8 @@ public class ActivityTracks extends ActivityMain {
             playBtn.setTag(R.mipmap.track_play);
             playBtn.setOnClickListener(v -> {
                 if (playBtn.getTag().equals(R.mipmap.track_pause)){
-                    tracks.setLastPlaying(track.id);
-                    tracks.setNowPlaying(-1);
+                    Tracks.setLastPlaying(track.id);
+                    Tracks.setNowPlaying(-1);
 
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.track_play);
@@ -178,6 +178,9 @@ public class ActivityTracks extends ActivityMain {
                 }else{
                     playTrack(track);
                     setQuiteTimeout();
+
+                    playBtn.setImageResource(R.mipmap.track_pause);
+                    playBtn.setTag(R.mipmap.track_pause);
                 }
             });
 
@@ -214,7 +217,7 @@ public class ActivityTracks extends ActivityMain {
         showTracks();
         filterTracks();
         continueTrack(savedInstanceState);
-        askToContinueDownloadTracks();
+        continueDownloadTracks();
         suggestToDownloadFavoriteTracks();
         registerReceiver();
     }
@@ -224,22 +227,15 @@ public class ActivityTracks extends ActivityMain {
 
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
-            stream.putExtra("stream", track.stream);
-            stream.putExtra("icon", track.getAuthorId());
-            stream.putExtra("author", track.getAuthor());
-            stream.putExtra("title", track.getTitle());
-            stream.putExtra("position", track.id == tracks.getLastPlaying() ? tracks.getLastPosition() : 0);
+            stream.putExtra("track.id", track.id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(stream);
-            }
-            else {
+            } else {
                 startService(stream);
             }
         }
 
-        tracks.setNowPlaying(track.id);
-        tracks.setLastPlaying(track.id);
         setPlayBtnIcon(false);
     }
 
@@ -247,12 +243,15 @@ public class ActivityTracks extends ActivityMain {
 
     private void setPlayBtnIcon(boolean scrollToTrack){
         LinearLayout list = findViewById(R.id.list);
-        TrackEntry track = tracks.getById(tracks.getNowPlaying());
+        TrackEntry track = tracks.getById(Tracks.getNowPlaying());
+        boolean isPaused = Tracks.isPaused();
 
         for (TrackEntry item:tracks.getTracks()){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
-            btn.setImageResource(track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
-            btn.setTag(track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+            boolean isPlaying = !isPaused && track != null && item.id == track.id;
+
+            btn.setImageResource(isPlaying ? R.mipmap.track_pause : R.mipmap.track_play);
+            btn.setTag(isPlaying ? R.mipmap.track_pause : R.mipmap.track_play);
         }
 
         if (scrollToTrack && track != null){
@@ -273,6 +272,7 @@ public class ActivityTracks extends ActivityMain {
             filter.addAction(SettingsHelper.application);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){
+            // nothing
         }
     }
 

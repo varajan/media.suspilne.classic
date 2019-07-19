@@ -3,7 +3,6 @@ package media.suspilne.classic;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -89,7 +88,7 @@ public class TrackEntry{
             scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
         }
         catch (Exception e){
-            Log.e(SettingsHelper.application, e.getMessage());
+            Classic.logError(e.getMessage());
         }
     }
 
@@ -114,9 +113,8 @@ public class TrackEntry{
             ((TextView) trackView.findViewById(R.id.author)).setText(authorNameId);
             setDownloadedIcon();
         }catch (Exception e){
-            Log.e(SettingsHelper.application, "Failed to load track #" + id);
-            Log.e(SettingsHelper.application, e.getMessage());
-            e.printStackTrace();
+            Classic.logError("Failed to load track #" + id, false);
+            Classic.logError(e.getMessage());
         }
     }
 
