@@ -33,13 +33,8 @@ public class Classic extends Application {
     private static void logStackTrace(String message){
         StringBuilder stackTrace = new StringBuilder(message + "\r\n");
 
-        int line = 0;
         for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            if (line > 7 && ste.toString().contains(SettingsHelper.application)){
-                stackTrace.append(ste).append("\r\n");
-            }
-
-            line++;
+            stackTrace.append(ste).append("\r\n");
         }
 
         Log.e(SettingsHelper.application, stackTrace.toString());

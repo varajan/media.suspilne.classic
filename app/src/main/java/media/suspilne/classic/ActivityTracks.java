@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -227,7 +228,12 @@ public class ActivityTracks extends ActivityMain {
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("track.id", track.id);
-            startService(stream);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(stream);
+            } else {
+                startService(stream);
+            }
         }
 
         setPlayBtnIcon(false);

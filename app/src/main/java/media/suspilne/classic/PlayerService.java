@@ -1,6 +1,7 @@
 package media.suspilne.classic;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -79,12 +80,22 @@ public class PlayerService extends IntentService {
         player = ExoPlayerFactory.newSimpleInstance(this);
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
-                new DefaultDataSourceFactory(this,"exoplayer-codelab"))
-                .createMediaSource(uri);
+            new DefaultDataSourceFactory(this,"exoplayer-codelab")).createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
         player.seekTo(position);
 
+        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+            @Override
+            public void onNotificationStarted(int notificationId, Notification notification) {
+                startForeground(notificationId, notification);
+            }
+
+            @Override
+            public void onNotificationCancelled(int notificationId) {
+                stopSelf();
+            }
+        });
         playerNotificationManager.setPlayer(player);
 
         player.addListener(new ExoPlayer.EventListener() {
