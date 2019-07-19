@@ -49,8 +49,6 @@ public class ActivitySettings extends ActivityMain {
 
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         languages.setOnItemSelectedListener(omLanguageSelect);
-
-        askToContinueDownloadTracks();
     }
 
     void setSwitch(String title, boolean isChecked){

@@ -257,12 +257,9 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    protected void askToContinueDownloadTracks(){
-        if (SettingsHelper.getBoolean("askedToContinueDownload")) return;
+    protected void continueDownloadTracks(){
         if (!SettingsHelper.getBoolean("downloadAllTracks") && !SettingsHelper.getBoolean("downloadFavoriteTracks")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
-
-        SettingsHelper.setBoolean("askedToContinueDownload", true);
 
         boolean allAreDownloaded = true;
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTracks") && !SettingsHelper.getBoolean("downloadAllTracks");
@@ -274,15 +271,7 @@ public class ActivityMain extends AppCompatActivity
             }
         }
 
-        if (allAreDownloaded) return;
-
-        new AlertDialog.Builder(ActivityMain.this)
-            .setIcon(R.mipmap.icon_classic)
-            .setTitle(R.string.continueDownload)
-            .setMessage(R.string.not_all_tracks)
-            .setPositiveButton(R.string.download, (dialog, which) -> download())
-            .setNegativeButton(R.string.no, null)
-            .show();
+        if (!allAreDownloaded) download();
     }
 
     protected void suggestToDownloadFavoriteTracks(){

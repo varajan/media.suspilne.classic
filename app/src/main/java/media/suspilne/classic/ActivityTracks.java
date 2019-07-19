@@ -177,7 +177,7 @@ public class ActivityTracks extends ActivityMain {
                 }else{
                     playTrack(track);
                     setQuiteTimeout();
-                    
+
                     playBtn.setImageResource(R.mipmap.track_pause);
                     playBtn.setTag(R.mipmap.track_pause);
                 }
@@ -216,7 +216,7 @@ public class ActivityTracks extends ActivityMain {
         showTracks();
         filterTracks();
         continueTrack(savedInstanceState);
-        askToContinueDownloadTracks();
+        continueDownloadTracks();
         suggestToDownloadFavoriteTracks();
         registerReceiver();
     }

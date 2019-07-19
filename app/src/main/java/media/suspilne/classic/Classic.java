@@ -10,7 +10,6 @@ public class Classic extends Application {
         super.onCreate();
 
         SharedPreferences.Editor editor = getSharedPreferences(SettingsHelper.application, 0).edit();
-        editor.putString("askedToContinueDownload", String.valueOf(false));
         editor.putString("tracks.paused", String.valueOf(false));
         editor.putString("tracks.lastPlaying", String.valueOf(-1));
         editor.putString("tracks.nowPlaying", String.valueOf(-1));
