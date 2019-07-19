@@ -6,8 +6,8 @@ android {
         applicationId "media.suspilne.classic"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 32
-        versionName "1.4.0"
+        versionCode 33
+        versionName "1.4.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
