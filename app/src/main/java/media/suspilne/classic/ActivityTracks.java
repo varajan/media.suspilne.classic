@@ -237,30 +237,20 @@ public class ActivityTracks extends ActivityMain {
     private void setPlayBtnIcon(boolean scrollToTrack){
         LinearLayout list = findViewById(R.id.list);
         TrackEntry track = tracks.getById(Tracks.getNowPlaying());
-        boolean paused = Tracks.getPause();
+        boolean isPaused = Tracks.isPaused();
 
         for (TrackEntry item:tracks.getTracks()){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
-            btn.setImageResource(!paused && track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
-            btn.setTag(!paused && track != null && item.id == track.id ? R.mipmap.track_pause : R.mipmap.track_play);
+            boolean isPlaying = !isPaused && track != null && item.id == track.id;
+
+            btn.setImageResource(isPlaying ? R.mipmap.track_pause : R.mipmap.track_play);
+            btn.setTag(isPlaying ? R.mipmap.track_pause : R.mipmap.track_play);
         }
 
         if (scrollToTrack && track != null){
             track.scrollIntoView();
         }
     }
-
-//    private void setPauseBtnIcon(){
-//        Tracks.setPause(true);
-//        setPlayBtnIcon(false);
-////
-////        LinearLayout list = findViewById(R.id.list);
-////        TrackEntry track = tracks.getById(Tracks.getNowPlaying());
-////        ImageView btn = list.findViewWithTag(track.id).findViewById(R.id.play);
-////
-////        btn.setImageResource(R.mipmap.track_play);
-////        btn.setTag(R.mipmap.track_play);
-//    }
 
     @Override
     protected void onStart() {
@@ -303,10 +293,6 @@ public class ActivityTracks extends ActivityMain {
             case "SetPlayBtnIcon":
                 setPlayBtnIcon();
                 break;
-//
-//            case "SetPauseBtnIcon":
-//                setPauseBtnIcon();
-//                break;
             }
         }
     };

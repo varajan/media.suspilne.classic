@@ -37,7 +37,7 @@ class Tracks {
         SettingsHelper.setBoolean("tracks.paused", value);
     }
 
-    public static boolean getPause(){
+    public static boolean isPaused(){
         return SettingsHelper.getBoolean("tracks.paused");
     }
 

@@ -32,17 +32,17 @@ public class Classic extends Application {
     }
 
     private static void logStackTrace(String message){
-        String stackTrace = message + "\r\n";
+        StringBuilder stackTrace = new StringBuilder(message + "\r\n");
 
         int line = 0;
         for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
             if (line > 7 && ste.toString().contains(SettingsHelper.application)){
-                stackTrace += ste + "\r\n";
+                stackTrace.append(ste).append("\r\n");
             }
 
             line++;
         }
 
-        Log.e(SettingsHelper.application, stackTrace);
+        Log.e(SettingsHelper.application, stackTrace.toString());
     }
 }

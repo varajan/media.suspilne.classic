@@ -100,7 +100,7 @@ public class PlayerService extends IntentService {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 Tracks.setPause(!playWhenReady);
-                sendMessage("setPlayBtnIcon");
+                sendMessage("SetPlayBtnIcon");
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
