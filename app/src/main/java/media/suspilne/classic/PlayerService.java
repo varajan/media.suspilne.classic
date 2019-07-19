@@ -3,7 +3,10 @@ package media.suspilne.classic;
 import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -25,15 +28,11 @@ public class PlayerService extends IntentService {
     private ExoPlayer player;
     private PlayerNotificationManager playerNotificationManager;
 
-    public static String CHANNEL = SettingsHelper.application;
+    public static String NOTIFICATION_CHANNEL = SettingsHelper.application;
     public static int NOTIFICATION_ID = 21;
 
     public PlayerService() {
-        super(CHANNEL);
-    }
-
-    public PlayerService(String name) {
-        super(name);
+        super(NOTIFICATION_CHANNEL);
     }
 
     @Override
@@ -48,16 +47,17 @@ public class PlayerService extends IntentService {
 
     @Override
     public void onCreate(){
+        registerReceiver();
+
         NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        playerNotificationManager = new PlayerNotificationManager(this,
-                PlayerService.CHANNEL, PlayerService.NOTIFICATION_ID, new PlayerAdapter(this));
+        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerAdapter(this));
 
         playerNotificationManager.setFastForwardIncrementMs(10_000_000);
         playerNotificationManager.setRewindIncrementMs(10_000_000);
         playerNotificationManager.setUseNavigationActions(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setSound(null, null);
             notificationChannel.setShowBadge(false);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -160,6 +160,7 @@ public class PlayerService extends IntentService {
 
         playerNotificationManager.setPlayer(null);
         releasePlayer();
+        unregisterReceiver();
     }
 
     private void releasePlayer(){
@@ -171,7 +172,7 @@ public class PlayerService extends IntentService {
 
     private void sendMessage(String code){
         Intent intent = new Intent();
-        intent.setAction(SettingsHelper.application);
+        intent.setAction(NOTIFICATION_CHANNEL);
         intent.putExtra("code", code);
         sendBroadcast(intent);
     }
@@ -179,13 +180,45 @@ public class PlayerService extends IntentService {
     private void playTrack(TrackEntry track){
         if (track.id != -1){
             long position = track.id == Tracks.getLastPlaying() ? Tracks.getLastPosition() : 0;
+
+            SettingsHelper.setInt("tracks.nowPlaying", track.id);
+            SettingsHelper.setInt("tracks.lastPlaying", track.id);
+
             playStream(track.stream, position);
         } else {
+            SettingsHelper.setInt("tracks.nowPlaying", -1);
+
             releasePlayer();
         }
 
-        SettingsHelper.setInt("tracks.nowPlaying", track.id);
-        SettingsHelper.setInt("tracks.lastPlaying", track.id);
         sendMessage("SetPlayBtnIcon");
     }
+
+    private void registerReceiver(){
+        try{
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(NOTIFICATION_CHANNEL);
+            this.registerReceiver(receiver, filter);
+        }catch (Exception e){ /*nothing*/ }
+    }
+
+    private void unregisterReceiver(){
+        try{
+            this.unregisterReceiver(receiver);
+        }catch (Exception e){ /*nothing*/ }
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getStringExtra("code")){
+                case "StopPlay":
+                    Tracks.setNowPlaying(-1);
+                    Tracks.setLastPosition(player.getCurrentPosition());
+                    stopSelf();
+                    sendMessage("SetPlayBtnIcon");
+                    break;
+            }
+        }
+    };
 }

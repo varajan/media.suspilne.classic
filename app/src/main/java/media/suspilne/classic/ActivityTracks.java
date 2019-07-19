@@ -177,6 +177,9 @@ public class ActivityTracks extends ActivityMain {
                 }else{
                     playTrack(track);
                     setQuiteTimeout();
+                    
+                    playBtn.setImageResource(R.mipmap.track_pause);
+                    playBtn.setTag(R.mipmap.track_pause);
                 }
             });
 
@@ -227,8 +230,6 @@ public class ActivityTracks extends ActivityMain {
             startService(stream);
         }
 
-        Tracks.setNowPlaying(track.id);
-        Tracks.setLastPlaying(track.id);
         setPlayBtnIcon(false);
     }
 
