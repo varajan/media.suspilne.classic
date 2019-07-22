@@ -169,12 +169,13 @@ public class PlayerService extends IntentService {
             Tracks.setLastPosition(player.getCurrentPosition());
         }
 
-        playerNotificationManager.setPlayer(null);
         releasePlayer();
         unregisterReceiver();
     }
 
     private void releasePlayer(){
+        playerNotificationManager.setPlayer(null);
+
         while (player != null){
             player.release();
             player = null;
