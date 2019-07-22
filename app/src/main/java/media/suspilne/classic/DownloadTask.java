@@ -22,7 +22,17 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
     private Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.icon_classic);
     private int count;
     private int current;
-    static int notificationId = 2;
+    static int IN_PROGRESS = 22;
+    static int COMPLETED = 23;
+    static int WITH_ERROR = 24;
+
+    public static void cancelAllNotifications(){
+        NotificationManager notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.cancel(IN_PROGRESS);
+        notificationManager.cancel(COMPLETED);
+        notificationManager.cancel(WITH_ERROR);
+    }
 
     private void showProgressNotification(String text){
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
@@ -36,12 +46,12 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
             .setContentIntent(openApplication)
             .setSound(null);
 
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        notificationManager.notify(IN_PROGRESS, notificationBuilder.build());
     }
 
     private void showCompletedNotification(){
         if (count == 0){
-            notificationManager.cancel(notificationId);
+            cancelAllNotifications();
         } else {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
                     .setSmallIcon(R.drawable.ic_cloud_done)
@@ -52,7 +62,7 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
                     .setContentIntent(openApplication)
                     .setSound(null);
 
-            notificationManager.notify(notificationId, notificationBuilder.build());
+            notificationManager.notify(COMPLETED, notificationBuilder.build());
         }
     }
 
@@ -66,13 +76,13 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
             .setContentIntent(openApplication)
             .setSound(null);
 
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        notificationManager.notify(WITH_ERROR, notificationBuilder.build());
         SettingsHelper.setString("errorMessage", errorMessage);
     }
 
     protected void onPreExecute() {
         notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(notificationId);
+        cancelAllNotifications();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
@@ -94,7 +104,7 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        notificationManager.cancel(notificationId);
+        cancelAllNotifications();
 
         if (result.isEmpty()){
             showCompletedNotification();

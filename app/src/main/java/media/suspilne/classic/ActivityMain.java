@@ -132,7 +132,7 @@ public class ActivityMain extends AppCompatActivity
 
         if (!errorMessage.isEmpty()){
             showAlert(getString(R.string.an_error_occurred), errorMessage);
-            notificationManager.cancel(DownloadTask.notificationId);
+            notificationManager.cancel(DownloadTask.WITH_ERROR);
             SettingsHelper.setString("errorMessage", "");
         }
     }
