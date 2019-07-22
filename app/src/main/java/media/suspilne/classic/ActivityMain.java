@@ -122,6 +122,8 @@ public class ActivityMain extends AppCompatActivity
     protected void onResume(){
         super.onResume();
         showErrorMessage();
+
+        ActivityMain.activity = this;
     }
 
     private void showErrorMessage(){

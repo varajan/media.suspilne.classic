@@ -209,7 +209,7 @@ public class ActivityTracks extends ActivityMain {
         String filter = intent.getStringExtra("filter");
         returnToComposers = intent.getBooleanExtra("returnToComposers", false);
 
-        tracksList = findViewById(R.id.list);
+        tracksList = findViewById(R.id.tracksList);
         tracks = new Tracks();
         tracks.filter = filter == null ? "" : filter;
 
@@ -242,7 +242,7 @@ public class ActivityTracks extends ActivityMain {
     private void setPlayBtnIcon(){ setPlayBtnIcon(true); }
 
     private void setPlayBtnIcon(boolean scrollToTrack){
-        LinearLayout list = findViewById(R.id.list);
+        LinearLayout list = findViewById(R.id.tracksList);
         TrackEntry track = tracks.getById(Tracks.getNowPlaying());
         boolean isPaused = Tracks.isPaused();
 

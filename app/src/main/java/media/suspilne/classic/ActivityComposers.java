@@ -32,7 +32,7 @@ public class ActivityComposers extends ActivityMain {
         currentView = R.id.composers_menu;
         super.onCreate(savedInstanceState);
 
-        composersList = findViewById(R.id.list);
+        composersList = findViewById(R.id.composersList);
         searchField = findViewById(R.id.searchField);
         searchIcon = findViewById(R.id.searchIcon);
         sortIcon = findViewById(R.id.sortIcon);
@@ -153,7 +153,6 @@ public class ActivityComposers extends ActivityMain {
             composer.setViewDetails(this);
 
             ImageView tracksButton = composerView.findViewById(R.id.play);
-            tracksButton.setTag(composer.getName());
             tracksButton.setVisibility(View.GONE);
             composerView.setOnClickListener(onPlayClick);
         }

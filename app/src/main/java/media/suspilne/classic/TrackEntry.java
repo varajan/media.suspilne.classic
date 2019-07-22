@@ -47,7 +47,7 @@ public class TrackEntry{
     }
 
     private View getTrackView(){
-        return ActivityTracks.getActivity().findViewById(R.id.list).findViewWithTag(id);
+        return ActivityTracks.getActivity().findViewById(R.id.tracksList).findViewWithTag(id);
     }
 
     void resetFavorite(){
@@ -63,7 +63,7 @@ public class TrackEntry{
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
     }
 
-    void setDownloadedIcon(){
+    private void setDownloadedIcon(){
         View trackView = getTrackView();
 
         if (trackView != null){
@@ -85,6 +85,11 @@ public class TrackEntry{
         try
         {
             ScrollView scrollView = ActivityTracks.getActivity().findViewById(R.id.scrollView);
+            if (scrollView == null) return;
+
+            View track = getTrackView();
+
+            if (track == null) return;
             scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
         }
         catch (Exception e){
@@ -93,11 +98,13 @@ public class TrackEntry{
     }
 
     void hide(){
-        getTrackView().setVisibility(View.GONE);
+        View track = getTrackView();
+        if (track != null) track.setVisibility(View.GONE);
     }
 
     void show(){
-        getTrackView().setVisibility(View.VISIBLE);
+        View track = getTrackView();
+        if (track != null) track.setVisibility(View.VISIBLE);
     }
 
     void setViewDetails(){
