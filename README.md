@@ -7,6 +7,6 @@ It's just a classic. From the funds of the Public Broadcasting Company.
 * *Settings* - select what tracks to download, set quit timer, others.
 * *Lock screen* - pause or resume, select next or previous track without unlocking the phone.
 
-Install from [GooglePlay](https://play.google.com/store/apps/details?id=media.suspilne.classic)
+Install from [GooglePlay](https://play.google.com/store/apps/details?id=media.suspilne.classic).
 
-![Lock screen](https://lh3.googleusercontent.com/Hlbc8OZ3oibYOuWVd-o92m31XPE8WP1NPZF6oI30YGrWx_kjavDFCXM48j3Exg6Bsxs=w1920-h937-rw)
+[![Google Play](https://lh3.googleusercontent.com/V4t-4ia2Odvk_JnKwwx4TuhhWXVdkTLWLcKhtrx6QzjBDb49557z9OwnQH-as2FG7tnR=s180-rw)](https://play.google.com/store/apps/details?id=media.suspilne.classic)
