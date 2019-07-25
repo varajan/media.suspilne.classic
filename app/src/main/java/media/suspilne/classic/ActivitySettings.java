@@ -60,6 +60,7 @@ public class ActivitySettings extends ActivityMain {
         ArrayList<Country> countries = new ArrayList<>();
         countries.add( new Country("en", getString(R.string.language_en), R.mipmap.uk));
         countries.add( new Country("uk", getString(R.string.language_ua), R.mipmap.ua));
+        countries.add( new Country("de", getString(R.string.language_de), R.mipmap.de));
 
         LanguageArrayAdapter arrayAdapter = new LanguageArrayAdapter(this, R.layout.language, countries);
         String currentLanguage = getResources().getConfiguration().locale.getLanguage();
