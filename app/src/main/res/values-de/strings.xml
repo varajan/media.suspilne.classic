@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UA: Класика</string>
-    <string name="composer_tracks">Кількість композицій: %d</string>
-    <string name="tracks">Всі композиції</string>
-    <string name="settings">Налаштування</string>
-    <string name="composers">Композитори</string>
-    <string name="info">Про програму</string>
+    <string name="app_name">UA: der Klassiker</string>
+    <string name="composer_tracks">Spurnummer: %d</string>
+    <string name="tracks">Alle Spuren</string>
+    <string name="settings">Die Einstellungen</string>
+    <string name="composers">Komponisten</string>
+    <string name="info">Über die Bewerbung</string>
     <string name="description">
         Версія: %s\n\n
 
@@ -19,10 +19,10 @@
 		[Екран блокування] - керуйте треками не розблоковуючи телефон: пауза, наступний чи попередній запис.\n
     </string>
     <string name="rate">Оцінити</string>
-    <string name="exit">Вийти</string>
+    <string name="exit">Verlassen</string>
     <string name="ok">OK</string>
-    <string name="yes">Так</string>
-    <string name="no">Ні</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
     <string name="confirm_exit">Закрити UA: Класична музика?</string>
     <string name="x_minutes">%s Minuten</string>
     <string name="no_internet">Keine Internetverbindung!</string>
@@ -30,25 +30,25 @@
     <string name="title">Titel</string>
     <string name="author">Autor</string>
     <string name="language_ua">Ukrainisch (Ukrainian)</string>
-	<string name="language_en">Deutsch (English)</string>
+	<string name="language_en">Englisch (English)</string>
     <string name="language_de">Deutsch (German)</string>
     <string name="language">Sprache:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Нічого не знайдено</string>
-    <string name="filterHint">Назва чи автор</string>
+    <string name="filterHint">Titel oder Autor</string>
     <string name="download_completed">Завантажено композицій: %d</string>
-    <string name="done">Готово.</string>
-    <string name="an_error_occurred">Сталась помилка.</string>
+    <string name="done">Gemacht.</string>
+    <string name="an_error_occurred">Ein Fehler ist aufgetreten.</string>
     <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>
-    <string name="download">Завантажити</string>
+    <string name="download">Herunterladen</string>
     <string name="suggestToDownloadFavorite">У вас %d улюблених композцій. Хочете завантажити їх на телефон, і вони будуть доступні офф-лайн?</string>
-    <string name="downloading">Завантаження композицій…</string>
-    <string name="clear">Видалити</string>
+    <string name="downloading">Tracks werden heruntergeladen…</string>
+    <string name="clear">Löschen</string>
     <string name="continueDownload">Продовжити завантаження?</string>
     <string name="not_all_tracks">Не всі композиції завантажено.</string>
     <string name="not_downloaded_favorite_tracks">Не всі улюблені композиції завантажено.</string>
     <string name="freeSpace">\nДоступно: %s вільного місця.</string>
-    <string name="usedSpace">\nВикористано: %s.</string>
+    <string name="usedSpace">\nBelegter Speicherplatz: %s.</string>
     <string name="downloadAllTracks">Зберігати всі композиції на пристрої.</string>
     <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої.</string>
     <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно %s вільного місця.</string>
