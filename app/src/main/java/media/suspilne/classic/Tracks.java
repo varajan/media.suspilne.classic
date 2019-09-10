@@ -195,7 +195,9 @@ class Tracks {
             new TrackEntry(78, R.string.track_078, R.string.prokofiev),
             new TrackEntry(79, R.string.track_079, R.string.prokofiev),
             new TrackEntry(80, R.string.track_080, R.string.puccini),
+
             new TrackEntry(83, R.string.track_083, R.string.verdi),
+
             new TrackEntry(85, R.string.track_085, R.string.rossini),
             new TrackEntry(86, R.string.track_086, R.string.puccini),
             new TrackEntry(87, R.string.track_087, R.string.puccini),
@@ -228,6 +230,7 @@ class Tracks {
             new TrackEntry(114, R.string.track_114, R.string.musorgsky),
             new TrackEntry(115, R.string.track_115, R.string.lysenko),
             new TrackEntry(116, R.string.track_116, R.string.bellini),
+
             new TrackEntry(118, R.string.track_118, R.string.bilash),
             new TrackEntry(119, R.string.track_119, R.string.leontovych),
             new TrackEntry(120, R.string.track_120, R.string.leontovych),
