@@ -47,7 +47,12 @@ public class TrackEntry{
     }
 
     private View getTrackView(){
-        return ActivityTracks.getActivity().findViewById(R.id.tracksList).findViewWithTag(id);
+        try{
+            return ActivityTracks.getActivity().findViewById(R.id.tracksList).findViewWithTag(id);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     void resetFavorite(){
