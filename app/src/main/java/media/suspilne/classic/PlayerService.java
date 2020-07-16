@@ -189,7 +189,7 @@ public class PlayerService extends IntentService {
     }
 
     private void playTrack(TrackEntry track){
-        if (track.id != -1){
+        if (track.id != -1 && !SettingsHelper.getBoolean(("stopPlaybackOnTimeout"))){
             long position = track.id == Tracks.getLastPlaying() ? Tracks.getLastPosition() : 0;
 
             SettingsHelper.setInt("tracks.nowPlaying", track.id);

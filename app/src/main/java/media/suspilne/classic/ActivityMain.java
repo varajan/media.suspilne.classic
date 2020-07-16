@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,34 +36,48 @@ public class ActivityMain extends AppCompatActivity
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
 
+    private  void resetTimer(){
+        if (quitTimer != null) quitTimer.cancel();
+        SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
+    }
+
     protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean("autoQuit")) {
-            if (quitTimer != null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt("timeout");
             timeout = timeout==0 ? 5 : timeout;
 
+            resetTimer();
             quitTimer = new Timer();
             quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60 * 1000);
         } else {
-            if (quitTimer != null) quitTimer.cancel();
+            resetTimer();
         }
     }
 
     class stopPlaybackOnTimeout extends TimerTask {
         @Override
         public void run() {
-            Intent intent = new Intent();
-            intent.setAction(SettingsHelper.application);
-            intent.putExtra("code", "StopPlay");
-            sendBroadcast(intent);
+            SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
         }
     }
 
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    protected boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected() && isNetworkSpeedOk();
+    }
+
+    private boolean isNetworkSpeedOk() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager != null
+                ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
+                : null;
+
+        int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
+        int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
+
+        return downSpeed > 20_000 && upSpeed > 10_000;
     }
 
     @Override
