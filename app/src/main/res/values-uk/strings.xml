@@ -18,6 +18,9 @@
 		
 		[Екран блокування] - керуйте треками не розблоковуючи телефон: пауза, наступний чи попередній запис.\n
     </string>
+    <string name="sortAsc">Відсортувати композиції за алфавітом</string>
+    <string name="groupByAuthor">Згрупувати треки за автором</string>
+    <string name="shuffle">Перемішати композиції</string>
     <string name="prev">≪ Назад</string>
     <string name="next">Далі ≫</string>
     <string name="stop">Зупинити</string>
@@ -156,7 +159,7 @@
     <string name="track_052">«Ave Maria»</string>
     <string name="track_053">«Libertango»</string>
     <string name="track_054">«Adois Nonino»</string>
-    <string name="track_055">Увертюра до опери \"Кармен\"</string>
+    <string name="track_055">Увертюра до опери «Кармен»</string>
     <string name="track_056">Хабанера Кармен з опери «Кармен»</string>
     <string name="track_057">Концерт для фортепіано та симфонічного оркестру – 1ша частина (Allegro molto moderato)</string>
     <string name="track_060">«У печері гірського короля» – Сюїта № 1 з музики до драми Г. Ібсена «Пер Гюнт»</string>
@@ -165,7 +168,7 @@
     <string name="track_061">«Танець з шаблями» з балету «Гаяне»</string>
     <string name="track_062">Увертюра до оперети «Орфей у пеклі»</string>
     <string name="track_063">«Баркарола» з опери «Казки Гофмана»</string>
-    <string name="track_064">\"Менует\" з Квінтету твір 11 №5</string>
+    <string name="track_064">Менует з Квінтету твір 11 №5</string>
     <string name="track_065">«Танець годинників» з опери «Джоконда»</string>
     <string name="track_066">«Місячне сяйво» з «Бергамської сюїти»</string>
     <string name="track_067">«Ніч на Лисій горі» (Симфонічна картина для симфонічного оркестру)</string>
@@ -198,7 +201,7 @@
     <string name="track_095">Ноктюрн №3 «Мрії кохання»</string>
     <string name="track_096">Концерт №1 для віолончелі з оркестром до мажор, 3 частина Allegro molto</string>
     <string name="track_097">Концерт  для труби з оркестром, 3 частина Allegro</string>
-    <string name="track_098">\"Вальс\". До дієз мінор. Твір 64 №2</string>
+    <string name="track_098">Вальс. До дієз мінор. Твір 64 №2</string>
     <string name="track_099">Вальс ре бемоль мажор Твір 64 №1</string>
     <string name="track_100">Вальс Фа мінор Твір 69 №1</string>
     <string name="track_101">«Фантазія-експромт» твір 66</string>
@@ -214,7 +217,7 @@
     <string name="track_111">«Прогулянка» з циклу «Картинки з виставки»</string>
     <string name="track_112">«Гном» з циклу «Картинки з виставки»</string>
     <string name="track_113">«Хатинка на курячих ніжках (Баба Яга)»  з циклу «Картинки з виставки»</string>
-    <string name="track_114">«Богатирські ворота (У стольному граді Києві)»  з циклу «Картинки з виставки»</string>
+    <string name="track_114">«Богатирські ворота (У стольному граді Києві)» з циклу «Картинки з виставки»</string>
     <string name="track_115">«Боже великий, єдиний» («Молитва за Україну»)</string>
     <string name="track_116">Каватина Норми з опери «Норма»</string>
     

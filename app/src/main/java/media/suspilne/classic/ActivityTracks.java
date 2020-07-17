@@ -145,21 +145,24 @@ public class ActivityTracks extends ActivityMain {
         activityTitle.setText(tracks.filter.equals("") ? getString(R.string.tracks) : "\u2315 " + tracks.filter);
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
+        StringBuilder list = new StringBuilder();
 
-        for (final TrackEntry track:tracks.getTracks()) {
+        for (final TrackEntry track:tracks.getTracksList()) {
             if (tracks.showOnlyFavorite && !track.isFavorite || !track.matchesFilter(tracks.filter)){
                 track.hide();
             }else{
                 track.show();
                 visibility = View.GONE;
+                list.append(track.id).append(";");
             }
         }
 
         nothing.setVisibility(visibility);
+        SettingsHelper.setString("filteredTracksList", list.toString());
     }
 
     private void showTracks(){
-        for (final TrackEntry track:tracks.getTracks()) {
+        for (final TrackEntry track:tracks.getTracksList()) {
             View trackView = LayoutInflater.from(this).inflate(R.layout.track_item, tracksList, false);
             trackView.setTag(track.id);
             tracksList.addView(trackView);
@@ -246,7 +249,7 @@ public class ActivityTracks extends ActivityMain {
         TrackEntry track = tracks.getById(Tracks.getNowPlaying());
         boolean isPaused = Tracks.isPaused();
 
-        for (TrackEntry item:tracks.getTracks()){
+        for (TrackEntry item:tracks.getTracksList()){
             ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
             boolean isPlaying = !isPaused && track != null && item.id == track.id;
 

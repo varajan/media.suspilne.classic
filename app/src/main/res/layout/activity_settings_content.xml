@@ -51,7 +51,15 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@+id/language"
                     app:layout_constraintStart_toEndOf="@id/language" />
-            </LinearLayout>
+                </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar0"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="-5dp" />
 
             <Switch
                 android:id="@+id/downloadAllTracks"
@@ -79,19 +87,74 @@
                 tools:typeface="serif"
                 app:layout_constraintStart_toStartOf="parent" />
 
-        <Switch
-            android:id="@+id/showOnlyFavorite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/chalkboard"
-            android:text="@string/showOnlyFavorite"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTracks"
-            tools:typeface="serif" />
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="-5dp" />
+
+            <Switch
+                android:id="@+id/showOnlyFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
+                android:text="@string/showOnlyFavorite"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTracks"
+                tools:typeface="serif" />
+
+            <Switch
+                android:id="@+id/sortAsc"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/sortAsc"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/groupByAuthor"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/groupByAuthor"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/shuffle"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/shuffle"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar3"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="-5dp" />
 
             <Switch
                 android:id="@+id/autoQuit"

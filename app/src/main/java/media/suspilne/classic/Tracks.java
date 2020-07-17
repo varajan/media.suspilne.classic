@@ -1,9 +1,11 @@
 package media.suspilne.classic;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 class Tracks {
     String filter = SettingsHelper.getString("tracksFilter");
@@ -42,57 +44,50 @@ class Tracks {
     }
 
     TrackEntry getPrevious(){
+        boolean skip = true;
         int nowPlaying = getNowPlaying();
-        List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
+        List<String> ids = Arrays.asList( SettingsHelper.getString("filteredTracksList").split(";") );
+        Collections.reverse(ids);
 
-        for (int i = tracks.size() - 1; i >= 0; i--){
-            TrackEntry track = tracks.get(i);
+        for(String id:ids){
+            int taleId = Integer.parseInt(id);
 
-            if (track.id != nowPlaying && skip) { continue; }
-            if (track.id == nowPlaying) { skip = false; continue; }
+            if (taleId != nowPlaying && skip) continue;
+            if (taleId == nowPlaying) {skip = false; continue;}
 
-            return track;
+            return getById(taleId);
         }
 
-        return tracks.size() == 0 ? new TrackEntry() : tracks.get(tracks.size() - 1);
+        return ids.size() == 0 ? new TrackEntry() : getById(ids.get(0));
     }
 
     TrackEntry getNext(){
+        boolean skip = true;
         int nowPlaying = getNowPlaying();
-        List<TrackEntry> tracks = getTracks(showOnlyFavorite, filter);
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
+        List<String> ids = ListHelper.removeBlank(SettingsHelper.getString("filteredTracksList").split(";"));
 
-        for (int i = 0; i < tracks.size(); i++){
-            TrackEntry track = tracks.get(i);
+        for(String id:ids){
+            int taleId = Integer.parseInt(id);
 
-            if (track.id != nowPlaying && skip) { continue; }
-            if (track.id == nowPlaying) { skip = false; continue; }
+            if (taleId != nowPlaying && skip) continue;
+            if (taleId == nowPlaying) {skip = false; continue;}
 
-            return track;
+            return getById(taleId);
         }
 
-        return tracks.size() == 0 ? new TrackEntry() : tracks.get(0);
+        return ids.size() == 0 ? new TrackEntry() : getById(ids.get(0));
     }
 
     TrackEntry getById(int id){
-        for (TrackEntry track:getTracks()) {
+        for (TrackEntry track:items) {
             if (track.id == id) return track;
         }
 
         return null;
     }
 
-    List<TrackEntry> getTracks(boolean onlyFavorite, String filter){
-        List<TrackEntry> result = new ArrayList<>();
-
-        for (TrackEntry track:getTracks()) {
-            if (track.shouldBeShown(onlyFavorite, filter)){
-                result.add(track);
-            }
-        }
-
-        return result;
+    TrackEntry getById(String id) {
+        return getById(Integer.parseInt(id));
     }
 
     List<TrackEntry> getTracks(boolean onlyFavorite){
@@ -106,6 +101,56 @@ class Tracks {
                 -> track1.getAuthor().equals(track2.getAuthor())
                 ?  track1.getTitle().compareTo(track2.getTitle())
                 :  track1.getAuthor().compareTo(track2.getAuthor()));
+
+        return result;
+    }
+
+    int compare(String arg1, String arg2) {
+        Collator collator = Collator.getInstance(new Locale(LocaleManager.getLanguage()));
+        collator.setStrength(Collator.PRIMARY);
+
+        return collator.compare(removeQuotes(arg1), removeQuotes(arg2));
+    }
+
+    String removeQuotes(String string)
+    {
+        return string
+                .replace("\"", "")
+                .replace("«", "")
+                .replace("»", "")
+                .replace(",", "")
+                .replace(".", "")
+                .replace("№", "");
+    }
+
+    public void setTracksList(){
+        boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
+        boolean isGroupByAuthor = SettingsHelper.getBoolean("groupByAuthor");
+        StringBuilder list = new StringBuilder();
+        List<TrackEntry> result = new ArrayList<>(items);
+
+        if (!isSortAsc){ Collections.shuffle(result); }
+        if (isSortAsc && !isGroupByAuthor){ Collections.sort(result, (track1, track2) -> compare(track1.getTitle(), track2.getTitle())); }
+        if (isSortAsc && isGroupByAuthor){
+            Collections.sort(result, (tack1, tack2)
+                    -> tack1.getAuthor().equals(tack2.getAuthor())
+                    ?  compare(tack1.getTitle(), tack2.getTitle())
+                    :  compare(tack1.getAuthor(), tack2.getAuthor()));
+        }
+
+        for (TrackEntry track:result) { list.append(track.id).append(";"); }
+
+        SettingsHelper.setString("tracksList", list.toString());
+    }
+
+    public List<TrackEntry> getTracksList(){
+        List<TrackEntry> result = new ArrayList<>();
+
+        if (SettingsHelper.getString("tracksList", "").length() == 0) setTracksList();
+
+        for(String id:SettingsHelper.getString("tracksList").split(";")){
+            result.add(getById(id));
+        }
 
         return result;
     }

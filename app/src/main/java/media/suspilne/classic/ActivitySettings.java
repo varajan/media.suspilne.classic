@@ -20,6 +20,9 @@ public class ActivitySettings extends ActivityMain {
     private Switch downloadAllTracks;
     private Switch downloadFavoriteTracks;
     private Switch showOnlyFavorite;
+    private Switch sortAsc;
+    private Switch groupByAuthor;
+    private Switch shuffle;
     private Switch autoQuit;
     private SeekBar timeout;
     private TextView timeoutText;
@@ -36,6 +39,9 @@ public class ActivitySettings extends ActivityMain {
         downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
         downloadFavoriteTracks = this.findViewById(R.id.downloadFavoriteTracks);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
+        sortAsc = this.findViewById(R.id.sortAsc);
+        groupByAuthor = this.findViewById(R.id.groupByAuthor);
+        shuffle = this.findViewById(R.id.shuffle);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
@@ -46,14 +52,41 @@ public class ActivitySettings extends ActivityMain {
 
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
+        sortAsc.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("sortAsc", isChecked));
+        groupByAuthor.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByAuthor", isChecked));
+        shuffle.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("shuffle", isChecked));
 
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
-        languages.setOnItemSelectedListener(omLanguageSelect);
+        languages.setOnItemSelectedListener(onLanguageSelect);
     }
 
     void setSwitch(String title, boolean isChecked){
         SettingsHelper.setBoolean(title, isChecked);
+        setSorting(title, isChecked);
         setColorsAndState();
+    }
+
+    private static void setSorting(String title, boolean isChecked){
+        if (!title.equals("shuffle") && !title.equals("sortAsc") && !title.equals("groupByAuthor")) return;
+
+        if (title.equals("shuffle") && isChecked){
+            SettingsHelper.setBoolean("sortAsc", false);
+            SettingsHelper.setBoolean("groupByAuthor", false);
+        }
+
+        if (title.equals("shuffle") && !isChecked){
+            SettingsHelper.setBoolean("sortAsc", true);
+        }
+
+        if (title.equals("sortAsc") && isChecked){
+            SettingsHelper.setBoolean("shuffle", false);
+        }
+
+        if (title.equals("sortAsc") && !isChecked){
+            SettingsHelper.setBoolean("shuffle", true);
+        }
+
+        new Tracks().setTracksList();
     }
 
     private void setLanguages(){
@@ -150,6 +183,9 @@ public class ActivitySettings extends ActivityMain {
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         boolean isDownloadAllTracks = SettingsHelper.getBoolean("downloadAllTracks");
         boolean isDownloadFavoriteTracks = SettingsHelper.getBoolean("downloadFavoriteTracks");
+        boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
+        boolean isGroupByAuthor = SettingsHelper.getBoolean("groupByAuthor");
+        boolean isShuffle = SettingsHelper.getBoolean("shuffle");
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -181,9 +217,19 @@ public class ActivitySettings extends ActivityMain {
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
+
+        sortAsc.setChecked(isSortAsc);
+        sortAsc.setTextColor(isSortAsc ? primaryDark : primary);
+
+        groupByAuthor.setChecked(isGroupByAuthor);
+        groupByAuthor.setTextColor(isGroupByAuthor ? primaryDark : primary);
+        groupByAuthor.setEnabled(!isShuffle);
+
+        shuffle.setChecked(isShuffle);
+        shuffle.setTextColor(isShuffle ? primaryDark : primary);
     }
 
-    AdapterView.OnItemSelectedListener omLanguageSelect = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener onLanguageSelect = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String code = ((Country) languages.getSelectedItem()).code;
