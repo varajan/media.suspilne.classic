@@ -279,11 +279,10 @@ class Tracks {
             new TrackEntry(118, "03:46", R.string.track_118, R.string.bilash),
             new TrackEntry(119, "02:00", R.string.track_119, R.string.leontovych),
             new TrackEntry(120, "01:45", R.string.track_120, R.string.leontovych),
-            new TrackEntry(121, "03:07", R.string.track_121, R.string.leontovych)
-// the tracks are not available any more
-//            new TrackEntry(122, "00:00", R.string.track_122, R.string.leontovych),
-//            new TrackEntry(123, "00:00", R.string.track_123, R.string.leontovych),
-//            new TrackEntry(124, "00:00", R.string.track_124, R.string.elgar),
-//            new TrackEntry(125, "00:00", R.string.track_125, R.string.chaikovsky)
+            new TrackEntry(121, "03:07", R.string.track_121, R.string.leontovych),
+            new TrackEntry(122, "04:32", R.string.track_122, R.string.leontovych),
+            new TrackEntry(123, "01:36", R.string.track_123, R.string.leontovych),
+            new TrackEntry(124, "03:28", R.string.track_124, R.string.elgar),
+            new TrackEntry(125, "02:30", R.string.track_125, R.string.chaikovsky)
     ));
 }

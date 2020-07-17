@@ -28,7 +28,7 @@ public class Composers {
             new Composer(R.string.mendelson),
             new Composer(R.string.bach),
             new Composer(R.string.musorgsky),
-//            new Composer(R.string.elgar),
+            new Composer(R.string.elgar),
             new Composer(R.string.leontovych),
             new Composer(R.string.bilash),
             new Composer(R.string.bellini),
