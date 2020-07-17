@@ -74,6 +74,18 @@
             app:fontFamily="@font/chalkboard"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/author"
+            android:layout_marginStart="8dp"
+            android:text=""
+            android:textColor="@color/colorAccent"
+            android:textSize="6pt"
+            app:fontFamily="@font/chalkboard"
+            app:layout_constraintTop_toBottomOf="@+id/author" />
+
         <ImageView
             android:id="@+id/favorite"
             android:layout_width="40dp"

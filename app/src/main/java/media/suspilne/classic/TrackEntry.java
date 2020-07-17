@@ -21,10 +21,11 @@ public class TrackEntry{
     boolean isDownloaded;
     String stream;
     String fileName;
+    String duration;
 
     TrackEntry(){ id = -1; }
 
-    TrackEntry(int id, int title, int name){
+    TrackEntry(int id, String duration, int title, int name){
         this.id = id;
         this.titleId = title;
         this.authorNameId = name;
@@ -32,6 +33,7 @@ public class TrackEntry{
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
         this.fileName = fileName(id);
+        this.duration = duration;
     }
 
     int getAuthorId(){
@@ -123,6 +125,7 @@ public class TrackEntry{
             ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
             ((TextView) trackView.findViewById(R.id.title)).setText(titleId);
             ((TextView) trackView.findViewById(R.id.author)).setText(authorNameId);
+            ((TextView) trackView.findViewById(R.id.duration)).setText(duration);
             setDownloadedIcon();
         }catch (Exception e){
             Classic.logError("Failed to load track #" + id, false);
