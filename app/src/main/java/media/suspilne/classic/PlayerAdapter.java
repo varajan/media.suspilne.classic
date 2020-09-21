@@ -45,7 +45,7 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
         Intent notificationIntent = new Intent(context, ActivityTracks.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
         PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
         return openTracksIntent;
