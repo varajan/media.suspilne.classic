@@ -16,29 +16,39 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
         this.context = context;
     }
 
-    private TrackEntry track(){
+    private TrackEntry getTrack() {
         return new Tracks().getById(Tracks.getNowPlaying());
     }
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return track().getTitle();
+        try {
+            return getTrack().getTitle();
+        } catch (Exception ex) {
+            return this.context.getString(R.string.title);
+        }
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return track().getAuthor();
+        try {
+            return getTrack().getAuthor();
+        } catch (Exception ex) {
+            return this.context.getString(R.string.author);
+        }
     }
 
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        Composer composer = new Composer((track().getAuthorId()));
-        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), composer.photo, 100, 100);
-        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
-
-        return authorPhoto;
+        try{
+            Composer composer = new Composer((getTrack().getAuthorId()));
+            Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), composer.photo, 100, 100);
+            return ImageHelper.getCircularDrawable(authorPhoto);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @Nullable
