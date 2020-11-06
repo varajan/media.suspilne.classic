@@ -97,7 +97,7 @@ public class TrackEntry{
             View track = getTrackView();
 
             if (track == null) return;
-            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
+            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)track.getY()), 300);
         }
         catch (Exception e){
             Classic.logError(e.getMessage());
