@@ -27,7 +27,10 @@
 		
 		[Lock screen] - pause or resume, select next or previous track without unlocking the phone.\n
     </string>
-    <string name="sortAsc">Sort tracks alphabetically by title</string>
+    <string name="sort91">By duration descending</string>
+    <string name="sort19">By duration ascending</string>
+    <string name="sorting">Tracks sorting:</string>
+    <string name="sortAsc">Alphabetically by title</string>
     <string name="groupByAuthor">Group tracks by author</string>
     <string name="shuffle">Shuffle tracks</string>
     <string name="prev">≪ Back</string>

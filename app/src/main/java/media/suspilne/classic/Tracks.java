@@ -50,12 +50,12 @@ class Tracks {
         Collections.reverse(ids);
 
         for(String id:ids){
-            int taleId = Integer.parseInt(id);
+            int trackId = Integer.parseInt(id);
 
-            if (taleId != nowPlaying && skip) continue;
-            if (taleId == nowPlaying) {skip = false; continue;}
+            if (trackId != nowPlaying && skip) continue;
+            if (trackId == nowPlaying) {skip = false; continue;}
 
-            return getById(taleId);
+            return getById(trackId);
         }
 
         return ids.size() == 0 ? new TrackEntry() : getById(ids.get(0));
@@ -67,12 +67,12 @@ class Tracks {
         List<String> ids = ListHelper.removeBlank(SettingsHelper.getString("filteredTracksList").split(";"));
 
         for(String id:ids){
-            int taleId = Integer.parseInt(id);
+            int trackId = Integer.parseInt(id);
 
-            if (taleId != nowPlaying && skip) continue;
-            if (taleId == nowPlaying) {skip = false; continue;}
+            if (trackId != nowPlaying && skip) continue;
+            if (trackId == nowPlaying) {skip = false; continue;}
 
-            return getById(taleId);
+            return getById(trackId);
         }
 
         return ids.size() == 0 ? new TrackEntry() : getById(ids.get(0));
@@ -124,18 +124,35 @@ class Tracks {
     }
 
     public void setTracksList(){
-        boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
-        boolean isGroupByAuthor = SettingsHelper.getBoolean("groupByAuthor");
+        String sorting = SettingsHelper.getString("sorting", "shuffle");
         StringBuilder list = new StringBuilder();
         List<TrackEntry> result = new ArrayList<>(items);
 
-        if (!isSortAsc){ Collections.shuffle(result); }
-        if (isSortAsc && !isGroupByAuthor){ Collections.sort(result, (track1, track2) -> compare(track1.getTitle(), track2.getTitle())); }
-        if (isSortAsc && isGroupByAuthor){
-            Collections.sort(result, (tack1, tack2)
-                    -> tack1.getAuthor().equals(tack2.getAuthor())
-                    ?  compare(tack1.getTitle(), tack2.getTitle())
-                    :  compare(tack1.getAuthor(), tack2.getAuthor()));
+        switch (sorting){
+            case "shuffle":
+                Collections.shuffle(result);
+                break;
+
+            case "sortAsc":
+                Collections.shuffle(result);
+                if (SettingsHelper.getBoolean("groupByAuthor")) {
+                    Collections.sort(result, (track1, track2)
+                            -> track1.getAuthor().equals(track2.getAuthor())
+                            ?  compare(track1.getTitle(), track2.getTitle())
+                            :  compare(track1.getAuthor(), track2.getAuthor()));
+                } else {
+                    Collections.sort(result, (track1, track2) -> compare(track1.getTitle(), track2.getTitle()));
+                }
+                break;
+
+            case "sort19":
+                Collections.sort(result, (track1, track2) -> compare(track1.duration, track2.duration));
+                break;
+
+            case "sort91":
+                Collections.sort(result, (track1, track2) -> compare(track1.duration, track2.duration));
+                Collections.reverse(result);
+                break;
         }
 
         for (TrackEntry track:result) { list.append(track.id).append(";"); }
