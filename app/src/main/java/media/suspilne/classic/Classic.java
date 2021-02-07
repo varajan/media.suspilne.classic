@@ -14,6 +14,7 @@ public class Classic extends Application {
 
         editor.putString("sortAsc", sharedPreferences.getString("sortAsc", "true"));
         editor.putString("tracks.paused", String.valueOf(false));
+        editor.putString("readSettingsFromGit", String.valueOf(false));
         editor.putString("tracks.lastPlaying", String.valueOf(-1));
         editor.putString("tracks.nowPlaying", String.valueOf(-1));
         editor.putString("tracksFilter", "");

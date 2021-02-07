@@ -21,6 +21,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.google.android.material.navigation.NavigationView;
@@ -71,6 +76,10 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private boolean isNetworkSpeedOk() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+            return true;
+        }
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager != null
                 ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
@@ -90,12 +99,41 @@ public class ActivityMain extends AppCompatActivity
         LocaleManager.setLanguage(this, language);
     }
 
+    private void readSettingsFromGit(){
+        if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
+
+        new Thread(() -> {
+            ArrayList<String> settings = new ArrayList<>();
+
+            try {
+                String url = "https://raw.githubusercontent.com/varajan/media.suspilne.classic/master/settings";
+                HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setConnectTimeout(15000);
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                String str;
+                while ((str = in.readLine()) != null) {
+                    settings.add(str);
+                }
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            SettingsHelper.setBoolean("useGitTracks", settings.contains("useGitTracks:true"));
+            SettingsHelper.setBoolean("readSettingsFromGit", false);
+        }).start();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String language = SettingsHelper.getString(this, "Language", LocaleManager.getLanguage());
         LocaleManager.setLanguage(this, language);
 
         ActivityMain.activity = this;
+
+        readSettingsFromGit();
 
         switch (currentView){
             case R.id.tracks_menu:

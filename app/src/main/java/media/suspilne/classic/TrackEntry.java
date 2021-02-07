@@ -26,6 +26,8 @@ public class TrackEntry{
     TrackEntry(){ id = -1; }
 
     TrackEntry(int id, String duration, int title, int name){
+        Boolean showClock = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M;
+
         this.id = id;
         this.titleId = title;
         this.authorNameId = name;
@@ -33,7 +35,7 @@ public class TrackEntry{
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
         this.fileName = fileName(id);
-        this.duration = duration;
+        this.duration = showClock ? "⏱ " + duration : duration;
     }
 
     int getAuthorId(){
@@ -145,7 +147,8 @@ public class TrackEntry{
     private String stream(int track){
         return isDownloaded(track)
             ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(track)
-            : ActivityTracks.getActivity().getResources().getString(R.string.trackUrl, track);
+            : ActivityTracks.getActivity().getResources().getString(
+                    Tracks.useGitTracks() ? R.string.gitTrackUrl : R.string.trackUrl, track);
     }
 
     public void download(){
