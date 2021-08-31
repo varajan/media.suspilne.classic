@@ -1,104 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UA: der Klassiker</string>
-    <string name="composer_tracks">Spurnummer: %d</string>
-    <string name="tracks">Alle Spuren</string>
+    <string name="app_name">UA: Klassiker</string>
+    <string name="composer_tracks">Tracksanzahl: %d</string>
+    <string name="tracks">Alle Tracks</string>
     <string name="settings">Die Einstellungen</string>
     <string name="composers">Komponisten</string>
-    <string name="info">Über die Bewerbung</string>
+    <string name="info">Über das Programm</string>
     <string name="description">
         Версія: %s\n\n
 
-        [Всі композиції] - 125 записів класичної музики від Суспільного Мовлення: слухайте, шукайте по назві чи автору, відмічайте як "улюблені".
+        [Alle Tracks] - 125 записів класичної музики від Суспільного Мовлення: слухайте, шукайте по назві чи автору, відмічайте як "улюблені".
         Збережені на пристрої композції позначені значком 💾\n\n
 
-        [Композитори] - Шукайте автора по імені, відсортуйте список за алфавітом або кількістю записів, відкрийте всі композиції автора в один клік.\n\n
+        [Komponisten] - Шукайте автора по імені, відсортуйте список за алфавітом або кількістю записів, відкрийте всі композиції автора в один клік.\n\n
 
         [Налаштування] - виберіть скачати всі записи чи тільки улюблені, встановіть таймер сну, тощо.\n\n\n
 		
 		[Екран блокування] - керуйте треками не розблоковуючи телефон: пауза, наступний чи попередній запис.\n
     </string>
-    <string name="rate">Оцінити</string>
-    <string name="exit">Verlassen</string>
+    <string name="rate">Bewerten</string>
+    <string name="exit">Schließen</string>
     <string name="ok">OK</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="confirm_exit">Закрити UA: Класична музика?</string>
+    <string name="confirm_exit">Möchten Sie die UA: Klassiker schließen?</string>
     <string name="x_minutes">%s Minuten</string>
     <string name="no_internet">Keine Internetverbindung!</string>
-    <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
+    <string name="sleep_timeout">Slaffen-Timer (Wiedergabe stoppen)</string>
     <string name="title">Titel</string>
     <string name="author">Autor</string>
     <string name="language_ua">Ukrainisch (Ukrainian)</string>
 	<string name="language_en">Englisch (English)</string>
     <string name="language_de">Deutsch (German)</string>
     <string name="language">Sprache:</string>
-    <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
-    <string name="nothingToShow">Нічого не знайдено</string>
+    <string name="showOnlyFavorite">Zeigen nur beliebte Tracks</string>
+    <string name="nothingToShow">Nichts zu zeigen</string>
     <string name="filterHint">Titel oder Autor</string>
-    <string name="download_completed">Завантажено композицій: %d</string>
+    <string name="download_completed">Traksherunterladendanzahl: %d</string>
     <string name="done">Gemacht.</string>
     <string name="an_error_occurred">Ein Fehler ist aufgetreten.</string>
-    <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>
+    <string name="not_enough_space">Herunterladung ist nicht möglich. Es gibt nur %s frei Speicherplatz, obwohl %s ist erforderlich.</string>
     <string name="download">Herunterladen</string>
-    <string name="suggestToDownloadFavorite">У вас %d улюблених композцій. Хочете завантажити їх на телефон, і вони будуть доступні офф-лайн?</string>
-    <string name="downloading">Tracks werden heruntergeladen…</string>
+    <string name="suggestToDownloadFavorite">Sie haben %d beliebt Tracks. Möchten Sie sie heruntergeladen, um ohne Internetverbindung zu horen?</string>
+    <string name="downloading">Tracksheruntergeladung…</string>
     <string name="clear">Löschen</string>
-    <string name="continueDownload">Продовжити завантаження?</string>
-    <string name="not_all_tracks">Не всі композиції завантажено.</string>
-    <string name="not_downloaded_favorite_tracks">Не всі улюблені композиції завантажено.</string>
-    <string name="freeSpace">\nДоступно: %s вільного місця.</string>
+    <string name="continueDownload">Weitermach die Tracks Herunterladen?</string>
+    <string name="not_all_tracks">Nich alle Tracks werden heruntergeladen.</string>
+    <string name="not_downloaded_favorite_tracks">Nich alle beliebte Tracks werden heruntergeladen.</string>
+    <string name="freeSpace">\nEs gibt %s frei Speicherplatz.</string>
     <string name="usedSpace">\nBelegter Speicherplatz: %s.</string>
-    <string name="downloadAllTracks">Зберігати всі композиції на пристрої.</string>
-    <string name="downloadFavoriteTracks">Зберігати улюблені композиції на пристрої.</string>
-    <string name="downloadAllTracksQuestion">Зберігти всі композиції на пристрої? Для цього потрібно приблизно %s вільного місця.</string>
-    <string name="downloadFavoriteTracksQuestion">Зберігати тільки улюблені композиції на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
-    <string name="clearAllTracksQuestion">Видалити збережені композиції? Улюблені клмпозиції залишаться на телефоні.</string>
-    <string name="clearFavoriteTracksQuestion">Видалити збережені улюблені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
-    <string name="bach">Йоганн Себастьян Бах</string>
-    <string name="barber">Самюел Барбер</string>
-    <string name="beethoven">Людвіг ван Бетховен</string>
-    <string name="bellini">Вінченцо Белліні</string>
-    <string name="bilash">Олександр Білаш</string>
-    <string name="bizet">Жорж Бізе</string>
-    <string name="boccherini">Луїджі Боккеріні</string>
-    <string name="borodin">Олександр Бородін</string>
-    <string name="brahms">Йоганнес Брамс</string>
-    <string name="chaikovsky">Петро Чайковський</string>
-    <string name="chopin">Фредерік Шопен</string>
-    <string name="debussy">Клод Дебюссі</string>
-    <string name="donizetti">Гаетано Доніцетті</string>
-    <string name="dukas">Поль Дюка</string>
-    <string name="elgar">Едуард Елгар</string>
-    <string name="gounod">Шарль Гуно</string>
-    <string name="grieg">Едвард Гріг</string>
-    <string name="handel">Георг Фрідріх Гендель</string>
-    <string name="haydn">Йозеф Гайдн</string>
-    <string name="khachaturian">Арам Хачатурян</string>
-    <string name="leontovych">Микола Леонтович</string>
-    <string name="list">Ференц Ліст</string>
-    <string name="lysenko">Микола Лисенко</string>
-    <string name="mendelson">Фелікс Мендельсон Бартольді</string>
-    <string name="mozart">Вольфганг Амадей Моцарт</string>
-    <string name="musorgsky">Модест Мусоргський</string>
-    <string name="offenbach">Жак Оффенбах</string>
-    <string name="orff">Карл Орф</string>
-    <string name="ravel">Моріс Жозеф Равель</string>
-    <string name="rossini">Джоаккіно Антоніо Россіні</string>
-    <string name="piazzolla">Астор П\'яццолла</string>
-    <string name="ponchielli">Амількаре Понк\'єллі</string>
-    <string name="prokofiev">Сергій Прокоф’єв</string>
-    <string name="puccini">Джакомо Пуччіні</string>
-    <string name="rachmaninov">Сергій Рахманінов</string>
-    <string name="rimsky_korsakov">Микола Андрійович Римський-Корсаков</string>
-    <string name="saint_saens">Каміль Сен-Санс</string>
-    <string name="shostakovich">Дмитро Шостакович</string>
-    <string name="strauss_i">Йоганн Штраус (батько)</string>
-    <string name="strauss_ii">Йоганн Штраус (син)</string>
-    <string name="strauss_eduard">Едуард Штраус</string>
-    <string name="verdi">Джузеппе Верді</string>
-    <string name="vivaldi">Антоніо Вівальді</string>
-    <string name="wagner">Ріхард Вагнер</string>
+    <string name="downloadAllTracks">Speichern alle Tracks auf Telefon.</string>
+    <string name="downloadFavoriteTracks">Speichern beliebte Tracks auf Telefon.</string>
+    <string name="downloadAllTracksQuestion">Möchten Sie alle Tracks auf Telefon speichern? %s frei Speicherplatz ist erforderlich.</string>
+    <string name="downloadFavoriteTracksQuestion">Möchten Sie beliebte Tracks auf Telefon speichern? Sie benötigen das Internet, um anderen zuzuhören.</string>
+    <string name="clearAllTracksQuestion">Möchten Sie speichern Tracks zu löschen? Lieblingstracks bleiben auf dem Handy.</string>
+    <string name="clearFavoriteTracksQuestion">Möchten Sie alle speichern Tracks zu löschen? In Zukunft brauchen Sie das Internet, um zuzuhören.</string>
+
+    <string name="bach">Johann Sebastian Bach</string>
+    <string name="barber">Samuel Osmond Barber</string>
+    <string name="beethoven">Ludwig van Beethoven</string>
+    <string name="bellini">Vincenzo Bellini</string>
+    <string name="bilash">Oleksandr Bilasch</string>
+    <string name="bizet">Georges Bizet</string>
+    <string name="boccherini">Luigi Rodolfo Boccherini</string>
+    <string name="borodin">Alexander Borodin</string>
+    <string name="brahms">Johannes Brahms</string>
+    <string name="chaikovsky">Pjotr Tschaikowski</string>
+    <string name="chopin">Fryderyk Chopin</string>
+    <string name="debussy">Claude Debussy</string>
+    <string name="donizetti">Gaetano Donizetti</string>
+    <string name="dukas">Paul Dukas</string>
+    <string name="elgar">Edward Elgar</string>
+    <string name="gounod">Charles Gounod</string>
+    <string name="grieg">Edvard Grieg</string>
+    <string name="handel">Georg Friedrich Händel</string>
+    <string name="haydn">Joseph Haydn</string>
+    <string name="khachaturian">Aram Chatschaturjan</string>
+    <string name="leontovych">Mykola Leontowytsch</string>
+    <string name="list">Franz Liszt</string>
+    <string name="lysenko">Mykola Lyssenko</string>
+    <string name="mendelson">Felix Mendelssohn</string>
+    <string name="mozart">Wolfgang Amadeus Mozart</string>
+    <string name="musorgsky">Modest Mussorgski</string>
+    <string name="offenbach">Jacques Offenbach</string>
+    <string name="orff">Karl Heinrich Maria Orff</string>
+    <string name="ravel">Joseph-Maurice Ravel</string>
+    <string name="rossini">Gioachino Antonio Rossini</string>
+    <string name="piazzolla">Astor Piazzolla</string>
+    <string name="ponchielli">Amilcare Ponchielli</string>
+    <string name="prokofiev">Sergei Prokofjew</string>
+    <string name="puccini">Giacomo Puccini</string>
+    <string name="rachmaninov">Sergei Rachmaninow</string>
+    <string name="rimsky_korsakov">Nikolai Rimski-Korsakow</string>
+    <string name="saint_saens">Camille Saint-Saëns</string>
+    <string name="shostakovich">Dmitri Schostakowitsch</string>
+    <string name="strauss_i">Johann Strauss (Vater)</string>
+    <string name="strauss_ii">Johann Strauss (Sohn)</string>
+    <string name="strauss_eduard">Eduard Strauß</string>
+    <string name="verdi">Giuseppe Verdi</string>
+    <string name="vivaldi">Antonio Vivaldi</string>
+    <string name="wagner">Richard Wagner</string>
 
     <string name="track_001">Концерт №2 для фортепіано з оркестром, твір 18, 1 частина - Moderato</string>
     <string name="track_002">Вокаліз, твір 34, №14. Перекладення для інструментального тріо В.Крюкова (оригінал для голосу і фортепіано)</string>
