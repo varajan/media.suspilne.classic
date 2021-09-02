@@ -17,8 +17,7 @@
 		
 		[Bildschirm sperren] - verwalten Tracks, ohne das Telefon zu entsperren: Pause, nächster oder vorheriger Track.\n\n\n
 		
-		Mahnung: Ich habe übersetzt selbst alle Texte. Melden Sie mir bitte wenn Sie eine Fehler gefunden haben.\n
-		Email: dmytrenko.sergii@gmail.com\n
+		Mahnung: Ich habe übersetzt selbst alle Texte. Melden Sie mir bitte wenn Sie eine Fehler gefunden haben.\nEmail: dmytrenko.sergii@gmail.com\n
     </string>
     <string name="rate">Bewerten</string>
     <string name="exit">Schließen</string>
@@ -187,45 +186,45 @@
 
     <string name="track_083">«Tisch» aus der Oper «La Traviata»</string>
 
-    <string name="track_085">Каватина Фігаро «Largo al factotum» з першої дії опери «Севільський цирульник»</string>
-    <string name="track_086">Арія Каварадосі «E lucevan le stelle» з третьої дії опери «Тоска»</string>
-    <string name="track_087">Арія Рудольфа «Che gelida manina» з першої дії опери «Богема»</string>
-    <string name="track_088">Арія «Nessun dorma» Принца Калафа з опери «Турандот»</string>
-    <string name="track_089">Арія Альфреда з другої дії опери «Травіата»</string>
-    <string name="track_090">Пісенька Герцога «La donna è mobile» з опери «Ріголетто»</string>
-    <string name="track_091">Романс Неморіно «Una furtiva lagrima» з опери «Любовний напій»</string>
-    <string name="track_092">Куплети Мефістофеля з опери «Фауст»</string>
-    <string name="track_093">Концерт №1 для фортепіано з оркестром 1 частина Allegro maestoso</string>
-    <string name="track_094">«Втіха»  (Consolation) №3, Lento placido</string>
-    <string name="track_095">Ноктюрн №3 «Мрії кохання»</string>
-    <string name="track_096">Концерт №1 для віолончелі з оркестром до мажор, 3 частина Allegro molto</string>
-    <string name="track_097">Концерт  для труби з оркестром, 3 частина Allegro</string>
-    <string name="track_098">\"Вальс\". До дієз мінор. Твір 64 №2</string>
-    <string name="track_099">Вальс ре бемоль мажор Твір 64 №1</string>
-    <string name="track_100">Вальс Фа мінор Твір 69 №1</string>
-    <string name="track_101">«Фантазія-експромт» твір 66</string>
-    <string name="track_102">Полонез «Героїчний» ля бемоль мажор, твір 53</string>
-    <string name="track_103">Етюд №12 «Революційний» для 2-х фортепіано та симфонічного оркестру</string>
-    <string name="track_104">Романс з кінофільму «Овод»</string>
-    <string name="track_105">Вальс до драми М. Лермонтова «Маскарад»</string>
-    <string name="track_106">Увертюра до опери «Тарас Бульба»</string>
-    <string name="track_107">«Пісня жайвіра» (березень) з циклу «Пори року»</string>
-    <string name="track_108">«Пролісок» (квітень) з циклу «Пори року»</string>
-    <string name="track_109">«Баркарола» (червень) з циклу «Пори року»</string>
-    <string name="track_110">«На трійці» (листопад) з циклу «Пори року»</string>
-    <string name="track_111">«Прогулянка» з циклу «Картинки з виставки»</string>
-    <string name="track_112">«Гном» з циклу «Картинки з виставки»</string>
-    <string name="track_113">«Хатинка на курячих ніжках (Баба Яга)»  з циклу «Картинки з виставки»</string>
-    <string name="track_114">«Богатирські ворота (У стольному граді Києві)»  з циклу «Картинки з виставки»</string>
-    <string name="track_115">«Боже великий, єдиний» («Молитва за Україну»)</string>
-    <string name="track_116">Каватина Норми з опери «Норма»</string>
+    <string name="track_085">Cavatina Figaro «Largo al factotum» aus der Oper «Der Barbier von Sevilla»</string>
+    <string name="track_086">Cavaradossis Arie «E lucevan le stelle» aus der Oper «Sehnsucht»</string>
+    <string name="track_087">Rudolfs Arie «Che gelida manina» aus der Oper «Böhmen»</string>
+    <string name="track_088">Arie des Prinzen Calaf «Nessun dorma» aus der Oper «Turandot»</string>
+    <string name="track_089">Alfreds Arie aus der Oper «La Traviata»</string>
+    <string name="track_090">Herzogslied «La donna è mobile» aus der Oper «Rigoletto»</string>
+    <string name="track_091">Nemorinos Romanze «Una furtiva lagrima» aus der Oper «Love Drink»</string>
+    <string name="track_092">Mephistopheles Verse aus der Oper «Faust»</string>
+    <string name="track_093">Konzert Nr. 1 für Klavier und Orchester, Allegro maestoso</string>
+    <string name="track_094">Trost, Lento placido</string>
+    <string name="track_095">Nocturne Nr. 3 «Liebesträume»</string>
+    <string name="track_096">Concerto №1 für Violoncello und Orchester C-Dur, 3. Teil Allegro molto</string>
+    <string name="track_097">Trompetenkonzert Es-Dur, 3. Teil Allegro</string>
+    <string name="track_098">Walzer. Zu scharfes Moll. Arbeite 64 Nr. 2</string>
+    <string name="track_099">Walzer in Des-Dur-Dur 64 Nr. 1</string>
+    <string name="track_100">Walzer f-moll Essay 69 Nr. 1</string>
+    <string name="track_101">«Fantasie-improvisiert» Werk 66</string>
+    <string name="track_102">Polonaise «Heroisch» As-Dur, Werk 53</string>
+    <string name="track_103">Etüde Nr. 12 «Revolutionär» für 2 Klaviere und Sinfonieorchester</string>
+    <string name="track_104">Romantik aus dem Film «Ovod»</string>
+    <string name="track_105">Walzer zu M. Lermontovs Drama «Masquerade»</string>
+    <string name="track_106">Ouvertüre zur Oper «Taras Bulba»</string>
+    <string name="track_107">«Das Lied vom Jay» (März) aus dem Zyklus «Jahreszeiten»</string>
+    <string name="track_108">«Schneeglöckchen» (April) aus dem Zyklus «Jahreszeiten»</string>
+    <string name="track_109">«Barkarole» (Juni) aus dem Zyklus «Jahreszeiten»</string>
+    <string name="track_110">«Auf der Dreifaltigkeit» (November) aus dem Zyklus «Jahreszeiten»</string>
+    <string name="track_111">«Spaziergang» aus der Serie «Bilder aus der Ausstellung»</string>
+    <string name="track_112">«Zwerg» aus der Serie «Bilder aus der Ausstellung»</string>
+    <string name="track_113">«Hütte auf Hühnerbeinen (Baba Yaga)» aus der Serie «Bilder aus der Ausstellung»</string>
+    <string name="track_114">«Heroisches Tor (In der Hauptstadt Kiew)» aus der Serie «Bilder aus der Ausstellung»</string>
+    <string name="track_115">Gebet für die Ukraine</string>
+    <string name="track_116">Cavatina Norma aus der Oper «Norma»</string>
     
-    <string name="track_118">Журавка</string>
-    <string name="track_119">Щедрик</string>
-    <string name="track_120">Дударик</string>
-    <string name="track_121">Пряля</string>
-    <string name="track_122">Піють півні</string>
-    <string name="track_123">За городом качки пливуть</string>
-    <string name="track_124">Варіації «Енігма»</string>
-    <string name="track_125">«Іспанський танець» з балету «Лебедине озеро»</string>
+    <string name="track_118">Kran (Zhuravka)</string>
+    <string name="track_119">Großzügig (Schedrik)</string>
+    <string name="track_120">Dudarik</string>
+    <string name="track_121">Spinnen (Prialia)</string>
+    <string name="track_122">Hähne trinken</string>
+    <string name="track_123">Enten schwimmen außerhalb der Stadt</string>
+    <string name="track_124">Enigma-Variationen</string>
+    <string name="track_125">«Spanischer Tanz» aus dem Ballett «Schwanensee»</string>
 </resources>
