@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UA: Klassiker</string>
     <string name="composer_tracks">Tracksanzahl: %d</string>
     <string name="tracks">Alle Tracks</string>
     <string name="settings">Die Einstellungen</string>
@@ -33,7 +32,7 @@
     <string name="ok">OK</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="confirm_exit">Möchten Sie das UA: Klassiker schließen?</string>
+    <string name="confirm_exit">Möchten Sie das UA: Classic schließen?</string>
     <string name="x_minutes">%s Minuten</string>
     <string name="no_internet">Keine Internetverbindung!</string>
     <string name="sleep_timeout">Slaffen-Timer (Wiedergabe stoppen)</string>

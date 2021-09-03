@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">UA: Classic</string>
+    <string name="app_name" translatable="false">UA: Classic</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
-    <string name="trackUrl" translatable="false">https://classical.suspilne.media/inc/audio/%02d.mp3</string>
+	<string name="trackUrl" translatable="false">https://classical.suspilne.media/songs/audio/%02d.mp3</string>
+	<string name="gitTrackUrl" translatable="false">https://github.com/varajan/media.suspilne.classic/raw/master/tracks/%02d.mp3</string>
 	<string name="language_ua">Ukrainian (Українська)</string>
     <string name="language_en">English</string>
     <string name="language_de">German (Deutsch)</string>
@@ -19,7 +20,7 @@
     <string name="description">
         Version %s\n\n
 
-        [All tracks] - 125 tracks of classical music from Public Broadcasting Company: listen, search by title or author, mark as "favorite".
+        [All tracks] - 125 tracks of classical music from Suspilne Radio: listen, search by title or author, mark as "favorite".
         Saved locally tracks are marked with 💾 sign.\n\n
 
         [Composers] - search composers by name, order by name or number of tracks, open all composer\'s tracks with one click.\n\n
@@ -176,12 +177,12 @@
     <string name="track_062">Orpheus in the Underworld, overture</string>
     <string name="track_063">The Tales of Hoffmann, barcarole</string>
     <string name="track_064">Meniute from the Quintet, essay 11 No.5</string>
-    <string name="track_065">"Opera La Gioconda, Clock Dance "</string>
+    <string name="track_065">Opera La Gioconda, Clock Dance</string>
     <string name="track_066">The Suite bergamasque, Clair de lune</string>
     <string name="track_067">Night on Bald Mountain</string>
     <string name="track_068">The Sorcerer\'s Apprentice</string>
     <string name="track_069">Adagio for Strings</string>
-    <string name="track_070">" The Tale of Tsar Saltan, Flight of the Bumblebee"</string>
+    <string name="track_070">The Tale of Tsar Saltan, Flight of the Bumblebee</string>
     <string name="track_071">Opera The Power of Fate, overture</string>
     <string name="track_072">The Carnival of the Animals, The Swan</string>
     <string name="track_073">Opera Lohengrin, Bridal Chorus</string>
