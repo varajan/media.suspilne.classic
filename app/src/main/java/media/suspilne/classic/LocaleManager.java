@@ -25,6 +25,7 @@ public class LocaleManager {
         switch (systemLanguage){
             case "uk": return "uk";
             case "en": return "en";
+            case "de": return "de";
 
             default: return "en";
         }
