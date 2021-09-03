@@ -9,12 +9,17 @@ public class Classic extends Application {
     public void onCreate() {
         super.onCreate();
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = getSharedPreferences(SettingsHelper.application, 0).edit();
+
+        editor.putString("sortAsc", sharedPreferences.getString("sortAsc", "true"));
         editor.putString("tracks.paused", String.valueOf(false));
+        editor.putString("readSettingsFromGit", String.valueOf(false));
         editor.putString("tracks.lastPlaying", String.valueOf(-1));
         editor.putString("tracks.nowPlaying", String.valueOf(-1));
         editor.putString("tracksFilter", "");
         editor.putString("errorMessage", "");
+        editor.putString("tracksList", "");
         editor.apply();
     }
 

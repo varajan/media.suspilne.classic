@@ -11,7 +11,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -189,7 +189,7 @@ public class PlayerService extends IntentService {
     }
 
     private void playTrack(TrackEntry track){
-        if (track.id != -1){
+        if (track.id != -1 && !SettingsHelper.getBoolean(("stopPlaybackOnTimeout"))){
             long position = track.id == Tracks.getLastPlaying() ? Tracks.getLastPosition() : 0;
 
             SettingsHelper.setInt("tracks.nowPlaying", track.id);

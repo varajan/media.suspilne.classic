@@ -4,7 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
@@ -16,38 +16,46 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
         this.context = context;
     }
 
-    private TrackEntry track(){
+    private TrackEntry getTrack() {
         return new Tracks().getById(Tracks.getNowPlaying());
     }
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return track().getTitle();
+        try {
+            return getTrack().getTitle();
+        } catch (Exception ex) {
+            return this.context.getString(R.string.title);
+        }
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return track().getAuthor();
+        try {
+            return getTrack().getAuthor();
+        } catch (Exception ex) {
+            return this.context.getString(R.string.author);
+        }
     }
 
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-//        if (!SettingsHelper.getBoolean("show_composer_photo")) return null;
-
-        Composer composer = new Composer((track().getAuthorId()));
-        Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), composer.photo, 100, 100);
-        authorPhoto = ImageHelper.getCircularDrawable(authorPhoto);
-
-        return authorPhoto;
+        try{
+            Composer composer = new Composer((getTrack().getAuthorId()));
+            Bitmap authorPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), composer.photo, 100, 100);
+            return ImageHelper.getCircularDrawable(authorPhoto);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
         Intent notificationIntent = new Intent(context, ActivityTracks.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
         PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
         return openTracksIntent;

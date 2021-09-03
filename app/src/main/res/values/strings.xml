@@ -4,9 +4,8 @@
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="trackUrl" translatable="false">https://classical.suspilne.media/inc/audio/%02d.mp3</string>
-    <string name="language_ua">Ukrainian (Українська)</string>
+	<string name="language_ua">Ukrainian (Українська)</string>
     <string name="language_en">English</string>
-    <string name="language_de">German (Deutsch)</string>
     <string name="language">Language:</string>
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">Nothing to show</string>
@@ -19,7 +18,8 @@
     <string name="description">
         Version %s\n\n
 
-        [All tracks] - 125 tracks of classical music from Suspilne Radio: listen, search by title or author, mark as «favorite». Saved locally tracks are marked with 💾 sign.\n\n
+        [All tracks] - 125 tracks of classical music from Public Broadcasting Company: listen, search by title or author, mark as "favorite".
+        Saved locally tracks are marked with 💾 sign.\n\n
 
         [Composers] - search composers by name, order by name or number of tracks, open all composer\'s tracks with one click.\n\n
 
@@ -27,6 +27,9 @@
 		
 		[Lock screen] - pause or resume, select next or previous track without unlocking the phone.\n
     </string>
+    <string name="prev">≪ Back</string>
+    <string name="next">Next ≫</string>
+    <string name="stop">Stop</string>
     <string name="rate">Rate application</string>
     <string name="exit">Quit</string>
     <string name="ok">OK</string>
@@ -103,7 +106,7 @@
     <string name="wagner">Richard Wagner</string>
 
     <string name="track_001">The Piano Concerto No. 2 in C minor, Op. 18, is a concerto for piano and orchestra, 1st part - Moderato</string>
-    <string name="track_002">Fourteen Songs, «Vocalise»</string>
+    <string name="track_002">Fourteen Songs, \"Vocalise\"</string>
     <string name="track_003">Six moments musicaux: No. 3 Andante cantabile in B minor</string>
     <string name="track_004">Morceaux de fantaisie, No. 2, Prélude in C-sharp minor</string>
     <string name="track_005">Morceaux de fantaisie, No. 1, Élégie in E-flat minor</string>
@@ -112,17 +115,17 @@
     <string name="track_008">The Symphony No. 3 in E♭ major, Op. 55, (Heroic Symphony) - part 3: Scherzo: Allegro vivace</string>
     <string name="track_009">The Piano Sonata No. 8 (Pathétique) in C minor, Op. 13, part 2: Adagio cantabile</string>
     <string name="track_010">The Violin Concerto in D major, Op. 61, part 3: Rondo. Allegro (D major)</string>
-    <string name="track_011">The Piano Sonata No. 14 (Moonlight Sonata) in C♯ minor «Quasi una fantasia», Op. 27, No. 2, part 2: Allegretto</string>
+    <string name="track_011">The Piano Sonata No. 14 (Moonlight Sonata) in C♯ minor \"Quasi una fantasia\", Op. 27, No. 2, part 2: Allegretto</string>
     <string name="track_012">The Piano Concerto No. 2 in B-flat major, Op. 19, part 3: Rondo Molto allegro</string>
     <string name="track_013">Egmont, Op. 84</string>
-    <string name="track_014">«Schöne Minka, ich muss scheiden!» Aus den Liedern verschiedener Völker (Songs of Various Nations)</string>
+    <string name="track_014">\"Schöne Minka, ich muss scheiden!\" Aus den Liedern verschiedener Völker (Songs of Various Nations)</string>
     <string name="track_015">The Symphony No. 5 in C minor, Op. 67, part 1</string>
-    <string name="track_016">Polonaise from the opera «Eugene Onegin»</string>
-    <string name="track_017">Waltz from the ballet «Sleeping Beauty»</string>
+    <string name="track_016">Polonaise from the opera \"Eugene Onegin\"</string>
+    <string name="track_017">Waltz from the ballet \"Sleeping Beauty\"</string>
     <string name="track_018">Flower Waltz from the Nutcracker ballet</string>
-    <string name="track_020">Waltz from the opera «Eugene Onegin»</string>
+    <string name="track_020">Waltz from the opera \"Eugene Onegin\"</string>
     <string name="track_019">Romeo and Juliet</string>
-    <string name="track_021">Dance of small swans from the «Swan Lake» ballet</string>
+    <string name="track_021">Dance of small swans from the \"Swan Lake\" ballet</string>
     <string name="track_022">Overture from Midsummer Night\'s Dream</string>
     <string name="track_023">Wedding macrh from Midsummer Night\'s Dream</string>
     <string name="track_024">O Fortune. Carmina Burana</string>
@@ -199,7 +202,7 @@
     <string name="track_096">The Piano Concerto No. 1, part 3 Allegro molto</string>
     <string name="track_097">The Tuba Concerto, part 3 Allegro</string>
     <string name="track_098">Waltz in C♯ minor, Op. 64</string>
-    <string name="track_099">Waltz in D♭ major, Minute Waltz</string>
+    <string name="track_099">" Waltz in D♭ major, Minute Waltz"</string>
     <string name="track_100">Waltz in A♭ major, L\'Adieu, Op. 69</string>
     <string name="track_101">Fantaisie-Impromptu in C♯ minor, Op. 66</string>
     <string name="track_102">Polonaise in A♭ major, Heroic or Drum, Op. 53</string>

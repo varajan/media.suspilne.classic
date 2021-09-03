@@ -1,26 +1,34 @@
 package media.suspilne.classic;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import com.google.android.material.navigation.NavigationView;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,34 +43,52 @@ public class ActivityMain extends AppCompatActivity
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
 
+    private  void resetTimer(){
+        if (quitTimer != null) quitTimer.cancel();
+        SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
+    }
+
     protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean("autoQuit")) {
-            if (quitTimer != null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt("timeout");
             timeout = timeout==0 ? 5 : timeout;
 
+            resetTimer();
             quitTimer = new Timer();
             quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60 * 1000);
         } else {
-            if (quitTimer != null) quitTimer.cancel();
+            resetTimer();
         }
     }
 
     class stopPlaybackOnTimeout extends TimerTask {
         @Override
         public void run() {
-            Intent intent = new Intent();
-            intent.setAction(SettingsHelper.application);
-            intent.putExtra("code", "StopPlay");
-            sendBroadcast(intent);
+            SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
         }
     }
 
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    protected boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected() && isNetworkSpeedOk();
+    }
+
+    private boolean isNetworkSpeedOk() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+            return true;
+        }
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager != null
+                ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
+                : null;
+
+        int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
+        int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
+
+        return downSpeed > 20_000 && upSpeed > 10_000;
     }
 
     @Override
@@ -73,12 +99,41 @@ public class ActivityMain extends AppCompatActivity
         LocaleManager.setLanguage(this, language);
     }
 
+    private void readSettingsFromGit(){
+        if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
+
+        new Thread(() -> {
+            ArrayList<String> settings = new ArrayList<>();
+
+            try {
+                String url = "https://raw.githubusercontent.com/varajan/media.suspilne.classic/master/settings";
+                HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setConnectTimeout(15000);
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                String str;
+                while ((str = in.readLine()) != null) {
+                    settings.add(str);
+                }
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            SettingsHelper.setBoolean("useGitTracks", settings.contains("useGitTracks:true"));
+            SettingsHelper.setBoolean("readSettingsFromGit", false);
+        }).start();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String language = SettingsHelper.getString(this, "Language", LocaleManager.getLanguage());
         LocaleManager.setLanguage(this, language);
 
         ActivityMain.activity = this;
+
+        readSettingsFromGit();
 
         switch (currentView){
             case R.id.tracks_menu:

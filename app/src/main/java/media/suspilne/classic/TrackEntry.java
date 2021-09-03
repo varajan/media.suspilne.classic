@@ -21,10 +21,13 @@ public class TrackEntry{
     boolean isDownloaded;
     String stream;
     String fileName;
+    String duration;
 
     TrackEntry(){ id = -1; }
 
-    TrackEntry(int id, int title, int name){
+    TrackEntry(int id, String duration, int title, int name){
+        Boolean showClock = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M;
+
         this.id = id;
         this.titleId = title;
         this.authorNameId = name;
@@ -32,6 +35,7 @@ public class TrackEntry{
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
         this.fileName = fileName(id);
+        this.duration = showClock ? "⏱ " + duration : duration;
     }
 
     int getAuthorId(){
@@ -47,7 +51,12 @@ public class TrackEntry{
     }
 
     private View getTrackView(){
-        return ActivityTracks.getActivity().findViewById(R.id.tracksList).findViewWithTag(id);
+        try{
+            return ActivityTracks.getActivity().findViewById(R.id.tracksList).findViewWithTag(id);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     void resetFavorite(){
@@ -90,7 +99,7 @@ public class TrackEntry{
             View track = getTrackView();
 
             if (track == null) return;
-            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
+            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)track.getY()), 300);
         }
         catch (Exception e){
             Classic.logError(e.getMessage());
@@ -118,6 +127,7 @@ public class TrackEntry{
             ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
             ((TextView) trackView.findViewById(R.id.title)).setText(titleId);
             ((TextView) trackView.findViewById(R.id.author)).setText(authorNameId);
+            ((TextView) trackView.findViewById(R.id.duration)).setText(duration);
             setDownloadedIcon();
         }catch (Exception e){
             Classic.logError("Failed to load track #" + id, false);
@@ -137,7 +147,8 @@ public class TrackEntry{
     private String stream(int track){
         return isDownloaded(track)
             ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(track)
-            : ActivityTracks.getActivity().getResources().getString(R.string.trackUrl, track);
+            : ActivityTracks.getActivity().getResources().getString(
+                    Tracks.useGitTracks() ? R.string.gitTrackUrl : R.string.trackUrl, track);
     }
 
     public void download(){

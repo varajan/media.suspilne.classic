@@ -1,18 +1,22 @@
 package media.suspilne.classic;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.RequiresApi;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -20,6 +24,8 @@ public class ActivitySettings extends ActivityMain {
     private Switch downloadAllTracks;
     private Switch downloadFavoriteTracks;
     private Switch showOnlyFavorite;
+    private Switch groupByAuthor;
+    private RadioGroup sorting;
     private Switch autoQuit;
     private SeekBar timeout;
     private TextView timeoutText;
@@ -36,6 +42,8 @@ public class ActivitySettings extends ActivityMain {
         downloadAllTracks = this.findViewById(R.id.downloadAllTracks);
         downloadFavoriteTracks = this.findViewById(R.id.downloadFavoriteTracks);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
+        sorting = this.findViewById(R.id.sorting);
+        groupByAuthor = this.findViewById(R.id.groupByAuthor);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
@@ -43,17 +51,49 @@ public class ActivitySettings extends ActivityMain {
 
         setLanguages();
         setColorsAndState();
+        setSorting();
 
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
+        groupByAuthor.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByAuthor", isChecked));
 
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
-        languages.setOnItemSelectedListener(omLanguageSelect);
+        languages.setOnItemSelectedListener(onLanguageSelect);
     }
 
     void setSwitch(String title, boolean isChecked){
         SettingsHelper.setBoolean(title, isChecked);
         setColorsAndState();
+
+        if (title.equals(("groupByAuthor"))) new Tracks().setTracksList();
+    }
+
+
+    private void setSorting() {
+        switch (sorting.getCheckedRadioButtonId()){
+            case R.id.shuffle:
+                SettingsHelper.setString("sorting", "shuffle");
+                groupByAuthor.setVisibility(View.GONE);
+                break;
+
+            case R.id.sortAsc:
+                SettingsHelper.setString("sorting", "sortAsc");
+                groupByAuthor.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.sort19:
+                SettingsHelper.setString("sorting", "sort19");
+                groupByAuthor.setVisibility(View.GONE);
+                break;
+
+            case R.id.sort91:
+                SettingsHelper.setString("sorting", "sort91");
+                groupByAuthor.setVisibility(View.GONE);
+                break;
+        }
+
+        setColorsAndState();
+        new Tracks().setTracksList();
     }
 
     private void setLanguages(){
@@ -151,6 +191,7 @@ public class ActivitySettings extends ActivityMain {
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         boolean isDownloadAllTracks = SettingsHelper.getBoolean("downloadAllTracks");
         boolean isDownloadFavoriteTracks = SettingsHelper.getBoolean("downloadFavoriteTracks");
+        boolean isGroupByAuthor = SettingsHelper.getBoolean("groupByAuthor");
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -182,9 +223,50 @@ public class ActivitySettings extends ActivityMain {
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
+
+        groupByAuthor.setChecked(isGroupByAuthor);
+        groupByAuthor.setTextColor(isGroupByAuthor ? primaryDark : primary);
+
+        setSortingState();
     }
 
-    AdapterView.OnItemSelectedListener omLanguageSelect = new AdapterView.OnItemSelectedListener() {
+    private void setSortingState(){
+        int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        int primary = ContextCompat.getColor(this, R.color.colorPrimary);
+
+        ((RadioButton)findViewById(R.id.shuffle)).setTextColor(primary);
+        ((RadioButton)findViewById(R.id.sortAsc)).setTextColor(primary);
+        ((RadioButton)findViewById(R.id.sort19)).setTextColor(primary);
+        ((RadioButton)findViewById(R.id.sort91)).setTextColor(primary);
+
+        sorting.setOnCheckedChangeListener(null);
+
+        switch (SettingsHelper.getString("sorting")){
+            case "sort19":
+                ((RadioButton)findViewById(R.id.sort19)).setTextColor(primaryDark);
+                sorting.check(R.id.sort19);
+                break;
+
+            case "sort91":
+                ((RadioButton)findViewById(R.id.sort91)).setTextColor(primaryDark);
+                sorting.check(R.id.sort91);
+                break;
+
+            case "sortAsc":
+                ((RadioButton)findViewById(R.id.sortAsc)).setTextColor(primaryDark);
+                sorting.check(R.id.sortAsc);
+                break;
+
+            default:
+                ((RadioButton)findViewById(R.id.shuffle)).setTextColor(primaryDark);
+                sorting.check(R.id.shuffle);
+                break;
+        }
+
+        sorting.setOnCheckedChangeListener((x, y) -> setSorting());
+    }
+
+    AdapterView.OnItemSelectedListener onLanguageSelect = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String code = ((Country) languages.getSelectedItem()).code;

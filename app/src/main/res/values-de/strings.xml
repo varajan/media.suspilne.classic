@@ -19,6 +19,16 @@
 		
 		Mahnung: Ich habe übersetzt selbst alle Texte. Melden Sie mir bitte wenn Sie eine Fehler gefunden haben.\nEmail: dmytrenko.sergii@gmail.com\n
     </string>
+    <string name="sort91">За тривалістю (за спаданням)</string>
+    <string name="sort19">За тривалістю (за зростанням)</string>
+    <string name="sorting">Відсортувати композиції:</string>
+    <string name="sortAsc">За алфавітом</string>
+    <string name="groupByAuthor">Згрупувати треки за автором</string>
+    <string name="shuffle">Перемішати композиції</string>
+    <string name="prev">≪ Назад</string>
+    <string name="next">Далі ≫</string>
+    <string name="stop">Зупинити</string>
+
     <string name="rate">Bewerten</string>
     <string name="exit">Schließen</string>
     <string name="ok">OK</string>
