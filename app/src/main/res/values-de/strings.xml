@@ -31,7 +31,7 @@
     <string name="title">Titel</string>
     <string name="author">Autor</string>
     <string name="language_ua">Ukrainisch (Українська)</string>
-	<string name="language_en">Englisch (English)</string>
+    <string name="language_en">Englisch (English)</string>
     <string name="language_de">Deutsch (German)</string>
     <string name="language">Sprache:</string>
     <string name="showOnlyFavorite">Zeigen nur beliebte Tracks</string>

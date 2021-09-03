@@ -21,7 +21,6 @@ public class LocaleManager {
 
     public static String getLanguage(){
         String systemLanguage = Locale.getDefault().getLanguage();
-        Classic.logError("System Language: " + Locale.getDefault().getCountry() + "(" + systemLanguage + ")");
 
         switch (systemLanguage){
             case "uk": return "uk";
