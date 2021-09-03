@@ -18,6 +18,12 @@
 		
 		[Екран блокування] - керуйте треками не розблоковуючи телефон: пауза, наступний чи попередній запис.\n
     </string>
+    <string name="sort91">За тривалістю (за спаданням)</string>
+    <string name="sort19">За тривалістю (за зростанням)</string>
+    <string name="sorting">Відсортувати композиції:</string>
+    <string name="sortAsc">За алфавітом</string>
+    <string name="groupByAuthor">Згрупувати треки за автором</string>
+    <string name="shuffle">Перемішати композиції</string>
     <string name="prev">≪ Назад</string>
     <string name="next">Далі ≫</string>
     <string name="stop">Зупинити</string>
@@ -34,6 +40,7 @@
     <string name="author">Автор</string>
 	<string name="language_en">Англійська (English)</string>
     <string name="language_ua">Українська (Ukrainian)</string>
+    <string name="language_de">Німецька (Deutsch)</string>
     <string name="language">Мова:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Нічого не знайдено</string>

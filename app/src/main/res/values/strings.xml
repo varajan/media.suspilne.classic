@@ -6,6 +6,7 @@
     <string name="trackUrl" translatable="false">https://classical.suspilne.media/inc/audio/%02d.mp3</string>
 	<string name="language_ua">Ukrainian (Українська)</string>
     <string name="language_en">English</string>
+    <string name="language_de">German (Deutsch)</string>
     <string name="language">Language:</string>
     <string name="showOnlyFavorite">Show only favorite tracks</string>
     <string name="nothingToShow">Nothing to show</string>
@@ -27,6 +28,12 @@
 		
 		[Lock screen] - pause or resume, select next or previous track without unlocking the phone.\n
     </string>
+	<string name="sort91">By duration descending</string>
+    <string name="sort19">By duration ascending</string>
+    <string name="sorting">Tracks sorting:</string>
+    <string name="sortAsc">Alphabetically by title</string>
+    <string name="groupByAuthor">Group tracks by author</string>
+    <string name="shuffle">Shuffle tracks</string>
     <string name="prev">≪ Back</string>
     <string name="next">Next ≫</string>
     <string name="stop">Stop</string>
