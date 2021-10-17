@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -29,7 +30,7 @@ public class ActivityTracks extends ActivityMain {
     private boolean returnToComposers = false;
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         unregisterReceiver();
 
@@ -70,7 +71,7 @@ public class ActivityTracks extends ActivityMain {
                 .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
     }
 
-    private View.OnClickListener search = v -> {
+    private final View.OnClickListener search = v -> {
         searchIcon.setVisibility(View.GONE);
         favoriteIcon.setVisibility(View.GONE);
         searchField.setVisibility(View.VISIBLE);
@@ -295,15 +296,19 @@ public class ActivityTracks extends ActivityMain {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        switch (intent.getStringExtra("code")){
-            case "SourceIsNotAccessible":
-                setPlayBtnIcon();
-                Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
-                break;
+            String code = intent.getStringExtra("code");
+            if (code == null) code = "";
 
-            case "SetPlayBtnIcon":
-                setPlayBtnIcon();
-                break;
+            switch (code) {
+                case "SourceIsNotAccessible":
+                    Tracks.setPause(true);
+                    setPlayBtnIcon();
+                    Toast.makeText(ActivityTracks.this, R.string.no_internet, Toast.LENGTH_LONG).show();
+                    break;
+
+                case "SetPlayBtnIcon":
+                    setPlayBtnIcon();
+                    break;
             }
         }
     };

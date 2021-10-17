@@ -11,17 +11,17 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackException;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
@@ -49,25 +49,25 @@ public class PlayerService extends IntentService {
     @Override
     public void onCreate(){
         registerReceiver();
-
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerAdapter(this));
-
-        playerNotificationManager.setFastForwardIncrementMs(10_000_000);
-        playerNotificationManager.setRewindIncrementMs(10_000_000);
-        playerNotificationManager.setUseNavigationActions(false);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
-            notificationManager.createNotificationChannel(notificationChannel);
+            NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
+
+            if (channel == null){
+                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.setSound(null, null);
+                notificationChannel.setShowBadge(false);
+
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        TrackEntry track = new Tracks().getById(intent.getIntExtra("track.id", -1));
+        int trackId = intent != null ? intent.getIntExtra("track.id", -1) : -1;
+        TrackEntry track = new Tracks().getById(trackId);
         playTrack(track);
 
         return START_NOT_STICKY;
@@ -77,87 +77,87 @@ public class PlayerService extends IntentService {
         releasePlayer();
 
         Uri uri = Uri.parse(stream);
-        player = ExoPlayerFactory.newSimpleInstance(this);
+        MediaSource mediaSource = new ProgressiveMediaSource.Factory(
+                new DefaultDataSourceFactory(this,"exoplayer-codelab"))
+                .createMediaSource(MediaItem.fromUri(uri));
 
-        MediaSource mediaSource = new ExtractorMediaSource.Factory(
-            new DefaultDataSourceFactory(this,"exoplayer-codelab")).createMediaSource(uri);
-        player.prepare(mediaSource, true, false);
+        player = new SimpleExoPlayer.Builder(ActivityMain.getActivity()).build();
+        player.setMediaSource(mediaSource);
+        player.prepare();
         player.setPlayWhenReady(true);
         player.seekTo(position);
 
-        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+        PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
             @Override
-            public void onNotificationStarted(int notificationId, Notification notification) {
+            public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                 startForeground(notificationId, notification);
             }
 
             @Override
-            public void onNotificationCancelled(int notificationId) {
+            public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
                 stopSelf();
             }
-        });
+        };
+
+        playerNotificationManager = new PlayerNotificationManager
+                .Builder(this, NOTIFICATION_ID, NOTIFICATION_CHANNEL)
+                .setNotificationListener(listener)
+                .setMediaDescriptionAdapter(new PlayerAdapter(this))
+                .setStopActionIconResourceId(R.drawable.exo_icon_stop)
+                .build();
+
+        playerNotificationManager.setUseStopAction(true);
+
+        playerNotificationManager.setUseFastForwardAction(true);
+        playerNotificationManager.setUseRewindAction     (true);
+        playerNotificationManager.setUseNextAction       (false);
+        playerNotificationManager.setUsePreviousAction   (false);
+
+        playerNotificationManager.setUseFastForwardActionInCompactView(true);
+        playerNotificationManager.setUseRewindActionInCompactView     (true);
+        playerNotificationManager.setUseNextActionInCompactView       (false);
+        playerNotificationManager.setUsePreviousActionInCompactView   (false);
+
         playerNotificationManager.setPlayer(player);
 
-        player.addListener(new ExoPlayer.EventListener() {
+        player.addListener(new Player.Listener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {}
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                Tracks.setPause(!playWhenReady);
-                sendMessage("SetPlayBtnIcon");
-
-                switch(playbackState) {
-                    case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-                        Tracks.setNowPlaying(-1);
-                        Tracks.setLastPosition(player.getCurrentPosition());
-                        stopSelf();
-                        sendMessage("SetPlayBtnIcon");
-                        break;
-
-                    case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        playTrack(new Tracks().getNext());
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {}
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
+            public void onPlayerError(@NonNull PlaybackException error) {
                 stopSelf();
                 sendMessage("SourceIsNotAccessible");
             }
 
             @Override
-            public void onPositionDiscontinuity(int reason) { }
+            public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
+                Tracks.setPause(!playWhenReady);
+                sendMessage("SetPlayBtnIcon");
+            }
 
             @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
+            public void onPlaybackStateChanged(@Player.State int playbackState) {
+                sendMessage("SetPlayBtnIcon");
+
+                if (playbackState == ExoPlayer.STATE_IDLE) {
+                    Tracks.setNowPlaying(-1);
+                }
+
+                if (playbackState == ExoPlayer.STATE_ENDED) {
+                    Tracks.setLastPosition(0);
+                    playTrack(new Tracks().getNext());
+                }
+            }
 
             @Override
-            public void onSeekProcessed() {
-                long position = player.getCurrentPosition();
-                long duration = player.getContentDuration();
-                Tracks tracks = new Tracks();
-
-                if (position < 0) {
-                    playTrack(tracks.getPrevious());
-                } else if(position > duration && duration > 0){
-                    playTrack(tracks.getNext());
+            public void onPositionDiscontinuity(
+                    @NonNull Player.PositionInfo oldPosition,
+                    @NonNull Player.PositionInfo newPosition,
+                    int reason) {
+                if (reason == Player.DISCONTINUITY_REASON_SEEK) {
+                    if (oldPosition.positionMs > newPosition.positionMs) {
+                        playTrack(new Tracks().getPrevious());
+                    } else {
+                        playTrack(new Tracks().getNext());
+                    }
                 }
             }
         });
@@ -223,13 +223,11 @@ public class PlayerService extends IntentService {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getStringExtra("code")){
-                case "StopPlay":
-                    Tracks.setNowPlaying(-1);
-                    Tracks.setLastPosition(player.getCurrentPosition());
-                    stopSelf();
-                    sendMessage("SetPlayBtnIcon");
-                    break;
+            if ("StopPlay".equals(intent.getStringExtra("code"))) {
+                Tracks.setNowPlaying(-1);
+                Tracks.setLastPosition(player.getCurrentPosition());
+                stopSelf();
+                sendMessage("SetPlayBtnIcon");
             }
         }
     };
