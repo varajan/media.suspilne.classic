@@ -15,15 +15,13 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 public class PlayerService extends IntentService {
     private ExoPlayer player;
@@ -76,14 +74,16 @@ public class PlayerService extends IntentService {
     private void playStream(String stream, long position) {
         releasePlayer();
 
-        Uri uri = Uri.parse(stream);
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(
-                new DefaultDataSourceFactory(this,"exoplayer-codelab"))
-                .createMediaSource(MediaItem.fromUri(uri));
+        MediaItem mediaItem = MediaItem.fromUri(Uri.parse(stream));
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA)
+                .setContentType(C.CONTENT_TYPE_SPEECH)
+                .build();
 
-        player = new SimpleExoPlayer.Builder(ActivityMain.getActivity()).build();
-        player.setMediaSource(mediaSource);
+        player = new ExoPlayer.Builder(ActivityMain.getActivity()).build();
+        player.setMediaItem(mediaItem);
         player.prepare();
+        player.setAudioAttributes(audioAttributes, true);
         player.setPlayWhenReady(true);
         player.seekTo(position);
 
@@ -103,7 +103,6 @@ public class PlayerService extends IntentService {
                 .Builder(this, NOTIFICATION_ID, NOTIFICATION_CHANNEL)
                 .setNotificationListener(listener)
                 .setMediaDescriptionAdapter(new PlayerAdapter(this))
-                .setStopActionIconResourceId(R.drawable.exo_icon_stop)
                 .build();
 
         playerNotificationManager.setUseStopAction(true);
