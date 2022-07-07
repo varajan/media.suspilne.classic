@@ -4,6 +4,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
+
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Player;
@@ -54,10 +56,11 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
+        int flag = android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? 0 : PendingIntent.FLAG_IMMUTABLE;
+
         Intent notificationIntent = new Intent(context, ActivityTracks.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
-        PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-        return openTracksIntent;
+        return PendingIntent.getActivity(context, 0, notificationIntent, flag);
     }
 }

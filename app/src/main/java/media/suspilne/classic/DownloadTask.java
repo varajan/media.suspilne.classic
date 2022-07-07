@@ -96,7 +96,8 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
 
         Intent notificationIntent = new Intent(ActivityMain.getActivity(), ActivityMain.getActivity().getClass());
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openApplication = PendingIntent.getActivity(ActivityMain.getActivity(), 0, notificationIntent, 0);
+        int flag = android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? 0 : PendingIntent.FLAG_IMMUTABLE;
+        openApplication = PendingIntent.getActivity(ActivityMain.getActivity(), 0, notificationIntent, flag);
     }
 
     @Override
