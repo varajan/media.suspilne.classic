@@ -88,7 +88,7 @@ public class ActivityMain extends AppCompatActivity
         int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
         int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
 
-        return downSpeed > 20_000 && upSpeed > 10_000;
+        return downSpeed > 20_000 && upSpeed > 2_000;
     }
 
     @Override
