@@ -31,6 +31,8 @@
     <string name="ok">OK</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
+    <string name="grant_permissions">Відкрити системні налаштування?</string>
+    <string name="no_post_notifications_permissions">Програма не має дозволу показувати повідомлення.</string>
     <string name="confirm_exit">Закрити UA: Classic?</string>
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>

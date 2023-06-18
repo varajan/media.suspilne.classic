@@ -32,7 +32,9 @@
     <string name="ok">OK</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="grant_permissions">Systemeinstellungen öffnen?</string>
     <string name="confirm_exit">Möchten Sie das UA: Classic schließen?</string>
+    <string name="no_post_notifications_permissions">Die Anwendung verfügt nicht über die Berechtigung zum Anzeigen von Benachrichtigungen.</string>
     <string name="x_minutes">%s Minuten</string>
     <string name="no_internet">Keine Internetverbindung!</string>
     <string name="sleep_timeout">Slaffen-Timer (Wiedergabe stoppen)</string>

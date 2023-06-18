@@ -1,5 +1,6 @@
 package media.suspilne.classic;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -181,6 +182,11 @@ public class ActivityTracks extends ActivityMain {
                     playBtn.setImageResource(R.mipmap.track_play);
                     playBtn.setTag(R.mipmap.track_play);
                 }else{
+                    if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+                        requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
+                        return;
+                    }
+
                     playTrack(track);
                     setQuiteTimeout();
 
@@ -225,6 +231,7 @@ public class ActivityTracks extends ActivityMain {
         continueDownloadTracks();
         suggestToDownloadFavoriteTracks();
         registerReceiver();
+        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
     }
 
     private void playTrack(TrackEntry track){

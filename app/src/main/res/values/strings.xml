@@ -43,6 +43,8 @@
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="grant_permissions">Open System Settings?</string>
+    <string name="no_post_notifications_permissions">Application doesn\'t have permissions to show Notifications.</string>
     <string name="confirm_exit">Quit UA: Classical Music?</string>
     <string name="x_minutes">%s minutes</string>
     <string name="no_internet">No Internet!</string>

@@ -6,15 +6,19 @@ import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -348,5 +352,31 @@ public class ActivityMain extends AppCompatActivity
             .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTracks", true); download();})
             .setNegativeButton(R.string.no, null)
             .show();
+    }
+
+
+    protected boolean hasPermission(String permission){
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    protected void requestPermission(String permission){
+        ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
+    }
+    protected void requestPermission(String permission, int error){
+        if (hasPermission(permission)) return;
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setIcon(R.mipmap.icon_classic)
+                .setTitle(error)
+                .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
+                .setNegativeButton(R.string.no, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
+                .show();
+    }
+
+    private void openAndroidSettings(){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }
