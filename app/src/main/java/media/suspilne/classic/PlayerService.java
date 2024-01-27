@@ -1,5 +1,7 @@
 package media.suspilne.classic;
 
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
+
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -77,7 +79,7 @@ public class PlayerService extends IntentService {
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(stream));
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(C.USAGE_MEDIA)
-                .setContentType(C.CONTENT_TYPE_SPEECH)
+                .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                 .build();
 
         player = new ExoPlayer.Builder(ActivityMain.getActivity()).build();
@@ -90,7 +92,11 @@ public class PlayerService extends IntentService {
         PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                startForeground(notificationId, notification);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
+                } else {
+                    startForeground(notificationId, notification);
+                }
             }
 
             @Override
