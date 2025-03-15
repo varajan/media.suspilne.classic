@@ -56,11 +56,9 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
-        int flag = android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? 0 : PendingIntent.FLAG_IMMUTABLE;
-
         Intent notificationIntent = new Intent(context, ActivityTracks.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
 
-        return PendingIntent.getActivity(context, 0, notificationIntent, flag);
+        return PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
     }
 }

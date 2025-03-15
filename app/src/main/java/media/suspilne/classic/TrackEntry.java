@@ -26,8 +26,6 @@ public class TrackEntry{
     TrackEntry(){ id = -1; }
 
     TrackEntry(int id, String duration, int title, int name){
-        Boolean showClock = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M;
-
         this.id = id;
         this.titleId = title;
         this.authorNameId = name;
@@ -35,7 +33,7 @@ public class TrackEntry{
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
         this.fileName = fileName(id);
-        this.duration = showClock ? "⏱ " + duration : duration;
+        this.duration = "⏱ " + duration;
     }
 
     int getAuthorId(){

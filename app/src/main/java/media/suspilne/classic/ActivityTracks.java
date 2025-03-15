@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -240,12 +239,7 @@ public class ActivityTracks extends ActivityMain {
         if (track.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("track.id", track.id);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(stream);
-            } else {
-                startService(stream);
-            }
+            startForegroundService(stream);
         }
 
         setPlayBtnIcon(false);
@@ -282,7 +276,7 @@ public class ActivityTracks extends ActivityMain {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
-            this.registerReceiver(receiver, filter);
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
         }catch (Exception e){
             // nothing
         }
