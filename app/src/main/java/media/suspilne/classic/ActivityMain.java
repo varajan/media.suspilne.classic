@@ -80,10 +80,6 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private boolean isNetworkSpeedOk() {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
-            return true;
-        }
-
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager != null
                 ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
@@ -362,6 +358,7 @@ public class ActivityMain extends AppCompatActivity
     protected void requestPermission(String permission){
         ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
     }
+
     protected void requestPermission(String permission, int error){
         if (hasPermission(permission)) return;
 

@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -86,18 +85,15 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
         notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
         cancelAllNotifications();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
-
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
+        NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setSound(null, null);
+        notificationChannel.setShowBadge(false);
+        notificationManager.createNotificationChannel(notificationChannel);
 
         Intent notificationIntent = new Intent(ActivityMain.getActivity(), ActivityMain.getActivity().getClass());
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        int flag = android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? 0 : PendingIntent.FLAG_IMMUTABLE;
-        openApplication = PendingIntent.getActivity(ActivityMain.getActivity(), 0, notificationIntent, flag);
+
+        openApplication = PendingIntent.getActivity(ActivityMain.getActivity(), 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     @Override
