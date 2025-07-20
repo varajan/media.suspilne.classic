@@ -4,8 +4,9 @@ android {
     defaultConfig {
         applicationId "media.suspilne.classic"
         minSdkVersion 34
+        targetSdkVersion 35
         compileSdk 35
-        versionCode 63
+        versionCode 65
         versionName "1.4.27"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
