@@ -26,6 +26,7 @@ public class LocaleManager {
             case "uk": return "uk";
             case "en": return "en";
             case "de": return "de";
+            case "es": return "es";
 
             default: return "en";
         }

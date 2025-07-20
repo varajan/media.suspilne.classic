@@ -40,8 +40,9 @@
     <string name="title">Назва</string>
     <string name="author">Автор</string>
 	<string name="language_en">Англійська (English)</string>
-    <string name="language_ua">Українська (Ukrainian)</string>
+    <string name="language_ua">Українська</string>
     <string name="language_de">Німецька (Deutsch)</string>
+    <string name="language_es">Іспанська (Español)</string>
     <string name="language">Мова:</string>
     <string name="showOnlyFavorite">Відображати лише улюблені композиції</string>
     <string name="nothingToShow">Нічого не знайдено</string>
@@ -65,6 +66,7 @@
     <string name="downloadFavoriteTracksQuestion">Зберігати тільки улюблені композиції на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTracksQuestion">Видалити збережені композиції? Улюблені клмпозиції залишаться на телефоні.</string>
     <string name="clearFavoriteTracksQuestion">Видалити збережені улюблені композиції? Надалі для прослуховування буде потрібен Інтернет.</string>
+
     <string name="bach">Йоганн Себастьян Бах</string>
     <string name="barber">Самюел Барбер</string>
     <string name="beethoven">Людвіг ван Бетховен</string>
@@ -93,19 +95,19 @@
     <string name="musorgsky">Модест Мусоргський</string>
     <string name="offenbach">Жак Оффенбах</string>
     <string name="orff">Карл Орф</string>
-    <string name="ravel">Моріс Жозеф Равель</string>
-    <string name="rossini">Джоаккіно Антоніо Россіні</string>
     <string name="piazzolla">Астор П\'яццолла</string>
     <string name="ponchielli">Амількаре Понк\'єллі</string>
     <string name="prokofiev">Сергій Прокоф’єв</string>
     <string name="puccini">Джакомо Пуччіні</string>
     <string name="rachmaninov">Сергій Рахманінов</string>
+    <string name="ravel">Моріс Жозеф Равель</string>
     <string name="rimsky_korsakov">Микола Андрійович Римський-Корсаков</string>
+    <string name="rossini">Джоаккіно Антоніо Россіні</string>
     <string name="saint_saens">Каміль Сен-Санс</string>
     <string name="shostakovich">Дмитро Шостакович</string>
+    <string name="strauss_eduard">Едуард Штраус</string>
     <string name="strauss_i">Йоганн Штраус (батько)</string>
     <string name="strauss_ii">Йоганн Штраус (син)</string>
-    <string name="strauss_eduard">Едуард Штраус</string>
     <string name="verdi">Джузеппе Верді</string>
     <string name="vivaldi">Антоніо Вівальді</string>
     <string name="wagner">Ріхард Вагнер</string>
