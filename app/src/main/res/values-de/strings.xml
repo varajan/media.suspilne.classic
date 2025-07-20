@@ -6,13 +6,13 @@
     <string name="composers">Komponisten</string>
     <string name="info">Über das Programm</string>
     <string name="description">
-        Version: %s
+        Version: %s\n\n
 
-        [Alle Tracks] – 125 Aufnahmen klassischer Musik aus dem Suspilne Radio: anhören, nach Titel oder Autor suchen, als «Favoriten» markieren. Die gespeicherten Tracks sind mit 💾 markiert.
+        [Alle Tracks] – 125 Aufnahmen klassischer Musik aus dem Suspilne Radio: anhören, nach Titel oder Autor suchen, als «Favoriten» markieren. Die gespeicherten Tracks sind mit 💾 markiert.\n\n
 
-        [Komponisten] – Suchen Sie nach dem Namen des Autors, sortieren Sie die Liste alphabetisch oder nach Anzahl der Tracks, öffnen Sie alle Tracks des Autors mit einem Klick.
+        [Komponisten] – Suchen Sie nach dem Namen des Autors, sortieren Sie die Liste alphabetisch oder nach Anzahl der Tracks, öffnen Sie alle Tracks des Autors mit einem Klick.\n\n
 
-        [Einstellungen] – Wählen Sie aus, ob alle Aufnahmen oder nur Favoriten heruntergeladen werden sollen, stellen Sie den Sleep-Timer ein usw.
+        [Einstellungen] – Wählen Sie aus, ob alle Aufnahmen oder nur Favoriten heruntergeladen werden sollen, stellen Sie den Sleep-Timer ein usw.\n\n
 
         [Bildschirm sperren] – Verwalten Sie die Wiedergabe, ohne das Telefon zu entsperren: Pause, nächster oder vorheriger Track.
     </string>
@@ -40,7 +40,8 @@
     <string name="author">Autor</string>
     <string name="language_ua">Ukrainisch (Українська)</string>
     <string name="language_en">Englisch (English)</string>
-    <string name="language_de">Deutsch (Deutsch)</string>
+    <string name="language_de">Deutsch</string>
+    <string name="language_es">Spanisch (Español)</string>
     <string name="language">Sprache:</string>
     <string name="showOnlyFavorite">Nur Favoriten anzeigen</string>
     <string name="nothingToShow">Nichts anzuzeigen</string>
@@ -66,45 +67,46 @@
     <string name="clearFavoriteTracksQuestion">Möchten Sie alle gespeicherten Tracks löschen? In Zukunft benötigen Sie eine Internetverbindung zum Hören.</string>
 
     <string name="bach">Johann Sebastian Bach</string>
+    <string name="barber">Samuel Osmund Barber</string>
     <string name="beethoven">Ludwig van Beethoven</string>
+    <string name="bellini">Vincenzo Bellini</string>
+    <string name="bilash">Oleksandr Bilasch</string>
     <string name="bizet">Georges Bizet</string>
+    <string name="boccherini">Luigi Rodolfo Boccherini</string>
     <string name="borodin">Alexander Borodin</string>
     <string name="brahms">Johannes Brahms</string>
-    <string name="bruckner">Anton Bruckner</string>
+    <string name="chaikovsky">Pjotr Tschaikowski</string>
     <string name="chopin">Frédéric Chopin</string>
     <string name="debussy">Claude Debussy</string>
-    <string name="dvorak">Antonín Dvořák</string>
+    <string name="donizetti">Gaetano Donizetti</string>
+    <string name="dukas">Paul Dukas</string>
     <string name="elgar">Edward Elgar</string>
-    <string name="glinka">Michail Glinka</string>
     <string name="gounod">Charles Gounod</string>
     <string name="grieg">Edvard Grieg</string>
-    <string name="haendel">Georg Friedrich Händel</string>
+    <string name="handel">Georg Friedrich Händel</string>
     <string name="haydn">Joseph Haydn</string>
     <string name="khachaturian">Aram Chatschaturjan</string>
     <string name="leontovych">Mykola Leontowytsch</string>
-    <string name="liszt">Franz Liszt</string>
-    <string name="lysenko">Mykola Lysenko</string>
-    <string name="massenet">Jules Massenet</string>
-    <string name="mendelssohn">Felix Mendelssohn</string>
+    <string name="list">Franz Liszt</string>
+    <string name="lysenko">Mykola Lyssenko</string>
+    <string name="mendelson">Felix Mendelssohn Bartholdy</string>
     <string name="mozart">Wolfgang Amadeus Mozart</string>
-    <string name="musorgsky">Modest Mussorgsky</string>
+    <string name="musorgsky">Modest Mussorgski</string>
     <string name="offenbach">Jacques Offenbach</string>
+    <string name="orff">Carl Heinrich Maria Orff</string>
+    <string name="piazzolla">Astor Piazzolla</string>
     <string name="ponchielli">Amilcare Ponchielli</string>
     <string name="prokofiev">Sergei Prokofjew</string>
     <string name="puccini">Giacomo Puccini</string>
     <string name="rachmaninov">Sergei Rachmaninow</string>
+    <string name="ravel">Maurice Ravel</string>
     <string name="rimsky_korsakov">Nikolai Rimski-Korsakow</string>
-    <string name="rossini">Gioachino Rossini</string>
+    <string name="rossini">Gioachino Antonio Rossini</string>
     <string name="saint_saens">Camille Saint-Saëns</string>
-    <string name="sarasate">Pablo de Sarasate</string>
-    <string name="satie">Erik Satie</string>
-    <string name="schubert">Franz Schubert</string>
-    <string name="schumann">Robert Schumann</string>
     <string name="shostakovich">Dmitri Schostakowitsch</string>
-    <string name="smetana">Bedřich Smetana</string>
-    <string name="strauss">Johann Strauß (Sohn)</string>
-    <string name="strauss_sr">Johann Strauß (Vater)</string>
-    <string name="tchaikovsky">Pjotr Iljitsch Tschaikowski</string>
+    <string name="strauss_eduard">Eduard Strauß</string>
+    <string name="strauss_i">Johann Strauß (Vater)</string>
+    <string name="strauss_ii">Johann Strauß (Sohn)</string>
     <string name="verdi">Giuseppe Verdi</string>
     <string name="vivaldi">Antonio Vivaldi</string>
     <string name="wagner">Richard Wagner</string>
@@ -122,7 +124,7 @@
     <string name="track_011">Klaviersonate Nr. 14 in cis-Moll, op. 27 Nr. 2 – 1. Satz: Adagio sostenuto</string>
     <string name="track_012">Klavierkonzert Nr. 2 in B-Dur, op. 19 – 3. Satz: Rondo. Molto allegro</string>
     <string name="track_013">Ouvertüre – Sostenuto, ma non troppo – Allegro</string>
-    <string name="track_014">Schöne Minka, ich muss scheiden</string>
+    <string name="track_014">Schöne Minka, ich muss scheiden!</string>
     <string name="track_015">Sinfonie Nr. 5 in c-Moll, op. 67 – 1. Satz</string>
     <string name="track_016">Polonaise aus der Oper „Eugen Onegin“</string>
     <string name="track_017">Walzer aus dem Ballett „Dornröschen“</string>
