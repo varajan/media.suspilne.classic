@@ -1,11 +1,14 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
+    compileSdk = 37
+
     defaultConfig {
         applicationId "media.suspilne.classic"
-        minSdkVersion 34
-        targetSdkVersion 37
-        compileSdk 35
+        minSdk = 35
+        targetSdk = 36
         versionCode 66
         versionName "1.4.27"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -17,15 +20,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     namespace 'media.suspilne.classic'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'andrxoidx.appcompat:appcompat:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
     implementation 'com.google.android.material:material:1.14.0'
