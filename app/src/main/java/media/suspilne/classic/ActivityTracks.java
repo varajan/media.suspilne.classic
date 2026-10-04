@@ -201,16 +201,6 @@ public class ActivityTracks extends ActivityMain {
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (returnToComposers && !drawer.isDrawerOpen(GravityCompat.START)) {
-            finish();
-        }else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tracks_menu;
         super.onCreate(savedInstanceState);
@@ -231,6 +221,15 @@ public class ActivityTracks extends ActivityMain {
         suggestToDownloadFavoriteTracks();
         registerReceiver();
         requestPermission(Manifest.permission.POST_NOTIFICATIONS);
+    }
+
+    @Override
+    protected void onBackPressedCustomAction() {
+        if (returnToComposers) {
+            finish();
+        } else {
+            showQuitDialog();
+        }
     }
 
     private void playTrack(TrackEntry track){

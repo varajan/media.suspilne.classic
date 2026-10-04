@@ -7,15 +7,21 @@ android {
 
     defaultConfig {
         applicationId "media.suspilne.classic"
-        minSdk = 35
+        minSdk = 26
         targetSdk = 36
-        versionCode 66
-        versionName "1.4.27"
+        versionCode 67
+        versionName "1.4.28"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

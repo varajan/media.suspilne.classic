@@ -1,20 +1,20 @@
 package media.suspilne.classic;
 
-import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
-
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.app.ServiceCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -24,7 +24,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
-public class PlayerService extends IntentService {
+public class PlayerService extends Service {
     private ExoPlayer player;
     private PlayerNotificationManager playerNotificationManager;
 
@@ -32,17 +32,12 @@ public class PlayerService extends IntentService {
     public static int NOTIFICATION_ID = 21;
 
     public PlayerService() {
-        super(NOTIFICATION_CHANNEL);
+        super();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        // not implemented
     }
 
     @Override
@@ -88,8 +83,12 @@ public class PlayerService extends IntentService {
         PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
-            }
+                ServiceCompat.startForeground(
+                        PlayerService.this,
+                        notificationId,
+                        notification,
+                        ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                );            }
 
             @Override
             public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
@@ -207,7 +206,13 @@ public class PlayerService extends IntentService {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(NOTIFICATION_CHANNEL);
-            this.registerReceiver(receiver, filter);
+
+            ContextCompat.registerReceiver(
+                    this,
+                    receiver,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+            );
         }catch (Exception e){ /*nothing*/ }
     }
 
