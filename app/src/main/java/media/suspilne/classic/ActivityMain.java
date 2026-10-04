@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -130,6 +131,7 @@ public class ActivityMain extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         String language = SettingsHelper.getString(this, "Language", LocaleManager.getLanguage());
         LocaleManager.setLanguage(this, language);
+        setupBackPressedHandler();
 
         ActivityMain.activity = this;
 
@@ -198,20 +200,26 @@ public class ActivityMain extends AppCompatActivity
         System.exit(1);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if(currentView == R.id.settings_menu){
-            openActivity(ActivityTracks.class);
-        }
-        else {
-            showQuitDialog();
-        }
+    protected void setupBackPressedHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+                if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    onBackPressedCustomAction();
+                }
+            }
+        });
     }
 
-    private void showQuitDialog(){
+    protected void onBackPressedCustomAction() {
+        finish();
+    }
+
+    protected void showQuitDialog(){
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(R.string.confirm_exit)
