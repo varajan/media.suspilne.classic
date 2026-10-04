@@ -9,7 +9,7 @@ android {
         applicationId "media.suspilne.classic"
         minSdk = 26
         targetSdk = 36
-        versionCode 66
+        versionCode 67
         versionName "1.4.28"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
